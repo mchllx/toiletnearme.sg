@@ -1,0 +1,40 @@
+TODO Persistence (MongoDB)
+Import .csv file into MongoDB
+mongoimport --db=toilets -csingapore --type=csv --file=toiletswithbidet2024.csv --headerline
+mongoimport --uri="mongodb://mongo:EbEc3f4Fdd35EcgB1hC4hA23A1ceeF-F@roundhouse.proxy.rlwy.net:/40167shop?authSource=admin&authMechanism=SCRAM-SHA-1" --collection="singapore" --type=csv --file==toiletswithbidet2024.csv --headerline 
+
+TODO Persistence (mySQL)
+Add schema to sql
+\.source schema.sql
+
+TODO Dependencies
+sudo npm install --save
+
+ng new toiletnearme --standalone=false
+ng g c components/search --flat --skip-tests=true
+ng g m material/material //choose indigo-pink
+
+ng generate environments
+
+sudo npm i dexie //indexeddb, install where package.json is
+sudo npm i -g http-server
+sudo npm i --save typeface-open-sans
+sudo npm i -g uuid
+npm install uuid --save
+ng add @ngrx/component-store@latest
+
+ng add @angular/material
+ng add hammerjs
+
+TODO Development
+ng serve
+ng serve --configuration=development
+ng serve --configuration=production
+ng build
+
+TODO Deployment
+docker build -t username/container:v1.0.0 .
+docker container run -d -p 8080:8080 username/container:v1.0.0 .
+docker push mchllx/toiletnearme.sg:tagname
+docker push new-repo:tagname
+docker tag local-image:tagname new-repo:tagname

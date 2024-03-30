@@ -1,0 +1,5 @@
+Diskpart // disk partition
+List disk
+Select disk1
+Attributes disk clear readonly
+exit
