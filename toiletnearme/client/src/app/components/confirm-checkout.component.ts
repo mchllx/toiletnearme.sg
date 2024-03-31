@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LineItem, Cart, Order } from '../models';
 import { Observable, of, switchMap, tap } from 'rxjs';
-import { CartStore } from '../cart.store';
+import { CartStore } from '../toilet.store';
 
 @Component({
   selector: 'app-confirm-checkout',

@@ -1,5 +1,3 @@
-// TODO Task 2
-// Use the following class to implement your store
 import {Injectable} from "@angular/core";
 import {ComponentStore} from "@ngrx/component-store";
 

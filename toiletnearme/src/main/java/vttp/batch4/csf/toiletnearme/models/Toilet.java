@@ -11,11 +11,13 @@ public class Toilet {
     private String name;
     private String address;
     private float price;
-    private String description;
+    private String remarks;
+    private String location;
     private String openingHours;
     private Date createdOn;
     private Date updatedOn;
     private String[] thumbnails;
+    private String author;
     private float rating;
     private List<Review> reviews;
     private String footTraffic;
@@ -34,8 +36,10 @@ public class Toilet {
     public void setAddress(String address) { this.address = address; }
     public float getPrice() { return price; }
     public void setPrice(float price) { this.price = price; }
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public String getRemarks() { return remarks; }
+    public void setRemarks(String remarks) { this.remarks = remarks; }
+    public String getLocation() { return location; }
+    public void setLocation(String location) { this.location = location; }
     public String getOpeningHours() { return openingHours; }
     public void setOpeningHours(String openingHours) { this.openingHours = openingHours; }
     public Date getCreatedOn() { return createdOn; }
@@ -44,6 +48,8 @@ public class Toilet {
     public void setUpdatedOn(Date updatedOn) { this.updatedOn = updatedOn; }
     public String[] getThumbnails() { return thumbnails; }
     public void setThumbnails(String[] thumbnails) { this.thumbnails = thumbnails; }
+    public String getAuthor() { return author; }
+    public void setAuthor(String author) { this.author = author; }
     public float getRating() { return rating; }
     public void setRating(float rating) { this.rating = rating; }
     public List<Review> getReviews() { return reviews; }
@@ -55,9 +61,9 @@ public class Toilet {
 
     @Override
     public String toString() {
-        return "Toilet{id=%s, name=%s, address=%s, price=%.2f, description=%s, openingHours=%s, createdOn: %s, updatedOn: %s, thumbnails: %s, rating: %.2f, reviews: %s, footTraffic: %s }"
-        .formatted(id, name, address, price, description, openingHours
-            ,createdOn.toString(), updatedOn.toString(), thumbnails
+        return "Toilet{id=%s, name=%s, address=%s, price=%.2f, remarks=%s, location=%s, openingHours=%s, createdOn: %s, updatedOn: %s, author: %s, thumbnails: %s, rating: %.2f, reviews: %s, footTraffic: %s }"
+        .formatted(id, name, address, price, remarks, location, openingHours
+            ,createdOn.toString(), updatedOn.toString(), thumbnails, author
             ,rating, reviews, footTraffic);
     }
 }

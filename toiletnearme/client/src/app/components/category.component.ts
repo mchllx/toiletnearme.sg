@@ -3,7 +3,7 @@ import {Observable, Subject, of, switchMap, tap} from 'rxjs';
 import {Cart, LineItem, Product} from '../models';
 import {ProductService} from '../product.service';
 import {ActivatedRoute} from '@angular/router';
-import { CartStore } from '../cart.store';
+import { CartStore } from '../toilet.store';
 
 @Component({
   selector: 'app-category',

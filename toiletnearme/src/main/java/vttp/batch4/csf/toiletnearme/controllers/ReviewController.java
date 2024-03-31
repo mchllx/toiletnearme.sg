@@ -27,9 +27,10 @@ import vttp.batch4.csf.toiletnearme.services.ReviewService;
 
 @Controller
 @CrossOrigin(origins={
-    "http://localhost:4200",
-    "https://vttpb4-michelle-lim.up.railway.app",
-    "http://localhost:8080"})
+  "http://localhost:4200"
+  , "https://vttpb4-michelle-lim.up.railway.app"
+  , "http://www.toiletnearme.sg"
+  , "http://localhost:8080"})
 
 @RequestMapping(path="/api")
 public class ReviewController {

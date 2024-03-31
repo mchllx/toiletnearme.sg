@@ -13,7 +13,7 @@ import { OrderFormComponent } from './components/order-form.component';
 import {ConfirmCheckoutComponent} from './components/confirm-checkout.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MaterialModule } from './material/material/material.module';
-import { CartStore } from './cart.store';
+import { CartStore } from './toilet.store';
 
 // NOTE: you are free to modify this file
 

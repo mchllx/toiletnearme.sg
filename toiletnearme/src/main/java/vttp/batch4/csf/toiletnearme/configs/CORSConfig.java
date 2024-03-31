@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 // Headers required for CORS
 @Configuration
-public class WebConfig {
+public class CORSConfig {
 
     @Bean
     public WebMvcConfigurer corsConfig() {
@@ -22,6 +22,7 @@ public class WebConfig {
                 .allowedOrigins(
                     "http://localhost:4200"
                     ,"http://localhost:8080"
+                    ,"http://www.toiletnearme.sg"
                     ,"https://vttpb4-michelle-lim.up.railway.app")
                 .allowedMethods(
                     HttpMethod.GET.name(),

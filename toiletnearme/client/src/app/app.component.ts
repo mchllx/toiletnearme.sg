@@ -2,7 +2,7 @@ import { AfterViewInit, Component, Input, OnInit, ViewChild, inject } from '@ang
 import {Observable, of, switchMap, tap} from 'rxjs';
 import {Router} from '@angular/router';
 import { Cart, LineItem } from './models';
-import { CartStore } from './cart.store';
+import { CartStore } from './toilet.store';
 
 @Component({
   selector: 'app-root',
@@ -11,13 +11,6 @@ import { CartStore } from './cart.store';
 })
 
 export class AppComponent implements OnInit {
-  
-  // ngAfterViewInit(): void {
-  //   console.info('>>>initialising viewchild')
-  //   this.itemCount = 0
-  // }
-
-  // NOTE: you are free to modify this component
 
   itemCount: number = 0
   itemCount$!: Observable<number | undefined >
@@ -28,17 +21,6 @@ export class AppComponent implements OnInit {
   
   @Input()
   cart!: Cart
-
-
-  // @ViewChild('itemCount') set itemCount(newCount: number) {
-  //   // console.log("loading item count")
-  //   this.itemCount = newCount
-  //   this.itemCount = this.cart.lineItems.length
-
-  //   if (this.itemCount > 0) {
-  //     this.disable = false
-  //   }
-  // }
 
   ngOnInit(): void {
     this.itemCount$ = this.store.getItemCount.pipe(
