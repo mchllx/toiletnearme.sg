@@ -1,2 +1,0 @@
-VI :qa! //quit without save
-VI :wq //save and quit
