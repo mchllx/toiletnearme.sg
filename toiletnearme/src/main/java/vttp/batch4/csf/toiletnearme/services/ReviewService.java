@@ -1,33 +1,28 @@
-package vttp.batch4.csf.ecommerce.services;
+package vttp.batch4.csf.toiletnearme.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import vttp.batch4.csf.ecommerce.models.Order;
-import vttp.batch4.csf.ecommerce.repositories.PurchaseOrderRepository;
-import vttp.batch4.csf.exceptions.AddReviewException;
+import vttp.batch4.csf.exceptions.CreateReviewException;
+import vttp.batch4.csf.toiletnearme.models.Review;
+import vttp.batch4.csf.toiletnearme.repositories.ReviewRepository;
 
 @Service
-public class PurchaseOrderService {
+public class ReviewService {
 
   @Autowired
-  private PurchaseOrderRepository poRepo;
+  private ReviewRepository reviewRepo;
 
-  // IMPORTANT: DO NOT MODIFY THIS METHOD.
-  // If this method is changed, any assessment task relying on this method will
-  // not be marked
-  // You may only add Exception to the method's signature
-  @Transactional(rollbackFor=AddReviewException.class)
-  public boolean createNewPurchaseOrder(Order order)  throws AddReviewException {
-    // TODO Task 3
+  @Transactional(rollbackFor=CreateReviewException.class)
+  public boolean createNewReview(Review review) throws CreateReviewException {
 
-    if (poRepo.create(order) == false) {
+    if (reviewRepo.create(review) == false) {
       System.out.println(">>>unsuccessful");
-      throw new AddReviewException"invalid request");
+      throw new CreateReviewException("invalid request");
     }
       System.out.println(">>>successfully inserted");
-      return poRepo.create(order);
+      return reviewRepo.create(review);
   
   }
 }

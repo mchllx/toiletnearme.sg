@@ -3,17 +3,13 @@
 import {Injectable} from "@angular/core";
 import {ComponentStore} from "@ngrx/component-store";
 
-import {Cart, LineItem, Product} from "./models";
+import {Cart, LineItem} from "./models";
 
 @Injectable({
     providedIn: 'root'
 })
         
 export class CartStore extends ComponentStore<Cart> {
-
-    // private INIT_STATE: Cart = {
-    //     lineItems: []
-    // }
 
     cart!: Cart[]
 
@@ -22,8 +18,6 @@ export class CartStore extends ComponentStore<Cart> {
             {lineItems: []}
         )
     }
-
-    // readonly lineItems$: Observable<LineItem[]> = this.select(state => state.lineItems);
 
     readonly getAllItems = this.select<LineItem[]>(
         (slice: Cart) => slice.lineItems

@@ -1,28 +1,27 @@
-package vttp.batch4.csf.ecommerce.services;
+package vttp.batch4.csf.toiletnearme.services;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import vttp.batch4.csf.ecommerce.models.Product;
-import vttp.batch4.csf.ecommerce.repositories.ProductsRepository;
-
-// IMPORTANT: DO NOT MODIFY THIS CLASS
-// If this class is changed, any assessment task relying on this class will
-// not be marked
+import vttp.batch4.csf.toiletnearme.models.Toilet;
+import vttp.batch4.csf.toiletnearme.repositories.ToiletRepository;
 
 @Service
-public class ProductService {
+public class ToiletService {
 
   @Autowired
-  private ProductsRepository prodRepo;
+  private ToiletRepository toiletRepo;
 
-  public List<String> getProductCategories() {
-    return prodRepo.getProductCategories();
+  public List<String> getToiletCategories() {
+    return toiletRepo.getToiletCategories();
   }
 
-  public List<Product> getProductByCategory(String category) {
-    return prodRepo.getProductByCategory(category, 20);
+  public List<Toilet> getToiletsByCategory(String category) {
+    return toiletRepo.getToiletsByCategory(category, 20);
   }
+
+  
+
 }

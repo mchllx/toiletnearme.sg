@@ -1,7 +1,3 @@
-// IMPORTANT: DO NOT MODIFY ANY OF THESE INTERFACES
-// If this class is changed, any assessment task relying on this class will
-// not be marked
-
 export interface Product {
   prodId: string
   name: string

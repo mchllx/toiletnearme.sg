@@ -1,8 +1,3 @@
-TODO Persistence (MongoDB)
-Import .csv file into MongoDB
-mongoimport --db=toilets -csingapore --type=csv --file=toiletswithbidet2024.csv --headerline
-mongoimport --uri="mongodb://mongo:EbEc3f4Fdd35EcgB1hC4hA23A1ceeF-F@roundhouse.proxy.rlwy.net:/40167shop?authSource=admin&authMechanism=SCRAM-SHA-1" --collection="singapore" --type=csv --file==toiletswithbidet2024.csv --headerline 
-
 TODO Persistence (mySQL)
 Add schema to sql
 \.source schema.sql
