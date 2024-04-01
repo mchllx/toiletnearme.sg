@@ -20,7 +20,9 @@ public class ToiletnearmeApplication implements CommandLineRunner {
   @Override
   public void run(String... args) throws Exception {
     System.out.println(">>> springboot");
-    googleSheetSvc.getSpreadSheetValues();
+    googleSheetSvc.getSpreadSheetValues(0);
+    googleSheetSvc.getSpreadSheetValues(1);
+    googleSheetSvc.getSpreadSheetValues(2);
 
   }
 

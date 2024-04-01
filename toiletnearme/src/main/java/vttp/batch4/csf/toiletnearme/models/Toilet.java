@@ -12,7 +12,6 @@ public class Toilet {
     private String address;
     private float price;
     private String remarks;
-    private String location;
     private String openingHours;
     private Date createdOn;
     private Date updatedOn;
@@ -22,7 +21,7 @@ public class Toilet {
     private List<Review> reviews;
     private String footTraffic;
 
-    public Toilet(String id, String name, String address, float price, String remarks, String location,
+    public Toilet(String id, String name, String address, float price, String remarks,
             String openingHours, Date createdOn, Date updatedOn, String[] thumbnails, String author, float rating,
             List<Review> reviews, String footTraffic) {
         this.id = id;
@@ -30,7 +29,6 @@ public class Toilet {
         this.address = address;
         this.price = price;
         this.remarks = remarks;
-        this.location = location;
         this.openingHours = openingHours;
         this.createdOn = createdOn;
         this.updatedOn = updatedOn;
@@ -57,8 +55,6 @@ public class Toilet {
     public void setPrice(float price) { this.price = price; }
     public String getRemarks() { return remarks; }
     public void setRemarks(String remarks) { this.remarks = remarks; }
-    public String getLocation() { return location; }
-    public void setLocation(String location) { this.location = location; }
     public String getOpeningHours() { return openingHours; }
     public void setOpeningHours(String openingHours) { this.openingHours = openingHours; }
     public Date getCreatedOn() { return createdOn; }
@@ -80,8 +76,8 @@ public class Toilet {
 
     @Override
     public String toString() {
-        return "Toilet{id=%s, name=%s, address=%s, price=%.2f, remarks=%s, location=%s, openingHours=%s, createdOn: %s, updatedOn: %s, author: %s, thumbnails: %s, rating: %.2f, reviews: %s, footTraffic: %s }"
-        .formatted(id, name, address, price, remarks, location, openingHours
+        return "Toilet{id=%s, name=%s, address=%s, price=%.2f, remarks=%s, openingHours=%s, createdOn: %s, updatedOn: %s, author: %s, thumbnails: %s, rating: %.2f, reviews: %s, footTraffic: %s }"
+        .formatted(id, name, address, price, remarks, openingHours
             ,createdOn.toString(), updatedOn.toString(), author, thumbnails
             ,rating, reviews, footTraffic);
     }

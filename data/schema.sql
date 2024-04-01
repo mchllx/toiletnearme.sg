@@ -28,9 +28,25 @@ create table amenities (
     primary key(amenities_id)
 );
 
-create table toilets (
+create table female_toilets (
     toilet_id varchar(64) not null,
-    location varchar(64),
+    name varchar(64),
+    address varchar(256) not null,
+    price decimal,
+    remarks varchar(256), 
+    opening_hours Date,
+    closing_hours Date,
+    images varchar(256),
+    amenities_id varchar(64) not null,
+ 
+    primary key(toilet_id),
+    foreign key(amenities_id) references amenities(amenities_id)
+    
+);
+
+create table male_toilets (
+    toilet_id varchar(64) not null,
+    name varchar(64),
     address varchar(256) not null,
     price decimal,
     remarks varchar(256), 
