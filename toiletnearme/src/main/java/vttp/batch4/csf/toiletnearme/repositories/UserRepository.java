@@ -18,33 +18,37 @@ public class UserRepository {
 
   private Logger logger = Logger.getLogger(UserRepository.class.getName());
 
-    // insert into purchase_order(id, date, name, address, priority, comments, cart)
-    //     values (?, ?, ?, ?, ?, ?, ?)
-    //     """;
+    // user_id auto incrs
+    // insert into users(username, email, password, created_on, first_name, last_name, profile_image, role)
+    // values (?, ?, ?, ?, ?, ?, ?, ?)
+    // """;
     public boolean insertNewUser(User user) throws InsertUserException {
     return template.update(SQLQueries.SQL_INSERT_USER
-        , user.getUserId()
-        // , review.getDate()
-        // , review.getName()
-        // , review.getAddress()
-        // , review.getPriority()
-        // , review.getComments()
-        // , review.getCart().toString()
+        , user.getUsername()
+        , user.getEmail()
+        , user.getPassword()
+        , user.getCreatedOn()
+        , user.getFirstName()
+        , user.getLastName()
+        , user.getProfileImage()
+        , user.getRole()
         ) > 0;
     }
 
     // user_id int, username str, email str, password str
     // created_on timestamp, first_name str, last_name str, profile_image str, role str
     public User selectByEmail(String email) {
-        SqlRowSet rs = template.queryForRowSet(SQLQueries.SQL_SELECT_USER_BY_EMAIL, email);
+        SqlRowSet rs = template.queryForRowSet(SQLQueries.SQL_SELECT_USER_BY_EMAIL
+        , email);
 
         //if record does not exist
         if(!rs.next()){
         logger.info("User does not exist in database");
-            return new User();
+        // returning new User() != null
+            return null;
         } else {
             logger.info("User found in database");
-            rs.beforeFirst();
+            // rs.beforeFirst();
 
             User user = new User();
             user.setUserId(rs.getInt("user_id"));

@@ -17,4 +17,10 @@ public class LoginController {
         logger.info("redirecting to login");
         return "index";
     }
+
+    @GetMapping(path="/logout")
+    public String logout() {
+        logger.info("redirecting to logout");
+        return "index";
+    }
 }

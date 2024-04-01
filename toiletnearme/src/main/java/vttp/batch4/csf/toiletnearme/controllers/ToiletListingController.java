@@ -19,12 +19,7 @@ import vttp.batch4.csf.toiletnearme.Utils;
 import vttp.batch4.csf.toiletnearme.services.ToiletService;
 
 @Controller
-@CrossOrigin(origins={
-    "http://localhost:4200"
-  , "https://vttpb4-michelle-lim.up.railway.app"
-  , "http://www.toiletnearme.sg"
-  , "http://localhost:8080"})
-
+@CrossOrigin()
 @RequestMapping(path="/api"
   , produces = MediaType.APPLICATION_JSON_VALUE)
   

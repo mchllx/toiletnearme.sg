@@ -15,14 +15,14 @@ public class UserService {
   private UserRepository userRepo;
 
   @Transactional(rollbackFor=InsertUserException.class)
-  public boolean insertNewUser(User user) throws InsertUserException {
+  public void insertNewUser(User user) throws InsertUserException {
 
     if (userRepo.insertNewUser(user) == false) {
       System.out.println(">>>unsuccessful");
       throw new InsertUserException("invalid request");
     }
       System.out.println(">>>successfully inserted");
-      return userRepo.insertNewUser(user); 
+      // returning user inserts records into mySQL twice
   }
 
   public User selectByEmail(String email) {

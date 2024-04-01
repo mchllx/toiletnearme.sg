@@ -1,10 +1,14 @@
 package vttp.batch4.csf.toiletnearme.configs;
 
 import java.io.IOException;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -37,13 +41,20 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
            String email = userDetails.getAttribute("email")
            !=null?userDetails.getAttribute("email"):userDetails.getAttribute("login")+"gmail.com";
 
+        //    System.out.println(">>>email:" +email);
+
            if (userSvc.selectByEmail(email) == null) {
                 User user = new User();
 
-                user.setUsername(null);
+                user.setUsername("test");
                 user.setEmail(email);
-                user.setPassword(Utils.newUUID());
-                user.setRole("USER");
+                user.setPassword(passwordEncoder().encode("password"));
+                user.setCreatedOn(new Date());
+                user.setFirstName("Tester");
+                user.setLastName("Tester");
+                user.setProfileImage("https://media.licdn.com/dms/image/D5603AQFGn1V-jldCHw/profile-displayphoto-shrink_400_400/0/1697914909889?e=1717632000&v=beta&t=J9uzaCvd3ocZsHYGUg16CBXwSOk6Z06VrzffP2-6Slg");
+                user.setRole("ADMIN");
+                System.out.println(">>>sending data to mySQL");
 
             try {
                 userSvc.insertNewUser(user);
@@ -51,11 +62,19 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
                 e1.printStackTrace();
             }
 
+           } else {
+                User user = userSvc.selectByEmail(email);
+                System.out.println(">>>receiving data from mySQL\n" + user.getEmail());
            }
         }
         redirectUrl = "/";
         new DefaultRedirectStrategy().sendRedirect(request, response, redirectUrl);
 
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
     
 }
