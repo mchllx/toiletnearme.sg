@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, Input, OnInit, ViewChild, inject } from '@angular/core';
-import {Observable, of, switchMap, tap} from 'rxjs';
-import {Router} from '@angular/router';
-import { Cart, LineItem } from './models';
+import { Observable, of, switchMap, tap } from 'rxjs';
+import { Router } from '@angular/router';
+import {} from './models';
 import { CartStore } from './toilet.store';
 
 @Component({
@@ -11,48 +11,7 @@ import { CartStore } from './toilet.store';
 })
 
 export class AppComponent implements OnInit {
-
-  itemCount: number = 0
-  itemCount$!: Observable<number | undefined >
-
-  private router = inject(Router)
-  private store = inject(CartStore)
-  public disable: boolean = true
-  
-  @Input()
-  cart!: Cart
-
-  ngOnInit(): void {
-    this.itemCount$ = this.store.getItemCount.pipe(
-      switchMap((value: number) => {
-
-        if (value === undefined ) {
-          return of(undefined)
-        }
-
-          const newCount = value
-
-          console.info('>>>retrieving count', newCount)
-          this.itemCount = newCount
-
-        return of(this.itemCount) 
-      }),
-
-      tap(value => {
-        console.info('>>> itemcount', value)
-      })
-    )
-  
-  }
-
-  checkout(itemCount: number) {
-
-    if (itemCount <= 0) {
-      alert('cart is empty')
-      this.disable = true
-    } else {
-      this.router.navigate([ '/checkout' ])
-    }
-   
+ 
+  ngOnInit(): void { 
   }
 }

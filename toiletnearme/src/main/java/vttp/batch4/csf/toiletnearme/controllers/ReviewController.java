@@ -21,7 +21,6 @@ import jakarta.json.JsonObject;
 import jakarta.json.JsonObjectBuilder;
 import jakarta.json.JsonReader;
 import jakarta.json.JsonValue;
-import vttp.batch4.csf.exceptions.CreateReviewException;
 import vttp.batch4.csf.toiletnearme.models.Review;
 import vttp.batch4.csf.toiletnearme.services.ReviewService;
 
@@ -38,9 +37,6 @@ public class ReviewController {
   @Autowired
   private ReviewService reviewSvc;
 
-  // IMPORTANT: DO NOT MODIFY THIS METHOD.
-  // If this method is changed, any assessment task relying on this method will
-  // not be marked
   // @PostMapping(path="/listings")
   // @ResponseBody
   // public ResponseEntity<String> postReview(@RequestBody String payload) throws CreateReviewException {

@@ -7,24 +7,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import vttp.batch4.csf.exceptions.CreateReviewException;
-import vttp.batch4.csf.exceptions.CreateUserException;
-import vttp.batch4.csf.toiletnearme.models.Review;
+import vttp.batch4.csf.toiletnearme.exceptions.InsertToiletListingException;
 import vttp.batch4.csf.toiletnearme.models.Toilet;
 
 @Repository
-public class ToiletRepository {
+public class ToiletListingRepository {
 
   @Autowired
   private JdbcTemplate template;
 
-  public boolean create(Toilet toilet) throws CreateUserException{
+  public boolean create(Toilet toilet) throws InsertToiletListingException{
 
     // insert into purchase_order(id, date, name, address, priority, comments, cart)
     //     values (?, ?, ?, ?, ?, ?, ?)
     //     """;
 
-    return template.update(SQLQueries.SQL_CREATE_REVIEW
+    return template.update(SQLQueries.SQL_INSERT_TOILET
         , toilet.getId()
         // , review.getDate()
         // , review.getName()

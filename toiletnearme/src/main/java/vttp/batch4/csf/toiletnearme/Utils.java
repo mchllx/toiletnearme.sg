@@ -1,7 +1,11 @@
 package vttp.batch4.csf.toiletnearme;
 
 
+import java.util.UUID;
+
 import org.bson.Document;
+
+import com.github.f4b6a3.ulid.UlidCreator;
 
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
@@ -40,5 +44,9 @@ public class Utils {
     //   .add("quantity", toilet.getQuantity())
     //   .build();
       return null;
+  }
+
+  public static String newUUID() {
+    return UlidCreator.getMonotonicUlid().toString();
   }
 }

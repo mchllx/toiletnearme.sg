@@ -1,35 +1,35 @@
 import {Injectable} from "@angular/core";
 import {ComponentStore} from "@ngrx/component-store";
 
-import {Cart, LineItem} from "./models";
+import { Toilet } from "./models";
 
 @Injectable({
     providedIn: 'root'
 })
         
-export class CartStore extends ComponentStore<Cart> {
+export class CartStore extends ComponentStore<Toilet> {
 
-    cart!: Cart[]
+    // cart!: Cart[]
 
-    constructor() {
-        super(
-            {lineItems: []}
-        )
-    }
+    // constructor() {
+    //     super(
+    //         {lineItems: []}
+    //     )
+    // }
 
-    readonly getAllItems = this.select<LineItem[]>(
-        (slice: Cart) => slice.lineItems
-        )
+    // readonly getAllItems = this.select<LineItem[]>(
+    //     (slice: Cart) => slice.lineItems
+    //     )
 
-    readonly getItemCount = this.select<number>(
-    (slice: Cart) => slice.lineItems.length
-    )
+    // readonly getItemCount = this.select<number>(
+    // (slice: Cart) => slice.lineItems.length
+    // )
 
-    public readonly addToCart = this.updater<LineItem[]>(
-            (slice: Cart, lineItems: LineItem[]) => 
-            ({
-            ...slice, lineItems,
-      }));
+    // public readonly addToCart = this.updater<LineItem[]>(
+    //         (slice: Cart, lineItems: LineItem[]) => 
+    //         ({
+    //         ...slice, lineItems,
+    //   }));
 
 }
 

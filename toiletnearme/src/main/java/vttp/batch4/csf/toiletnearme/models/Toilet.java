@@ -22,6 +22,25 @@ public class Toilet {
     private List<Review> reviews;
     private String footTraffic;
 
+    public Toilet(String id, String name, String address, float price, String remarks, String location,
+            String openingHours, Date createdOn, Date updatedOn, String[] thumbnails, String author, float rating,
+            List<Review> reviews, String footTraffic) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.price = price;
+        this.remarks = remarks;
+        this.location = location;
+        this.openingHours = openingHours;
+        this.createdOn = createdOn;
+        this.updatedOn = updatedOn;
+        this.thumbnails = thumbnails;
+        this.author = author;
+        this.rating = rating;
+        this.reviews = reviews;
+        this.footTraffic = footTraffic;
+    }
+
     public Toilet() {
     // 26 characters
     // Eg - 01HNS6YMJNZX24G4YN38AGBZEE
@@ -63,7 +82,7 @@ public class Toilet {
     public String toString() {
         return "Toilet{id=%s, name=%s, address=%s, price=%.2f, remarks=%s, location=%s, openingHours=%s, createdOn: %s, updatedOn: %s, author: %s, thumbnails: %s, rating: %.2f, reviews: %s, footTraffic: %s }"
         .formatted(id, name, address, price, remarks, location, openingHours
-            ,createdOn.toString(), updatedOn.toString(), thumbnails, author
+            ,createdOn.toString(), updatedOn.toString(), author, thumbnails
             ,rating, reviews, footTraffic);
     }
 }
