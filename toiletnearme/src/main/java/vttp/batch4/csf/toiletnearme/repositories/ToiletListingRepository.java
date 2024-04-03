@@ -16,21 +16,20 @@ public class ToiletListingRepository {
   @Autowired
   private JdbcTemplate template;
 
-  public boolean create(Toilet toilet) throws InsertToiletListingException{
-
-    // insert into purchase_order(id, date, name, address, priority, comments, cart)
-    //     values (?, ?, ?, ?, ?, ?, ?)
-    //     """;
+  public boolean insertToilet(Toilet toilet) throws InsertToiletListingException{
+  // insert into toilet(id, date, name, address, priority, comments, cart)
+  //     values (?, ?, ?, ?, ?, ?, ?)
+  //     """;
 
     return template.update(SQLQueries.SQL_INSERT_TOILET
-        , toilet.getId()
-        // , review.getDate()
-        // , review.getName()
-        // , review.getAddress()
-        // , review.getPriority()
-        // , review.getComments()
-        // , review.getCart().toString()
-        ) > 0;
+      , toilet.getId()
+      // , review.getDate()
+      // , review.getName()
+      // , review.getAddress()
+      // , review.getPriority()
+      // , review.getComments()
+      // , review.getCart().toString()
+      ) > 0;
   }
 
   public List<String> getToiletCategories() {

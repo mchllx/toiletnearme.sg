@@ -11,28 +11,32 @@ public class Toilet {
     private String name;
     private String address;
     private float price;
+    private String gender;
     private String remarks;
     private String openingHours;
     private Date createdOn;
     private Date updatedOn;
     private String[] thumbnails;
+    private String region;
     private String author;
     private float rating;
     private List<Review> reviews;
     private String footTraffic;
 
-    public Toilet(String id, String name, String address, float price, String remarks,
-            String openingHours, Date createdOn, Date updatedOn, String[] thumbnails, String author, float rating,
-            List<Review> reviews, String footTraffic) {
+    public Toilet(String id, String name, String address, float price, String gender, String remarks,
+            String openingHours, Date createdOn, Date updatedOn, String[] thumbnails, String region,
+            String author, float rating,List<Review> reviews, String footTraffic) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.price = price;
+        this.gender = gender;
         this.remarks = remarks;
         this.openingHours = openingHours;
         this.createdOn = createdOn;
         this.updatedOn = updatedOn;
         this.thumbnails = thumbnails;
+        this.region = region;
         this.author = author;
         this.rating = rating;
         this.reviews = reviews;
@@ -53,6 +57,8 @@ public class Toilet {
     public void setAddress(String address) { this.address = address; }
     public float getPrice() { return price; }
     public void setPrice(float price) { this.price = price; }
+    public String getGender() { return gender; }
+    public void setGender(String gender) { this.gender = gender; }
     public String getRemarks() { return remarks; }
     public void setRemarks(String remarks) { this.remarks = remarks; }
     public String getOpeningHours() { return openingHours; }
@@ -63,6 +69,8 @@ public class Toilet {
     public void setUpdatedOn(Date updatedOn) { this.updatedOn = updatedOn; }
     public String[] getThumbnails() { return thumbnails; }
     public void setThumbnails(String[] thumbnails) { this.thumbnails = thumbnails; }
+    public String getRegion() { return region; }
+    public void setRegion(String region) { this.region = region; }
     public String getAuthor() { return author; }
     public void setAuthor(String author) { this.author = author; }
     public float getRating() { return rating; }
@@ -76,9 +84,9 @@ public class Toilet {
 
     @Override
     public String toString() {
-        return "Toilet{id=%s, name=%s, address=%s, price=%.2f, remarks=%s, openingHours=%s, createdOn: %s, updatedOn: %s, author: %s, thumbnails: %s, rating: %.2f, reviews: %s, footTraffic: %s }"
-        .formatted(id, name, address, price, remarks, openingHours
+        return "Toilet{id=%s, name=%s, address=%s, price=%.2f, gender=%s, remarks=%s, openingHours=%s, createdOn: %s, updatedOn: %s, author: %s, thumbnails: %s, region: %s, rating: %.2f, reviews: %s, footTraffic: %s }"
+        .formatted(id, name, address, price, gender, remarks, openingHours
             ,createdOn.toString(), updatedOn.toString(), author, thumbnails
-            ,rating, reviews, footTraffic);
+            ,region, rating, reviews, footTraffic);
     }
 }
