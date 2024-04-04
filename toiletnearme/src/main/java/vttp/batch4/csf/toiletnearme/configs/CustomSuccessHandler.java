@@ -13,11 +13,13 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
+import com.google.api.client.util.Value;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import vttp.batch4.csf.toiletnearme.exceptions.InsertUserException;
 import vttp.batch4.csf.toiletnearme.Utils;
+import vttp.batch4.csf.toiletnearme.exceptions.InsertUserException;
 import vttp.batch4.csf.toiletnearme.models.User;
 import vttp.batch4.csf.toiletnearme.services.UserService;
 
@@ -32,49 +34,65 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
             Authentication authentication) throws IOException, ServletException {
         
         String redirectUrl = null;
-        System.out.println("Successfully authenticated");
+        System.out.println(">>>Successful OAuth2.0 authentication");
 
+        // at_hash=, sub=, email_verified=, iss=, given_name=
+        // , nonce=, picture=https://lh3.googleusercontent.com/a/, aud=, azp=, name=
+        // , exp/expiration=date, family_name=, iat/issued at=, email=
         // if auth username is instance of oa2user
         if (authentication.getPrincipal() instanceof DefaultOAuth2User) {
            DefaultOAuth2User userDetails = (DefaultOAuth2User)authentication.getPrincipal();
 
+           String firstName = userDetails.getAttribute("name")
+           !=null?userDetails.getAttribute("name"):userDetails.getAttribute("name");
+
+           String lastName = userDetails.getAttribute("family_name")
+           !=null?userDetails.getAttribute("family_name"):userDetails.getAttribute("family_name");
+
            String email = userDetails.getAttribute("email")
            !=null?userDetails.getAttribute("email"):userDetails.getAttribute("login")+"gmail.com";
 
-        //    System.out.println(">>>email:" +email);
+           String username = email.replace("@gmail.com", Utils.createUUID8Char());
 
-           if (userSvc.selectByEmail(email) == null) {
+            // Placeholder
+           String profileImage = userDetails.getAttribute("picture")
+           !=null?userDetails.getAttribute("picture"):"https://t4.ftcdn.net/jpg/05/42/36/11/360_F_542361185_VFRJWpR2FH5OiAEVveWO7oZnfSccZfD3.jpg";
+
+        //    System.out.println(">>>email:" +email);
+        //    System.out.println(">>>details:" +userDetails.getAttributes());
+
+           if (userSvc.selectUserByEmail(email) == null) {
                 User user = new User();
 
-                user.setUsername("test");
+                user.setUserId(Utils.createUUID26Char());
+                user.setUsername(username);
                 user.setEmail(email);
-                user.setPassword(passwordEncoder().encode("password"));
+                user.setPassword(passwordEncoder().encode(email));
                 user.setCreatedOn(new Date());
-                user.setFirstName("Tester");
-                user.setLastName("Tester");
-                user.setProfileImage("https://media.licdn.com/dms/image/D5603AQFGn1V-jldCHw/profile-displayphoto-shrink_400_400/0/1697914909889?e=1717632000&v=beta&t=J9uzaCvd3ocZsHYGUg16CBXwSOk6Z06VrzffP2-6Slg");
-                user.setRole("ADMIN");
-                System.out.println(">>>sending data to mySQL");
+                user.setUpdatedOn(new Date());
+                user.setFirstName(firstName);
+                user.setLastName(lastName);
+                user.setProfileImage(profileImage);
+                user.setRole(Utils.ROLE_2);
+                // System.out.println(">>>sending user data to mySQL");
 
             try {
-                userSvc.insertNewUser(user);
+                userSvc.insertUser(user);
             } catch (InsertUserException e1) {
+                System.out.println(">>>Email exists in database");
                 e1.printStackTrace();
             }
 
-           } else {
-                User user = userSvc.selectByEmail(email);
-                System.out.println(">>>receiving data from mySQL\n" + user.getEmail());
+                user = userSvc.selectUserByEmail(email);
+                System.out.println(">>>Login successful\n" + user.getEmail());
            }
         }
         redirectUrl = "/";
         new DefaultRedirectStrategy().sendRedirect(request, response, redirectUrl);
-
     }
-
+    
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-    
 }

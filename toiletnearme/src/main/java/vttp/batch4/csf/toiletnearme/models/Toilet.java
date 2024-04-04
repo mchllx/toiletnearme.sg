@@ -12,7 +12,7 @@ import jakarta.json.JsonObject;
 
 public class Toilet {
 
-    private String id;
+    private String toiletId;
     private String name;
     private String address;
     private float price;
@@ -30,10 +30,10 @@ public class Toilet {
     private List<Review> reviews;
     private String footTraffic;
 
-    public Toilet(String id, String name, String address, float price, String gender, String type, String remarks,
+    public Toilet(String toiletId, String name, String address, float price, String gender, String type, String remarks,
             Map<String, Date> openingHours, Map<String, Date> closingHours, Date createdOn, Date updatedOn, String[] images, String region,
             String author, float rating,List<Review> reviews, String footTraffic) {
-        this.id = id;
+        this.toiletId = toiletId;
         this.name = name;
         this.address = address;
         this.price = price;
@@ -55,8 +55,8 @@ public class Toilet {
     public Toilet() {
     }
     
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
+    public String getToiletId() { return toiletId; }
+    public void setToiletId(String toiletId) { this.toiletId = toiletId; }
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
     public String getAddress() { return address; }
@@ -94,8 +94,8 @@ public class Toilet {
 
     @Override
     public String toString() {
-        return "Toilet{id=%s, name=%s, address=%s, price=%.2f, gender=%s, type=%s, remarks=%s, openingHours=%s, closingHours=%s, createdOn: %s, updatedOn: %s, author: %s, thumbnails: %s, region: %s, rating: %.2f, reviews: %s, footTraffic: %s }"
-        .formatted(id, name, address, price, gender, type, remarks, openingHours.toString(), closingHours.toString()
+        return "Toilet{toiletId=%s, name=%s, address=%s, price=%.2f, gender=%s, type=%s, remarks=%s, openingHours=%s, closingHours=%s, createdOn: %s, updatedOn: %s, author: %s, thumbnails: %s, region: %s, rating: %.2f, reviews: %s, footTraffic: %s }"
+        .formatted(toiletId, name, address, price, gender, type, remarks, openingHours.toString(), closingHours.toString()
             ,createdOn.toString(), updatedOn.toString(), author, images
             ,region, rating, reviews, footTraffic);
     }

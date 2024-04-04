@@ -13,7 +13,8 @@ import vttp.batch4.csf.toiletnearme.models.Toilet;
 
 public class Utils {
 
-  // public static final String MONGODB_1 = "singapore";
+  public static final String ROLE_1 = "ADMIN";
+  public static final String ROLE_2 = "USER";
 
   public static final String AMENITIES_1 = "babycare";
   public static final String AMENITIES_2 = "bidet";
@@ -28,7 +29,13 @@ public class Utils {
 
   // 26 characters
   // Eg - 01HNS6YMJNZX24G4YN38AGBZEE
-  public static String createUUID() {
+  public static String createUUID26Char() {
     return UlidCreator.getMonotonicUlid().toString();
+  }
+
+  // 8 characters
+  // Eg - 01HNS6YM
+  public static String createUUID8Char() {
+    return UlidCreator.getMonotonicUlid().toString().substring(0,8);
   }
 }

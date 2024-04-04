@@ -32,12 +32,12 @@ public class ToiletService {
   public void insertToilets(Toilet toilet) throws Exception {
 
     if (toiletRepo.insertToilet(toilet) == false) {
-      System.out.printf(">>>Unsuccessful: %s was not inserted", toilet.getId());
+      System.out.printf(">>>Unsuccessful: %s was not inserted", toilet.getToiletId());
       throw new InsertUserException("Invalid request");
     }
 
     // returning user inserts records into mySQL twice
-      System.out.printf(">>>Successfully: %s was inserted", toilet.getId()); 
+      System.out.printf(">>>Successful: %s was inserted", toilet.getToiletId()); 
   }
 
   // TODO: check ID if already exists
@@ -52,7 +52,7 @@ public class ToiletService {
     }
 
     // returning user inserts records into mySQL twice
-      System.out.printf(">>>Successfully: %s was inserted", hotel); 
+      System.out.printf(">>>Successful: %s was inserted", hotel); 
   }
 
   @Transactional(rollbackFor=InsertToiletListingException.class)
@@ -66,7 +66,7 @@ public class ToiletService {
     }
 
     // returning user inserts records into mySQL twice
-      System.out.printf(">>>Successfully: %s was inserted", location); 
+      System.out.printf(">>>Successful: %s was inserted", location); 
   }
 
   @Transactional(rollbackFor=InsertToiletListingException.class)
@@ -80,7 +80,7 @@ public class ToiletService {
     }
 
     // returning user inserts records into mySQL twice
-      System.out.printf(">>>Successfully: %s was inserted", location); 
+      System.out.printf(">>>Successful: %s was inserted", location); 
   }
 
 

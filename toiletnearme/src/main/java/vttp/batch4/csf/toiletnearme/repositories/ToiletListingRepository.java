@@ -25,7 +25,7 @@ public class ToiletListingRepository {
   public boolean insertToilet(Toilet toilet) throws InsertToiletListingException{
 
     return template.update(SQLQueries.SQL_INSERT_TOILET
-      , toilet.getId()
+      , toilet.getToiletId()
       , toilet.getName()
       , toilet.getAddress()
       , toilet.getPrice()
@@ -36,7 +36,7 @@ public class ToiletListingRepository {
       , toilet.getClosingHours()
       , toilet.getImages()
       , toilet.getRegion()
-      , Utils.createUUID() 
+      , Utils.createUUID26Char() 
       ) > 0;
   }
 
@@ -46,7 +46,7 @@ public class ToiletListingRepository {
     throws InsertToiletListingException {
 
     return template.update(SQLQueries.SQL_INSERT_GSHEETS_TOILET_FEMALE
-      , Utils.createUUID()
+      , Utils.createUUID26Char()
       , new Date()
       , region
       , location
@@ -61,7 +61,7 @@ public class ToiletListingRepository {
     throws InsertToiletListingException {
 
     return template.update(SQLQueries.SQL_INSERT_GSHEETS_TOILET_MALE
-      , Utils.createUUID()
+      , Utils.createUUID26Char()
       , new Date()
       , region
       , location
@@ -76,7 +76,7 @@ public class ToiletListingRepository {
     throws InsertToiletListingException {
 
     return template.update(SQLQueries.SQL_INSERT_GSHEETS_TOILET_HOTEL
-      , Utils.createUUID()
+      , Utils.createUUID26Char()
       , new Date()
       , hotel
       , room
