@@ -33,5 +33,6 @@ build/
 .vscode/
 
 # misc file
+commands.txt
 src/main/java/vttp/batch4/csf/resources/credentials.json
 tokens

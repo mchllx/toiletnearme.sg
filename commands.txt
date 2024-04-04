@@ -33,3 +33,7 @@ docker container run -d -p 8080:8080 username/container:v1.0.0 .
 docker push mchllx/toiletnearme.sg:tagname
 docker push new-repo:tagname
 docker tag local-image:tagname new-repo:tagname
+
+commands.txt
+src/main/java/vttp/batch4/csf/resources/credentials.json
+tokens
