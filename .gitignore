@@ -23,5 +23,11 @@
 hs_err_pid*
 replay_pid*
 
+# System files
+.DS_Store
+Thumbs.db
+
 # misc
 commands.txt
+toiletnearme/tokens/StoredCredential
+toiletnearme/src/main/resources/credentials.json
