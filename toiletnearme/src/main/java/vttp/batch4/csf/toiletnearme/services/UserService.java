@@ -17,12 +17,12 @@ public class UserService {
   @Transactional(rollbackFor=InsertUserException.class)
   public void insertNewUser(User user) throws InsertUserException {
 
-    if (userRepo.insertNewUser(user) == false) {
+    if (userRepo.insertUser(user) == false) {
       System.out.println(">>>unsuccessful");
       throw new InsertUserException("invalid request");
     }
+    // returning user inserts records into mySQL twice
       System.out.println(">>>successfully inserted");
-      // returning user inserts records into mySQL twice
   }
 
   public User selectByEmail(String email) {

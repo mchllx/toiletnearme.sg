@@ -1,8 +1,8 @@
 TODO Persistence (mySQL)
 Add schema to sql
+mysql -uroot -hroundhouse.proxy.rlwy.net -P58996 --protocol=TCP railway -p
 \.source schema.sql
 
-TODO Dependencies
 sudo npm install --save
 
 ng new toiletnearme --standalone=false

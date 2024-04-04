@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# misc file
+src/main/java/vttp/batch4/csf/resources/credentials.json
+tokens

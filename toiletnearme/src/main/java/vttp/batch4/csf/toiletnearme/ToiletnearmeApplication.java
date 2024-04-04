@@ -14,15 +14,15 @@ public class ToiletnearmeApplication implements CommandLineRunner {
     SpringApplication.run(ToiletnearmeApplication.class, args);
   }
 
-  // @Autowired
-  // GoogleSheetsServiceImpl googleSheetSvc;
+  @Autowired
+  GoogleSheetsServiceImpl googleSheetSvc;
   
   @Override
   public void run(String... args) throws Exception {
     // System.out.println(">>> springboot");
-    // googleSheetSvc.getSpreadSheetValues(0);
-    // googleSheetSvc.getSpreadSheetValues(1);
-    // googleSheetSvc.getSpreadSheetValues(2);
+    googleSheetSvc.getSpreadSheetValues(Utils.SHEET_MALE);
+    googleSheetSvc.getSpreadSheetValues(Utils.SHEET_FEMALE);
+    googleSheetSvc.getSpreadSheetValues(Utils.SHEET_HOTEL);
   }
 
 }

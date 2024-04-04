@@ -22,7 +22,7 @@ public class UserRepository {
     // insert into users(username, email, password, created_on, first_name, last_name, profile_image, role)
     // values (?, ?, ?, ?, ?, ?, ?, ?)
     // """;
-    public boolean insertNewUser(User user) throws InsertUserException {
+    public boolean insertUser(User user) throws InsertUserException {
     return template.update(SQLQueries.SQL_INSERT_USER
         , user.getUsername()
         , user.getEmail()

@@ -22,6 +22,7 @@ import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
 import jakarta.json.JsonValue;
 import vttp.batch4.csf.toiletnearme.configs.GoogleAuthorisationConfig;
+import vttp.batch4.csf.toiletnearme.exceptions.InsertToiletListingException;
 
 @Service
 public class GoogleSheetsServiceImpl implements GoogleSheetsService {
@@ -33,6 +34,9 @@ public class GoogleSheetsServiceImpl implements GoogleSheetsService {
     @Autowired
     private GoogleAuthorisationConfig googleAuthorisationConfig;
 
+    @Autowired
+    private ToiletService toiletSvc;
+    
     @Override
     public void getSpreadSheetValues(Integer index) throws IOException, GeneralSecurityException {
         Sheets sheetsService = googleAuthorisationConfig.getSheetsService();
@@ -71,16 +75,16 @@ public class GoogleSheetsServiceImpl implements GoogleSheetsService {
         for (JsonValue v : rowDataArr) {
             // DO NOT use clear(), final actions updates references into last value
             List<String> processed = new LinkedList<>();
-            System.out.println(">>> processing new row");
+            // System.out.println(">>> processing new row");
 
             JsonObject rowDataObj = v.asJsonObject();
             JsonArray valuesArr = rowDataObj.getJsonArray("values");
 
-            // unordered, nested keys, objects NOT json
+            // unordered, nested keys, objects NOT json, empty cells required for col info
             if (valuesArr != null) {
                 valuesArr.stream()
                     .map(j -> j.asJsonObject())
-                    .filter(j -> ((j != null && !j.isEmpty())))
+                    // .filter(j -> (j != null && !j.isEmpty()))
                     .forEach(j -> {
                         try {
                             String stringValue = j.get("userEnteredValue")
@@ -89,25 +93,110 @@ public class GoogleSheetsServiceImpl implements GoogleSheetsService {
                             .toString()
                             .replaceAll("\\\\n|\\\\r", "");
 
+                            if (!j.containsKey("hyperlink"))
                             processed.add(stringValue); 
-                            System.out.println(j.get("userEnteredValue").asJsonObject().get("stringValue"));
-                            
-                            String hyperlink = j.get("hyperlink")
-                                .toString();
-                                
-                            processed.add(hyperlink);
-                            System.out.println(j.get("hyperlink").toString());
+                            // System.out.println(j.get("userEnteredValue").asJsonObject().get("stringValue"));
 
-                            results.add(processed);
-                            System.out.println(">>> added:\n" + results.getLast());
+                            String hyperlink = j.get("hyperlink").toString();
+                            StringBuilder sb = new StringBuilder();
+                                sb.append(stringValue);
+                                sb.append(",");
+                                sb.append(hyperlink);
 
+                            // System.out.println(">>> check:" +sb.toString());
+                            processed.add(sb.toString());
+                            // System.out.println(j.get("hyperlink").toString());
                         } catch (NullPointerException e) {
-                            logger.info(">>>null value, not added");
+                            // System.out.println(">>>null value, not added");
                         } 
                     });  
             }
+            //Add to list after stream ends to avoid dupes
+            results.add(processed);
+            // System.out.println(">>> added:\n" + results.getLast());
         }
-        System.out.println(">>>results:\n" + results);
+        // System.out.println(">>>>results:"+results);
+       
+        // TODO: Allow incomplete cells to be inserted
+        String region = "";
+        switch (index) {
+            case 0:
+            System.out.println(">>>>adding Male GSheet records");
+            for (List<String> list : results) {
+                try {
+                    // Not all region cells have values, "\"" double quotes are part of the string
+                    String value = list.get(0).replaceAll("\"", "");
+                    // System.out.println(">>>check:"+value);
+                    if ("NORTH-EAST".equals(value) || 
+                        "NORTH".equals(value) || 
+                        "EAST".equals(value) || 
+                        "CENTRAL".equals(value) || 
+                        "SOUTH".equals(value) || 
+                        "WEST".equals(value) || 
+                        "INSTITUTIONS".equals(value)) {
+                        region = value;
+                        // System.out.println(">>>region:"+region);
+                        toiletSvc.insertGSheetToiletMale(
+                            region, list.get(1), list.get(2), list.get(3));
+                    } else {
+                        toiletSvc.insertGSheetToiletMale(
+                            region, list.get(0), list.get(1), list.get(2));
+                    }
+                } catch (IndexOutOfBoundsException e3) {
+                    // System.out.println("incomplete");
+                } catch (InsertToiletListingException e4) {
+                    System.out.println("error");
+                }
+            }
+            break;
+            case 1:
+            System.out.println(">>>>adding Female GSheet records");
+            for (List<String> list : results) {
+                try {
+                    // Not all region cells have values, "\"" double quotes are part of the string
+                    String value = list.get(0).replaceAll("\"", "");
+                    // System.out.println(">>>check:"+value);
+                    if ("NORTH-EAST".equals(value) || 
+                        "NORTH".equals(value) || 
+                        "EAST".equals(value) || 
+                        "CENTRAL".equals(value) || 
+                        "SOUTH".equals(value) || 
+                        "WEST".equals(value) || 
+                        "INSTITUTIONS".equals(value)) {
+                        region = value;
+                        // System.out.println(">>>region:"+region);
+                        toiletSvc.insertGSheetToiletFemale(
+                            region, list.get(1), list.get(2), list.get(3));
+                    } else {
+                        toiletSvc.insertGSheetToiletFemale(
+                            region, list.get(0), list.get(1), list.get(2));
+                    }
+                } catch (IndexOutOfBoundsException e3) {
+                    // System.out.println("incomplete");
+                } catch (InsertToiletListingException e4) {
+                    System.out.println("error");
+                }
+            }
+            break;
+            case 2:
+            System.out.println(">>>>adding Hotel GSheet records");
+                for (List<String> list : results) {
+                    try {
+                        toiletSvc.insertGSheetToiletHotel(
+                    list.get(0), list.get(1), list.get(2)
+                    , list.get(3), list.get(4));
+
+                    } catch (IndexOutOfBoundsException e3) {
+                        // System.out.println("incomplete");
+                    } catch (InsertToiletListingException e4) {
+                        System.out.println("error");
+                    };
+                } 
+                break; 
+            default:
+                System.out.println("invalid sheet");
+                break;
+        }
     }
 
     private List<String> getSpreadSheet(Integer index) throws IOException, GeneralSecurityException {
