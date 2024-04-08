@@ -1,10 +1,13 @@
 package vttp.batch4.csf.toiletnearme;
 
+import java.net.ServerSocket;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import vttp.batch4.csf.toiletnearme.configs.WebSocketConfig;
 import vttp.batch4.csf.toiletnearme.services.GoogleSheetsServiceImpl;
 
 @SpringBootApplication
@@ -16,6 +19,9 @@ public class ToiletnearmeApplication implements CommandLineRunner {
 
   // @Autowired
   // GoogleSheetsServiceImpl googleSheetSvc;
+
+  // @Autowired
+  // WebSocketConfig webSocketConfig;
   
   @Override
   public void run(String... args) throws Exception {
@@ -23,6 +29,7 @@ public class ToiletnearmeApplication implements CommandLineRunner {
     // googleSheetSvc.getSpreadSheetValues(Utils.SHEET_MALE);
     // googleSheetSvc.getSpreadSheetValues(Utils.SHEET_FEMALE);
     // googleSheetSvc.getSpreadSheetValues(Utils.SHEET_HOTEL);
+
   }
 
 }
