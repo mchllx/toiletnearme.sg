@@ -1,11 +1,15 @@
 package vttp.batch4.csf.toiletnearme.services;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import vttp.batch4.csf.toiletnearme.exceptions.InsertUserException;
 import vttp.batch4.csf.toiletnearme.exceptions.NoAccessException;
+import vttp.batch4.csf.toiletnearme.models.Role;
 import vttp.batch4.csf.toiletnearme.models.User;
 import vttp.batch4.csf.toiletnearme.repositories.UserRepository;
 
@@ -18,7 +22,7 @@ public class UserService {
   @Transactional(rollbackFor={InsertUserException.class, NoAccessException.class})
   public void updateUserRoleByEmail(User user, String approverEmail) throws InsertUserException, NoAccessException {
 
-    if (userRepo.selectUserByEmail(approverEmail).getRole() == "USER") {
+    if (userRepo.selectUserByEmail(approverEmail).getAuthorities().isEmpty()) {
       System.out.printf(">>>Unsuccessful: User do not have access");
       throw new NoAccessException("Invalid access");
     }
@@ -28,14 +32,18 @@ public class UserService {
       throw new InsertUserException("Invalid request");
     }
 
-    switch (user.getRole()) {
+    Set<Role> authorities = new HashSet<>();
+
+    switch (user.getAuthorities().toString()) {
       case "USER":
-        user.setRole("ADMIN");
+        authorities.add(Role.ROLE_ADMIN);
+        user.setAuthorities(authorities);
         userRepo.updateUserRoleByEmail(user); 
         break;
 
       case "ADMIN":
-        user.setRole("USER");
+        authorities.add(Role.ROLE_USER);
+        user.setAuthorities(authorities);
         userRepo.updateUserRoleByEmail(user); 
       break;
     

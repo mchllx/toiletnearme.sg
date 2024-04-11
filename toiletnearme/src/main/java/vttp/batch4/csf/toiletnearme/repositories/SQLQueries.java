@@ -105,7 +105,8 @@ public class SQLQueries {
     public static final String SQL_UPDATE_USER = """
         replace into users(
         user_id, username, email, password, created_on
-        ,last_update, first_name, last_name, profile_image, role)
+        , last_update, first_name, last_name, profile_image, role
+        , expired, enabled, locked, credentials)
         values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """;
 
@@ -113,14 +114,16 @@ public class SQLQueries {
     public static final String SQL_INSERT_USER = """
         insert into users(
         user_id, username, email, password, created_on
-        , last_update, first_name, last_name, profile_image, role)
-        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        , last_update, first_name, last_name, profile_image, role
+        , expired, enabled, locked, credentials)
+        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """;
 
     public static final String SQL_SELECT_USER_BY_EMAIL = """
         select 
         user_id, username, email, password, created_on
         , last_update, first_name, last_name, profile_image, role
+        , expired, enabled, locked, credentials
         from users
         where email like ?
         """;
@@ -129,6 +132,7 @@ public class SQLQueries {
         select 
         user_id, username, email, password, created_on
         , last_update, first_name, last_name, profile_image, role
+        , expired, enabled, locked, credentials
         from users
         where user_id like ?
         """;

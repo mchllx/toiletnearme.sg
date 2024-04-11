@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.bson.Document;
 
 import com.github.f4b6a3.ulid.UlidCreator;
 
@@ -100,7 +99,7 @@ public class Toilet {
             ,region, rating, reviews, footTraffic);
     }
 
-    public static Toilet toToilet(Document doc) {
+    public static Toilet toToilet() {
     // Toilet toilet = new Toilet();
     // toilet.setId(doc.getObjectId("_id").toHexString());
     // toilet.setName(doc.getString("ProductName"));

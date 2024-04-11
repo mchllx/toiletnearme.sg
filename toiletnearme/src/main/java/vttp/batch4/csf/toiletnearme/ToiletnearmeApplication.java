@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import vttp.batch4.csf.toiletnearme.configs.WebSocketConfig;
 import vttp.batch4.csf.toiletnearme.services.GoogleSheetsServiceImpl;
+import vttp.batch4.csf.toiletnearme.services.UserService;
 
 @SpringBootApplication
 public class ToiletnearmeApplication implements CommandLineRunner {
@@ -17,6 +18,9 @@ public class ToiletnearmeApplication implements CommandLineRunner {
     SpringApplication.run(ToiletnearmeApplication.class, args);
   }
 
+  // @Autowired
+  // UserService userSvc;
+  
   // @Autowired
   // GoogleSheetsServiceImpl googleSheetSvc;
 
@@ -29,6 +33,8 @@ public class ToiletnearmeApplication implements CommandLineRunner {
     // googleSheetSvc.getSpreadSheetValues(Utils.SHEET_MALE);
     // googleSheetSvc.getSpreadSheetValues(Utils.SHEET_FEMALE);
     // googleSheetSvc.getSpreadSheetValues(Utils.SHEET_HOTEL);
+
+    // userSvc.selectUserByEmail("michcllelim@gmail.com");
 
   }
 

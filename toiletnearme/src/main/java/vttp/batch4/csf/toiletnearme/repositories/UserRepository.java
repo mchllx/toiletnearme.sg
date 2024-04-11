@@ -1,5 +1,7 @@
 package vttp.batch4.csf.toiletnearme.repositories;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import vttp.batch4.csf.toiletnearme.exceptions.InsertUserException;
 import vttp.batch4.csf.toiletnearme.exceptions.NoAccessException;
+import vttp.batch4.csf.toiletnearme.models.Role;
 import vttp.batch4.csf.toiletnearme.models.User;
 
 @Repository
@@ -23,7 +26,7 @@ public class UserRepository {
     public boolean updateUserRoleByEmail(User user) throws InsertUserException, NoAccessException {
     return template.update(SQLQueries.SQL_UPDATE_USER_ROLE_BY_EMAIL
         , user.getEmail()
-        , user.getRole()
+        , user.getAuthorities()
         ) > 0;
     }
 
@@ -41,18 +44,8 @@ public class UserRepository {
             // rs.beforeFirst();
 
             User user = new User();
-            user.setUserId(rs.getString("user_id"));
-            user.setUsername(rs.getString("username"));
-            user.setEmail(rs.getString("email"));
-            user.setPassword(rs.getString("password"));
-            user.setCreatedOn(rs.getDate("created_on"));
-            user.setUpdatedOn(rs.getDate("updated_on"));
-            user.setFirstName(rs.getString("first_name"));
-            user.setLastName(rs.getString("last_name"));
-            user.setProfileImage(rs.getString("profile_image"));
-            user.setRole(rs.getString("role"));
-          
-            return user; 
+            return user.fromSQL(rs);
+            
         }
     }
 
@@ -87,7 +80,11 @@ public class UserRepository {
             , user.getFirstName()
             , user.getLastName()
             , user.getProfileImage()
-            , user.getRole()
+            , user.getAuthorities().toString()
+            , user.isAccountNonExpired()
+            , user.isEnabled()
+            , user.isAccountNonLocked()
+            , user.isCredentialsNonExpired()
             ) > 0;
         }
     

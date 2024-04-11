@@ -16,9 +16,12 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import vttp.batch4.csf.toiletnearme.models.Role;
 
 @Configuration
 @EnableWebSecurity
@@ -26,37 +29,55 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class WebSecurityConfig {
 
     @Autowired
-    CustomSuccessHandler successHandler;
+    private JWTAuthFilter jwtAuthFilter;
+
+    @Autowired
+    private GoogleSignInHandler successHandler;
 
     // if true, enables debug
     private boolean securityDebug = false;
+
+    // @Bean
+    // public SecurityFilterChain jwtFilterChain(HttpSecurity http) throws Exception {
+
+    //     http.csrf(AbstractHttpConfigurer::disable)
+    //         .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
+
+    //     .authorizeHttpRequests((requests) -> requests
+    //         .requestMatchers(HttpMethod.DELETE).hasAnyAuthority(Role.ROLE_ADMIN.toString())
+    //         .requestMatchers("/admin").authenticated()
+    //         .requestMatchers("/", "/login", "/form", "/authorization/jwt", "/register/***").permitAll()
+    //     );
+
+    //     http.sessionManagement(
+    //         httpSecuritySessionManagementConfigurer
+    //         -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+    //     http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
+    // return http.build();
+    // }
 
     // any request must be made by an authenticated user
     // AccessDeniedException thrown when not authorised
     // Continues upon success
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain oAuth2FilterChain(HttpSecurity http) throws Exception {
 
         http.csrf(AbstractHttpConfigurer::disable)
             .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
 
         .authorizeHttpRequests((requests) -> requests
-            .requestMatchers(HttpMethod.DELETE).hasAnyAuthority("ADMIN")
+            .requestMatchers(HttpMethod.DELETE).hasAnyAuthority(Role.ROLE_ADMIN.toString())
             .requestMatchers("/add").authenticated()
             .requestMatchers("/", "/login", "/login/oauth2/code/google/***", "/register/***").permitAll()
         );
-
-        // uses a form, httpBasic loads up browser prompt
-        http.formLogin(form -> form
-            .loginPage("/login")
-            .successHandler(successHandler));
 
         http.oauth2Login(login -> login
             .loginPage("/login")
             .successHandler(successHandler)) 
             .logout(logout -> logout
-            .logoutUrl("/logout") // Specify the logout URL
-            .logoutSuccessUrl("/") // Redirect to homepage after logout
+            .logoutUrl("/logout")
             .logoutSuccessUrl("/")
             .clearAuthentication(true)
             .invalidateHttpSession(true)
@@ -70,6 +91,8 @@ public class WebSecurityConfig {
             httpSecuritySessionManagementConfigurer
             -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
+        http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+        
     return http.build();
     }
 
@@ -98,25 +121,13 @@ public class WebSecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer() {
         return web -> web.debug(securityDebug);
     }
-
-    // @Bean
-    // public UserDetailsService users() {
-    //     // The builder will ensure the passwords are encoded before saving in memory
-    //     UserDetails user = User.builder()
-    //             .username("user")
-    //             .password(
-    //                 passwordEncoder().encode("password")
-    //             )
-    //             .roles("USER")
-    //             .build();
-    //     UserDetails admin = User.builder()
-    //             .username("admin")
-    //             .password(
-    //                 passwordEncoder().encode("password")
-    //             )
-    //             .roles("USER", "ADMIN")
-    //             .build();
-    //     return new InMemoryUserDetailsManager(user, admin);
-    // }
-
 }
+
+
+// uses a form, httpBasic loads up browser prompt
+// http.formLogin(form -> form
+//     .loginPage("/login")
+//     .successHandler(successHandler))
+//     .logout(logout -> logout
+//     .logoutUrl("/logout")
+//     .logoutSuccessUrl("/"));
