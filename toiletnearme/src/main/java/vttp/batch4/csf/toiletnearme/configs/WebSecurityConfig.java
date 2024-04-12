@@ -37,27 +37,6 @@ public class WebSecurityConfig {
     // if true, enables debug
     private boolean securityDebug = false;
 
-    // @Bean
-    // public SecurityFilterChain jwtFilterChain(HttpSecurity http) throws Exception {
-
-    //     http.csrf(AbstractHttpConfigurer::disable)
-    //         .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
-
-    //     .authorizeHttpRequests((requests) -> requests
-    //         .requestMatchers(HttpMethod.DELETE).hasAnyAuthority(Role.ROLE_ADMIN.toString())
-    //         .requestMatchers("/admin").authenticated()
-    //         .requestMatchers("/", "/login", "/form", "/authorization/jwt", "/register/***").permitAll()
-    //     );
-
-    //     http.sessionManagement(
-    //         httpSecuritySessionManagementConfigurer
-    //         -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
-    //     http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-
-    // return http.build();
-    // }
-
     // any request must be made by an authenticated user
     // AccessDeniedException thrown when not authorised
     // Continues upon success
@@ -72,6 +51,11 @@ public class WebSecurityConfig {
             .requestMatchers("/add").authenticated()
             .requestMatchers("/", "/login", "/login/oauth2/code/google/***", "/register/***").permitAll()
         );
+
+        http.formLogin(login -> login
+            .loginPage("/authorization/jwt")
+            .permitAll()
+            );
 
         http.oauth2Login(login -> login
             .loginPage("/login")
@@ -92,7 +76,7 @@ public class WebSecurityConfig {
             -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-        
+
     return http.build();
     }
 

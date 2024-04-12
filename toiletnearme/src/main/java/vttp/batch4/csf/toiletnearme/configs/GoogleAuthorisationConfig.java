@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 import com.google.api.client.auth.oauth2.Credential;
+import com.google.api.client.auth.oauth2.TokenResponseException;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
@@ -52,7 +53,7 @@ public class GoogleAuthorisationConfig {
             .Builder(
                 GoogleNetHttpTransport.newTrustedTransport()
                 , JSON_FACTORY, clientSecrets, scopes)
-                .setDataStoreFactory(
+                    .setDataStoreFactory(
                     new FileDataStoreFactory(
                     new File(tokensDirectoryPath)
                 ))
@@ -72,12 +73,14 @@ public class GoogleAuthorisationConfig {
     public Sheets getSheetsService() throws IOException, GeneralSecurityException {
         Credential credential = authorise();
 
+        if (credential.getRefreshToken() == null) {
+            System.out.println("Refresh token expired or invalid");
+        }
+
         return new Sheets.Builder(
             GoogleNetHttpTransport.newTrustedTransport(), JSON_FACTORY, credential)
             .setApplicationName(applicationName)
             .build();        
     }
-
-
     
 }

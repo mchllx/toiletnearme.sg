@@ -21,18 +21,18 @@ public class ToiletnearmeApplication implements CommandLineRunner {
   // @Autowired
   // UserService userSvc;
   
-  // @Autowired
-  // GoogleSheetsServiceImpl googleSheetSvc;
+  @Autowired
+  GoogleSheetsServiceImpl googleSheetSvc;
 
   // @Autowired
   // WebSocketConfig webSocketConfig;
   
   @Override
   public void run(String... args) throws Exception {
-    // System.out.println(">>> springboot");
-    // googleSheetSvc.getSpreadSheetValues(Utils.SHEET_MALE);
-    // googleSheetSvc.getSpreadSheetValues(Utils.SHEET_FEMALE);
-    // googleSheetSvc.getSpreadSheetValues(Utils.SHEET_HOTEL);
+    System.out.println(">>> springboot");
+    googleSheetSvc.getSpreadSheetValues(Utils.SHEET_MALE);
+    googleSheetSvc.getSpreadSheetValues(Utils.SHEET_FEMALE);
+    googleSheetSvc.getSpreadSheetValues(Utils.SHEET_HOTEL);
 
     // userSvc.selectUserByEmail("michcllelim@gmail.com");
 
