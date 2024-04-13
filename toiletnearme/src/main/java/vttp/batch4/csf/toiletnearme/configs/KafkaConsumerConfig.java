@@ -37,6 +37,7 @@ public class KafkaConsumerConfig {
 		config.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaGroupId);
         config.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 		config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+		// config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 		config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
 		return new DefaultKafkaConsumerFactory<>(config, null, new JsonDeserializer<ToiletLocation>(ToiletLocation.class));
 	}

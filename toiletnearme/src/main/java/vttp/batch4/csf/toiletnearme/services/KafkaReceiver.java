@@ -13,8 +13,11 @@ public class KafkaReceiver {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(KafkaReceiver.class);
 
+	// {"id":"123","firstName":"John","lastName":"Doe","department":"IT"}
 	@KafkaListener(topics = "${kafka.topic.name}", groupId = "${kafka.consumer.group.id}")
 	public void recieveData(ToiletLocation toiletLocation) {
 		LOGGER.info("Data - " + toiletLocation.toString() + " recieved");
+		// ToiletLocation location = new ToiletLocation("1", "name", "name2", "dept");
+		// LOGGER.info("Test - " + location.toString() + " recieved");
 	}
 }

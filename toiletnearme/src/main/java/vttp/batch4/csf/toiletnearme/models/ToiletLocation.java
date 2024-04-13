@@ -4,7 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 // @Document(indexName="employee", shards=1, replicas = 0, refreshInterval = "-1")
-@Document(indexName="employee")
+@Document(indexName="toiletLocation")
 public class ToiletLocation {
 
     @Id
@@ -15,9 +15,13 @@ public class ToiletLocation {
     
     @Override
     public String toString() {
-        return "Employee [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", department="
+        return "ToiletLocation [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", department="
                 + department + "]";
     }
+
+    public ToiletLocation() {
+    }
+
     public ToiletLocation(String id, String firstName, String lastName, String department) {
         this.id = id;
         this.firstName = firstName;

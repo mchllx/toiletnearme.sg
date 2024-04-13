@@ -26,11 +26,12 @@ public class KafkaService {
 	@Value("${kafka.topic.name}")
 	private String topicName;
 
+	// 	{"id":"123","firstName":"John","lastName":"Doe","department":"IT"}
 	public void sendData(ToiletLocation toiletLocation) {
 		Map<String, Object> headers = new HashMap<>();
 		headers.put(KafkaHeaders.TOPIC, topicName);
 		kafkaTemplate.send(new GenericMessage<ToiletLocation>(toiletLocation, headers));
-		// use the below to send String values through kafka
+
 		// kafkaTemplate.send(topicName, "some string value")
 		LOGGER.info("Data - " + toiletLocation.toString() + " sent to Kafka Topic - " + topicName);
 	}

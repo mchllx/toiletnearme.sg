@@ -30,7 +30,7 @@ import vttp.batch4.csf.toiletnearme.services.ToiletService;
 @RequestMapping(path="/api"
   , produces = MediaType.APPLICATION_JSON_VALUE)
   
-public class ToiletListingController {
+public class GoogleSheetsController {
 
   @Autowired
   private GoogleSheetsServiceImpl googleSheetSvc;
