@@ -5,7 +5,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 
 // @Document(indexName="employee", shards=1, replicas = 0, refreshInterval = "-1")
 @Document(indexName="employee")
-public class Employee {
+public class ToiletLocation {
 
     @Id
     private String id;
@@ -18,7 +18,7 @@ public class Employee {
         return "Employee [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", department="
                 + department + "]";
     }
-    public Employee(String id, String firstName, String lastName, String department) {
+    public ToiletLocation(String id, String firstName, String lastName, String department) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;

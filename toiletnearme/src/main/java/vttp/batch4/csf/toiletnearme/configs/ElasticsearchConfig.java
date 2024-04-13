@@ -24,7 +24,6 @@ public class ElasticsearchConfig extends ElasticsearchConfiguration {
             .withHeaders(() -> {                                                  
                 HttpHeaders headers = new HttpHeaders();
                 headers.add("currentTime", new Date().toString());
-                // TODO: JWT Token, if not, label as unauthorised
             return headers;
             })
 
