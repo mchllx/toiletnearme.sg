@@ -73,6 +73,10 @@ create table users (
     last_name varchar(64) not null,
     profile_image varchar(256),
     role varchar(64) not null,
+    expired boolean,
+    enabled boolean,
+    locked boolean,
+    credentials boolean,
 
     primary key(user_id)
 );
