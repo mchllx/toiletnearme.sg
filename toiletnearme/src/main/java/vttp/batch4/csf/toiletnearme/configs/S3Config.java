@@ -20,7 +20,7 @@ public class S3Config {
     private String accessKey;
 
     //amazon s3 client
-   @Bean
+    @Bean
     public AmazonS3 createS3Client() {
         BasicAWSCredentials cred = new BasicAWSCredentials(accessKey, secretKey);
 
