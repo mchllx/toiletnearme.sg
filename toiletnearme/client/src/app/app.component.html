@@ -1,20 +1,11 @@
-<div class="title">
-  <div class="title-a"> <img src="/assets/kwikemart.png"> </div>
+<div className="flex min-h-screen w-full flex-col">
+  <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
+    Header
+    <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
+      Navigation
+    </nav>
+  </header>
 
-  <div class="title-d">
-    <h3>Item in cart</h3>
-    <!-- <h1> <code #itemCount> {{ itemCount }}</code> </h1> -->
-    <h1> <code> {{ itemCount$ | async }}</code> </h1>
-  </div>
+<router-outlet/>
 
-  <div class="title-b">
-    <button type="button" (click)="checkout(itemCount)" [disabled]="!itemCount" >Checkout</button>
-    <!-- <button type="button" (click)="checkout(itemCount)">Checkout</button> -->
-  </div>
-
-  <div class="title-c">
-    <button type="button" [routerLink]="['/']">Back</button>
-  </div>
 </div>
-
-<router-outlet />
