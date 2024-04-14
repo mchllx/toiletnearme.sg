@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.mortbay.jetty.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.json.Json;
-import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
 import vttp.batch4.csf.toiletnearme.Utils;
 import vttp.batch4.csf.toiletnearme.services.GoogleSheetsService;
@@ -30,12 +30,18 @@ import vttp.batch4.csf.toiletnearme.services.ToiletService;
 @RequestMapping(path="/api"
   , produces = MediaType.APPLICATION_JSON_VALUE)
   
-public class GoogleSheetsController {
+public class GoogleAPIController {
+
+  @Value("${maps.api.key}")
+  private String mapsAPIKey;
+
+
 
   @Autowired
   private GoogleSheetsServiceImpl googleSheetSvc;
 
-  @PostMapping(path="/api/gsheets")
+  // POST localhost:8080/api/gsheets
+  @PostMapping(path="/gsheets")
   @ResponseBody
   public ResponseEntity<String> postToilet() {
 
@@ -58,6 +64,25 @@ public class GoogleSheetsController {
         .status(HttpStatus.ORDINAL_200_OK)
         .body("Successful");
   }
+
+  // GET localhost:8080/api/gmap/key
+  @GetMapping(path="/gmap/key")
+  @ResponseBody
+  public ResponseEntity<String> getGoogleMapAPIKey() {
+    System.out.println("Google Maps API Key requested");
+    
+    if (mapsAPIKey.isEmpty()) {
+      System.out.println("API Key does not exist");
+
+      return ResponseEntity
+      .status(HttpStatus.ORDINAL_500_Internal_Server_Error)
+      .body("");
+    }
+
+    return ResponseEntity
+      .status(HttpStatus.ORDINAL_200_OK)
+      .body(Json.createObjectBuilder().add("apiKey", mapsAPIKey).build().toString());
+  } 
   
   // @GetMapping(path="/categories")
   // @ResponseBody
