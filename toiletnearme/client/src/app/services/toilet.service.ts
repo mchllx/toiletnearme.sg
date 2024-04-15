@@ -38,9 +38,24 @@ export class ToiletService {
     }
   }
 
+  // GET http://localhost:8080/api/toilet/address/{type}")
+  getGoogleMapAddressByType(type: string): Promise<string[]> {
+    const params = new HttpParams()
+    .set('type', type)
+
+  console.info(params)
+
+    const API_KEY_ENDPOINT = 'api/toilet/address'
+    try {
+      return lastValueFrom(this.http.get<any>(`${URL}/${API_KEY_ENDPOINT}`, {params}))
+    } catch (error) {
+      console.error('Error fetching address', error)
+      throw error
+    }
+  }
+
   // GET http://localhost:8080/api/toilet/address/{region}")
   getGoogleMapAddressByRegion(region: string): Promise<string[]> {
-
     const params = new HttpParams()
       .set('region', region)
 

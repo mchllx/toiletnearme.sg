@@ -5,6 +5,8 @@
           [position]="{ lat: location.lat, lng: location.lng }"
           [title]="location.title"
           [content]="location.content"
+          (mapClick)="onMarkerClick(markerElem)"
         />
         }
+    <map-info-window #infoWindow></map-info-window>
 </google-map>

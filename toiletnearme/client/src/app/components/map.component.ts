@@ -1,5 +1,5 @@
 import { AfterContentInit, AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild, inject } from '@angular/core';
-import { GoogleMap, MapAdvancedMarker, MapMarker } from '@angular/google-maps';
+import { GoogleMap, MapAdvancedMarker, MapInfoWindow, MapMarker } from '@angular/google-maps';
 import { sgLocations } from '../models';
 import { ToiletService } from '../services/toilet.service';
 
@@ -39,6 +39,9 @@ export class MapComponent implements OnInit {
     <path d="M12 6c-1.656 0-3 1.344-3 3v6c0 1.656 1.344 3 3 3s3-1.344 3-3v-6c0-1.656-1.344-3-3-3zm1.5 9.75c0 .414-.336.75-.75.75s-.75-.336-.75-.75v-3c0-.414.336-.75.75-.75s.75.336.75.75v3zm-3-9h1.5v-1.5c0-.414-.336-.75-.75-.75s-.75.336-.75.75v1.5z" fill="#FFFFFF" />
     </svg>`
 
+    // info marker
+  @ViewChild(MapInfoWindow) infoWindow!: MapInfoWindow;
+
   constructor() {
     this.mapOptions = {
       center: { lat: 1.3191389705135221, lng: 103.89404363104732 },
@@ -55,8 +58,13 @@ export class MapComponent implements OnInit {
     this.sgLocations.forEach((location) => {
       location.content = parser.parseFromString(this.svgString, "image/svg+xml").documentElement
     })
+    // console.log(">>updated:",this.sgLocations)
+  }
 
-    console.log(">>updated:",this.sgLocations)
+  onMarkerClick(marker: MapAdvancedMarker) {
+    // console.log(">>>advmarker:", marker.advancedMarker)
+    // console.log(">>>title:", marker.advancedMarker.title)
+    this.infoWindow.openAdvancedMarkerElement(marker.advancedMarker, marker.advancedMarker.title);
   }
 
   getAddress(): string[] {
