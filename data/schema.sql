@@ -4,6 +4,24 @@ create database toiletnearme;
 
 use toiletnearme;
 
+create table toilets (
+    toilet_id varchar(64) not null,
+    name varchar(256),
+    address varchar(256) not null,
+    price decimal,
+    gender varchar(64),
+    type varchar(64),
+    remarks varchar(1024),
+    website varchar(1024),
+    last_update timestamp default current_timestamp on update current_timestamp, 
+    opening_hours_id varchar(64) not null,
+    closing_hours_id varchar(64) not null,
+    images varchar(256),
+    region varchar(64),
+ 
+    primary key(toilet_id)
+);
+
 create table opening_hours (
     opening_hours_id varchar(64) not null,
     sunday Date,
@@ -28,24 +46,6 @@ create table closing_hours (
     saturday Date,
 
     primary key(closing_hours_id)
-);
-
-create table toilets (
-    toilet_id varchar(64) not null,
-    name varchar(64),
-    address varchar(256) not null,
-    price decimal,
-    gender varchar(64),
-    type varchar(64),
-    remarks varchar(256), 
-    opening_hours_id varchar(64) not null,
-    closing_hours_id varchar(64) not null,
-    images varchar(256),
-    region varchar(64),
- 
-    primary key(toilet_id),
-    foreign key(opening_hours_id) references opening_hours(opening_hours_id), 
-    foreign key(closing_hours_id) references closing_hours(closing_hours_id)
 );
 
 create table amenities (
@@ -99,8 +99,8 @@ create table reviews (
     created_on timestamp default current_timestamp,
     last_update timestamp default current_timestamp on update current_timestamp,
     header varchar(256),
-    text varchar(256),
-    rating int not null,
+    text varchar(1024),
+    rating int,
     images varchar(256),
 
     primary key(review_id),
