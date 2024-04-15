@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild, inject } from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild, inject } from '@angular/core';
 import { GoogleMap, MapAdvancedMarker, MapMarker } from '@angular/google-maps';
 import { sgLocations } from '../models';
 import { ToiletService } from '../services/toilet.service';
@@ -32,7 +32,12 @@ export class MapComponent implements OnInit {
   address!: string
 
   private toiletSvc = inject(ToiletService)
-  sgLocations: sgLocations[] = [{ title: "Singpost Centre", lat: 1.3191389705135221, lng: 103.89404363104732 }]
+  sgLocations: sgLocations[] = [{ content: "", title: "Singpost Centre", lat: 1.3191389705135221, lng: 103.89404363104732 }]
+
+  svgString: string = `<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#FF5733" stroke="#FFFFFF" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="10" fill="#FF5733" stroke="#FFFFFF" stroke-width="2" />
+    <path d="M12 6c-1.656 0-3 1.344-3 3v6c0 1.656 1.344 3 3 3s3-1.344 3-3v-6c0-1.656-1.344-3-3-3zm1.5 9.75c0 .414-.336.75-.75.75s-.75-.336-.75-.75v-3c0-.414.336-.75.75-.75s.75.336.75.75v3zm-3-9h1.5v-1.5c0-.414-.336-.75-.75-.75s-.75.336-.75.75v1.5z" fill="#FFFFFF" />
+    </svg>`
 
   constructor() {
     this.mapOptions = {
@@ -40,11 +45,18 @@ export class MapComponent implements OnInit {
       zoom: 12,
       mapId: 'fc1289eedacfb1a1'
     }
+
+    this.addressList = this.getAddress()
   }
 
   ngOnInit(): void {
-    // console.log(">>> addresses:", this.addressList)
-    this.addressList = this.getAddress()
+    const parser = new DOMParser()
+
+    this.sgLocations.forEach((location) => {
+      location.content = parser.parseFromString(this.svgString, "image/svg+xml").documentElement
+    })
+
+    console.log(">>updated:",this.sgLocations)
   }
 
   getAddress(): string[] {
@@ -76,7 +88,8 @@ export class MapComponent implements OnInit {
           {
             title:results[0].formatted_address,
             lat: lat,
-            lng: lng
+            lng: lng,
+            content: new DOMParser().parseFromString(this.svgString, "image/svg+xml").documentElement
           })
         // console.log(this.sgLocations)
 

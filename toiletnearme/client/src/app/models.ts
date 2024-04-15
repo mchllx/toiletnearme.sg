@@ -2,9 +2,10 @@ export interface Toilet {
 }
 
 export interface sgLocations {
-    title: any,
+    title: string,
     lat: any,
-    lng: any
+    lng: any,
+    content: any
 }
 // export interface Cart {
 //   lineItems: LineItem[]
