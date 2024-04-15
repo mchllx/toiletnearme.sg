@@ -21,15 +21,15 @@ export class MapComponent implements OnInit {
   geocoder!: google.maps.Geocoder
   geocoderRequest!: google.maps.GeocoderRequest
   geocoderStatus!: google.maps.GeocoderStatus
-  geocoderResults!: google.maps.GeocoderResult
+  geocoderResults!: google.maps.GeocoderResult[]
   responseDiv!: HTMLDivElement
   response!: HTMLPreElement
 
   width: number= 1280
   height: number= 720
 
-  address$!: Promise<string>
-  addressList!: string[]
+  address$!: Promise<string[]>
+  addressList: string[] = []
   address!: string
 
   options: google.maps.MapOptions = {
@@ -38,27 +38,28 @@ export class MapComponent implements OnInit {
     mapTypeControl: false
   };
 
-  // private googleMapSvc = inject(GoogleMapsConfigService)
   private toiletSvc = inject(ToiletService)
 
   ngOnInit(): void {
-    this.getAddress()
+    this.addressList = this.getAddress()
+    console.log(">>> addresses:", this.addressList)
 
-    for (let index = 0; index < this.addressList.length; index++) {
-      this.address = this.addressList[index];
-      this.loadGeocode(this.address)
-    } 
-    // this.JWTToken = this.springSvc.getJWTToken();
-    
+    for (let i = 0; i < this.addressList.length; i++) {
+      this.loadGeocode(this.addressList[i])
+    }  
   }
 
-  getAddress() {
+  getAddress(): string[] {
     address$: this.toiletSvc.getGoogleMapAddress()
       .then(value => {
         console.log('awaiting response from server')
-        this.addressList = value 
+        // console.log(">>> value:", value)
+        for (let i = 0; i < value.length; i++) {
+          this.addressList.push(value[i]) 
+        }
       })
       .catch(err => console.error(err))
+      return this.addressList
   }
 
   loadGeocode(address: string) {
@@ -67,9 +68,21 @@ export class MapComponent implements OnInit {
       region: "SG"
     }
 
-    this.geocoder = new google.maps.Geocoder()
-    this.geocoder.geocode(this.geocoderRequest)
-    console.log(this.geocoder)
-  }
+  this.geocoder = new google.maps.Geocoder()
+  this.geocoder.geocode(this.geocoderRequest, 
+    (results: google.maps.GeocoderResult[] | null, status: google.maps.GeocoderStatus) => {
+    if (this.geocoderStatus === google.maps.GeocoderStatus.OK) {
+      this.map.setCenter(this.geocoderResults[0].geometry.location);
 
+      var marker = new google.maps.Marker({
+        map: this.map,
+        position: this.geocoderResults[0].geometry.location
+      })
+      console.log(marker)
+
+    } else {
+      alert('Geocode was not successful for the following reason: ' + this.geocoderResults);
+      }
+    })
+  }
 }
