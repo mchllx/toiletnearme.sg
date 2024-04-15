@@ -136,10 +136,18 @@ public class GoogleSheetsServiceImpl implements GoogleSheetsService {
                         region = value;
                         // System.out.println(">>>region:"+region);
                         toiletSvc.insertGSheetToiletMale(
-                            region, list.get(1), list.get(2), list.get(3));
+                            region
+                            , list.get(1).replace('"', ' ').strip()
+                            , list.get(2).replace('"', ' ').strip()
+                            , list.get(3).replace('"', ' ').strip()
+                            );
                     } else {
                         toiletSvc.insertGSheetToiletMale(
-                            region, list.get(0), list.get(1), list.get(2));
+                            region
+                            , list.get(0).replace('"', ' ').strip()
+                            , list.get(1).replace('"', ' ').strip()
+                            , list.get(2).replace('"', ' ').strip()
+                            );
                     }
                 } catch (IndexOutOfBoundsException e3) {
                     // System.out.println("incomplete");
@@ -165,10 +173,18 @@ public class GoogleSheetsServiceImpl implements GoogleSheetsService {
                         region = value;
                         // System.out.println(">>>region:"+region);
                         toiletSvc.insertGSheetToiletFemale(
-                            region, list.get(1), list.get(2), list.get(3));
+                            region
+                            , list.get(1).replace('"', ' ').strip()
+                            , list.get(2).replace('"', ' ').strip()
+                            , list.get(3).replace('"', ' ').strip()
+                            );
                     } else {
                         toiletSvc.insertGSheetToiletFemale(
-                            region, list.get(0), list.get(1), list.get(2));
+                            region
+                            , list.get(0).replace('"', ' ').strip()
+                            , list.get(1).replace('"', ' ').strip()
+                            , list.get(2).replace('"', ' ').strip()
+                            );
                     }
                 } catch (IndexOutOfBoundsException e3) {
                     // System.out.println("incomplete");
@@ -182,8 +198,12 @@ public class GoogleSheetsServiceImpl implements GoogleSheetsService {
                 for (List<String> list : results) {
                     try {
                         toiletSvc.insertGSheetToiletHotel(
-                    list.get(0), list.get(1), list.get(2)
-                    , list.get(3), list.get(4));
+                    list.get(0).replace('"', ' ').strip()
+                    , list.get(1).replace('"', ' ').strip()
+                    , list.get(2).replace('"', ' ').strip()
+                    , list.get(3).replace('"', ' ').strip()
+                    , list.get(4).replace('"', ' ').strip()
+                    );
 
                     } catch (IndexOutOfBoundsException e3) {
                         // System.out.println("incomplete");

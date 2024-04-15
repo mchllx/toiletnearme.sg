@@ -143,9 +143,9 @@ public class ToiletListingRepository {
             review.setCreatedOn(new Date());
             review.setLastUpdate(new Date());
             review.setBody("Credits to contributors from @toiletswithbidetsg");
-            review.setHeader(processedReview[0]);
+            review.setHeader(processedReview[0].replace('"', ' ').strip());
             review.setToiletId(toiletId);
-            review.setImages(processedReview[1]);
+            review.setImages(processedReview[1].replace('"', ' ').strip());
             list.add(review);
           }
         }

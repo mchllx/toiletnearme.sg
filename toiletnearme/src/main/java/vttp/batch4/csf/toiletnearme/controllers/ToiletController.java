@@ -30,8 +30,10 @@ public class ToiletController {
     @GetMapping(path="/address")
     @ResponseBody
     public ResponseEntity<String> getAddress() {
-
     JsonArrayBuilder arrBuilder = Json.createArrayBuilder(toiletSvc.getToiletAddress());
+
+    System.out.println(">>>Received GET: Address");
+
     return ResponseEntity.ok(arrBuilder.build().toString());
     }
 
@@ -40,6 +42,15 @@ public class ToiletController {
     public ResponseEntity<String> getAddressByRegion(@PathVariable String region) {
 
     JsonArrayBuilder arrBuilder = Json.createArrayBuilder(toiletSvc.getToiletAddressByRegion(region));
+    return ResponseEntity.ok(arrBuilder.build().toString());
+    }
+
+    // api/toilet/address/type=<type>
+    @GetMapping(path="/address/type={type}")
+    @ResponseBody
+    public ResponseEntity<String> getAddressByType(@PathVariable String type) {
+
+    JsonArrayBuilder arrBuilder = Json.createArrayBuilder(toiletSvc.getToiletAddressByRegion(type));
     return ResponseEntity.ok(arrBuilder.build().toString());
     }
 
