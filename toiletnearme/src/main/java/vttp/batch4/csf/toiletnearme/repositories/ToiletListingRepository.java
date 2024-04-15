@@ -3,25 +3,28 @@ package vttp.batch4.csf.toiletnearme.repositories;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 
 import vttp.batch4.csf.toiletnearme.Utils;
+import vttp.batch4.csf.toiletnearme.exceptions.InsertReviewException;
 import vttp.batch4.csf.toiletnearme.exceptions.InsertToiletListingException;
-import vttp.batch4.csf.toiletnearme.models.Amenities;
+import vttp.batch4.csf.toiletnearme.models.Review;
 import vttp.batch4.csf.toiletnearme.models.Toilet;
+import vttp.batch4.csf.toiletnearme.models.User;
 
 @Repository
 public class ToiletListingRepository {
 
+  private Logger logger = Logger.getLogger(ToiletListingRepository.class.getName());
+
   @Autowired
   private JdbcTemplate template;
-  
-  // toilet_id, name, address, price, gender,
-  // type, remarks, opening_hours, closing_hours, images
-  // region, amenities
+
   public boolean insertToilet(Toilet toilet) throws InsertToiletListingException{
 
     return template.update(SQLQueries.SQL_INSERT_TOILET
@@ -32,11 +35,12 @@ public class ToiletListingRepository {
       , toilet.getGender()
       , toilet.getType()
       , toilet.getRemarks()
-      , toilet.getOpeningHours()
-      , toilet.getClosingHours()
+      , toilet.getWebsite()
+      , toilet.getUpdatedOn()
+      , Utils.createUUID8Char(Utils.PREFIX_OPENING)
+      , Utils.createUUID8Char(Utils.PREFIX_CLOSING)
       , toilet.getImages()
       , toilet.getRegion()
-      , Utils.createUUID26Char() 
       ) > 0;
   }
 
@@ -46,7 +50,7 @@ public class ToiletListingRepository {
     throws InsertToiletListingException {
 
     return template.update(SQLQueries.SQL_INSERT_GSHEETS_TOILET_FEMALE
-      , Utils.createUUID26Char()
+      , Utils.createUUID26Char(Utils.PREFIX_TOILET)
       , new Date()
       , region
       , location
@@ -61,7 +65,7 @@ public class ToiletListingRepository {
     throws InsertToiletListingException {
 
     return template.update(SQLQueries.SQL_INSERT_GSHEETS_TOILET_MALE
-      , Utils.createUUID26Char()
+      , Utils.createUUID26Char(Utils.PREFIX_TOILET)
       , new Date()
       , region
       , location
@@ -76,7 +80,7 @@ public class ToiletListingRepository {
     throws InsertToiletListingException {
 
     return template.update(SQLQueries.SQL_INSERT_GSHEETS_TOILET_HOTEL
-      , Utils.createUUID26Char()
+      , Utils.createUUID26Char(Utils.PREFIX_TOILET)
       , new Date()
       , hotel
       , room
@@ -86,12 +90,149 @@ public class ToiletListingRepository {
       ) > 0;
   }
 
-  public List<String> getToiletCategories() {
-    return new LinkedList<>();
+  public List<Toilet> getGSheetToiletHotel() {
+    SqlRowSet rs = template.queryForRowSet(SQLQueries.SQL_SELECT_GSHEETS_TOILET_HOTEL);
+
+    if(!rs.next()){
+      logger.info("Toilet does not exist in database");
+        return null;
+    } else {
+        List<Toilet> list = new LinkedList<>();
+        while (rs.next() != false) {
+          String userWebsite = rs.getString("website");
+          String[] processedWebsite = userWebsite.split(",");
+          
+          Toilet toilet = new Toilet();
+          toilet.setToiletId(rs.getString("gsheets_hotel_toilet_id"));
+          toilet.setName(rs.getString("hotel"));
+          toilet.setAddress(rs.getString("address"));
+          toilet.setGender("Unisex");
+          toilet.setType("Private");
+          toilet.setRemarks(rs.getString("room"));
+          toilet.setUpdatedOn(rs.getDate("last_update"));
+
+          if (processedWebsite.length > 1) {
+            toilet.setWebsite(processedWebsite[1]); 
+          } else {
+            toilet.setWebsite(processedWebsite[0]);
+          }
+
+          list.add(toilet);
+        }
+        return list;
+    }
   }
 
-  public List<Toilet> getToiletsByCategory(String category, Integer limit) {
-    return new LinkedList<>();
+  public List<Review> getGSheetToiletHotelReviews() {
+    SqlRowSet rs = template.queryForRowSet(SQLQueries.SQL_SELECT_GSHEETS_TOILET_HOTEL_REVIEW);
+
+    if(!rs.next()){
+      logger.info("Hotel review does not exist in database");
+        return null;
+    } else {
+        List<Review> list = new LinkedList<>();
+        while (rs.next() != false) {
+          String userReview = rs.getString("review");
+          String[] processedReview = userReview.split(",");
+
+          String toiletId = rs.getString("gsheets_hotel_toilet_id");
+
+          // '\"@hilmzeats\'s Deluxe Room\",\"https://www.tiktok.com/@hilmzeats/video/6982870107588480258?is_from_webapp=1&sender_device=pc&web_id=7100855173279237634\"
+          if (processedReview.length > 1){
+            Review review = new Review();
+            review.setCreatedOn(new Date());
+            review.setLastUpdate(new Date());
+            review.setBody("Credits to contributors from @toiletswithbidetsg");
+            review.setHeader(processedReview[0]);
+            review.setToiletId(toiletId);
+            review.setImages(processedReview[1]);
+            list.add(review);
+          }
+        }
+        return list;
+    }
+  }
+
+  public List<Toilet> getGSheetToiletMale() {
+    SqlRowSet rs = template.queryForRowSet(SQLQueries.SQL_SELECT_GSHEETS_TOILET_MALE);
+
+    if(!rs.next()){
+      logger.info("Toilet does not exist in database");
+        return null;
+    } else {
+        List<Toilet> list = new LinkedList<>();
+        while (rs.next() != false) {
+          Toilet toilet = new Toilet(
+            rs.getString("gsheets_male_toilet_id"),
+            rs.getString("location"),
+            "Male",
+            rs.getString("address"),
+            "Public",
+            rs.getString("remarks"),
+            rs.getDate("last_update"),
+            rs.getString("region")
+          );
+
+          list.add(toilet);
+        }
+        return list;
+    }
+  }
+
+  public List<Toilet> getGSheetToiletFemale() {
+    SqlRowSet rs = template.queryForRowSet(SQLQueries.SQL_SELECT_GSHEETS_TOILET_FEMALE);
+
+    if(!rs.next()){
+      logger.info("Toilet does not exist in database");
+        return null;
+    } else {
+        List<Toilet> list = new LinkedList<>();
+        while (rs.next() != false) {
+          Toilet toilet = new Toilet(
+            rs.getString("gsheets_female_toilet_id"),
+            rs.getString("location"),
+            "Female",
+            rs.getString("address"),
+            "Public",
+            rs.getString("remarks"),
+            rs.getDate("last_update"),
+            rs.getString("region")
+          );
+
+          list.add(toilet);
+        }
+        return list;
+    }
+  }
+
+  public List<String> getToiletAddress() {
+    SqlRowSet rs = template.queryForRowSet(SQLQueries.SQL_SELECT_TOILET_ADDRESS);
+
+    if(!rs.next()){
+      logger.info("Toilet does not exist in database");
+        return null;
+    } else {
+        List<String> list = new LinkedList<>();
+        while (rs.next() != false) {
+          list.add(rs.getString("address"));
+        }
+        return list;
+    }
+  }
+
+  public List<String> getToiletAddressByRegion(String region) {
+    SqlRowSet rs = template.queryForRowSet(SQLQueries.SQL_SELECT_TOILET_ADDRESS_BY_REGION, region);
+
+    if(!rs.next()){
+      logger.info("Toilet does not exist in database");
+        return null;
+    } else {
+        List<String> list = new LinkedList<>();
+        while (rs.next() != false) {
+          list.add(rs.getString("address"));
+        }
+        return list;
+    }
   }
 
 }

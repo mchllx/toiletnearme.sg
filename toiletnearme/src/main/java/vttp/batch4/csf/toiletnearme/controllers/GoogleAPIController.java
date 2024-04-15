@@ -27,15 +27,12 @@ import vttp.batch4.csf.toiletnearme.services.ToiletService;
 
 @Controller
 @CrossOrigin()
-@RequestMapping(path="/api"
-  , produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path="/api", produces = MediaType.APPLICATION_JSON_VALUE)
   
 public class GoogleAPIController {
 
   @Value("${maps.api.key}")
   private String mapsAPIKey;
-
-
 
   @Autowired
   private GoogleSheetsServiceImpl googleSheetSvc;
@@ -83,25 +80,5 @@ public class GoogleAPIController {
       .status(HttpStatus.ORDINAL_200_OK)
       .body(Json.createObjectBuilder().add("apiKey", mapsAPIKey).build().toString());
   } 
-  
-  // @GetMapping(path="/categories")
-  // @ResponseBody
-  // public ResponseEntity<String> getCategories() {
 
-  //   JsonArrayBuilder arrBuilder = Json.createArrayBuilder(toiletSvc.getToiletCategories());
-
-  //   return ResponseEntity.ok(arrBuilder.build().toString());
-  // }
-
-  // @GetMapping(path="/category/{category}")
-  // @ResponseBody
-  // public ResponseEntity<String> getCategory(@PathVariable String category) {
-
-  //   List<JsonObject> products = toiletSvc.getToiletsByCategory(category)
-  //       .stream()
-  //       .map(Utils::toJson)
-  //       .toList();
-
-  //   return ResponseEntity.ok(Json.createArrayBuilder(products).build().toString());
-  // }
 }

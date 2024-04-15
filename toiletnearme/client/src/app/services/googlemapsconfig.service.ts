@@ -1,5 +1,5 @@
 import {Injectable, inject} from "@angular/core";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {Observable, lastValueFrom} from "rxjs";
 import {} from "../models";
 
@@ -28,4 +28,5 @@ export class GoogleMapsConfigService {
       return ''
     }
   }
+ 
 }

@@ -1,7 +1,7 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild, inject } from '@angular/core';
 import { GoogleMap } from '@angular/google-maps';
 import { GoogleMapsConfigService } from '../services/googlemapsconfig.service';
-import { SpringService } from '../services/spring.service';
+import { ToiletService } from '../services/toilet.service';
 
 @Component({
   selector: 'app-map',
@@ -16,32 +16,60 @@ export class MapComponent implements OnInit {
   gmapAPIKey:string = ""
   mapURL!:string
 
-  // private googleMapSvc = inject(GoogleMapsConfigService)
-  // private springSvc = inject(SpringService)
+  map!: google.maps.Map
+  marker!: google.maps.Marker
+  geocoder!: google.maps.Geocoder
+  geocoderRequest!: google.maps.GeocoderRequest
+  geocoderStatus!: google.maps.GeocoderStatus
+  geocoderResults!: google.maps.GeocoderResult
+  responseDiv!: HTMLDivElement
+  response!: HTMLPreElement
+
+  width: number= 1280
+  height: number= 720
+
+  address$!: Promise<string>
+  addressList!: string[]
+  address!: string
 
   options: google.maps.MapOptions = {
-    center: {lat: 1.3863827334246217, lng: 103.74673591332547},
-    zoom: 4
+    center: {lat: 1.3191389705135221, lng: 103.89404363104732},
+    zoom: 12,
+    mapTypeControl: false
   };
 
-  ngOnInit(): void {
-    // this.JWTToken = this.springSvc.getJWTToken();
+  // private googleMapSvc = inject(GoogleMapsConfigService)
+  private toiletSvc = inject(ToiletService)
 
-    // google namespace script needs to be in index.html
-    //   this.gmapAPIKeyPromise = this.googleMapSvc.getGoogleMapsApiKey();
-    //   this.gmapAPIKeyPromise.then(
-    //     value => {
-    //       console.log('awaiting response from server')
-    //       const YOUR_API_KEY = value
-    //       this.gmapAPIKey = YOUR_API_KEY
-          
-    //       this.mapURL=
-    //       "https://maps.googleapis.com/maps/api/js?key="
-    //       .concat(YOUR_API_KEY)
-    //       .concat("&libraries=visualization")
-          
-    //       console.log('displaying map', this.mapURL)
-    //     })
-    // }
+  ngOnInit(): void {
+    this.getAddress()
+
+    for (let index = 0; index < this.addressList.length; index++) {
+      this.address = this.addressList[index];
+      this.loadGeocode(this.address)
+    } 
+    // this.JWTToken = this.springSvc.getJWTToken();
+    
   }
+
+  getAddress() {
+    address$: this.toiletSvc.getGoogleMapAddress()
+      .then(value => {
+        console.log('awaiting response from server')
+        this.addressList = value 
+      })
+      .catch(err => console.error(err))
+  }
+
+  loadGeocode(address: string) {
+    this.geocoderRequest = {
+      address: address,
+      region: "SG"
+    }
+
+    this.geocoder = new google.maps.Geocoder()
+    this.geocoder.geocode(this.geocoderRequest)
+    console.log(this.geocoder)
+  }
+
 }

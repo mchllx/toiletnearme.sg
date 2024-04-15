@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment'
 const URL = environment.url
 
 @Injectable()
-export class SpringService {
+export class AuthService {
 
   private http = inject(HttpClient)
 

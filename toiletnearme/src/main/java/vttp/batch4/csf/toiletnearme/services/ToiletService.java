@@ -1,5 +1,6 @@
 package vttp.batch4.csf.toiletnearme.services;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -20,20 +21,47 @@ public class ToiletService {
 
   private static final Logger logger = Logger.getLogger(ToiletService.class.getName());
 
-  public List<String> getToiletCategories() {
-    return toiletRepo.getToiletCategories();
+  @Transactional(rollbackFor=InsertToiletListingException.class)
+  public void updateToiletfromGSheet() throws InsertToiletListingException{
+    List<Toilet> toilets = new LinkedList<>();
+
+      toiletRepo.getGSheetToiletFemale()
+        .stream()
+        .forEach(toilet -> toilets.add(toilet));
+
+        toiletRepo.getGSheetToiletMale()
+        .stream()
+        .forEach(toilet -> toilets.add(toilet));
+
+        toiletRepo.getGSheetToiletHotel()
+        .stream()
+        .forEach(toilet -> toilets.add(toilet));
+      
+        toilets
+          .forEach(toilet -> {
+            try {
+              insertToilet(toilet);
+            } catch (InsertToiletListingException e) {
+              System.out.printf(">>>Unsuccessful: %s was not inserted", toilet.getToiletId());
+            }
+          }); 
+          System.out.printf(">>>Successful: %s was inserted", toilets.toString());
   }
 
-  public List<Toilet> getToiletsByCategory(String category) {
-    return toiletRepo.getToiletsByCategory(category, 20);
+  public List<String> getToiletAddress() {
+    return toiletRepo.getToiletAddress();
+  }
+
+  public List<String> getToiletAddressByRegion(String region) {
+    return toiletRepo.getToiletAddressByRegion(region);
   }
 
   @Transactional(rollbackFor=InsertToiletListingException.class)
-  public void insertToilets(Toilet toilet) throws Exception {
+  public void insertToilet(Toilet toilet) throws InsertToiletListingException {
 
     if (toiletRepo.insertToilet(toilet) == false) {
       System.out.printf(">>>Unsuccessful: %s was not inserted", toilet.getToiletId());
-      throw new InsertUserException("Invalid request");
+      throw new InsertToiletListingException("Invalid request");
     }
 
     // returning user inserts records into mySQL twice

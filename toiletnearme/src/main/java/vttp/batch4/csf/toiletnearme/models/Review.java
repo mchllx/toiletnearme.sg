@@ -14,12 +14,12 @@ public class Review {
     private Date lastUpdate;
     private String toiletId;
     private float rating;
-    private String[] images;
+    private String images;
 
     public Review() { 
     }
 
-    public Review(Integer reviewId, String name, String header, String body, Date createdOn, Date lastUpdate, String toiletId) {
+    public Review(Integer reviewId, String name, String header, String body, Date createdOn, Date lastUpdate, String toiletId, float rating, String images) {
         this.reviewId = reviewId;
         this.name = name;
         this.header = header;
@@ -27,6 +27,8 @@ public class Review {
         this.createdOn = createdOn;
         this.lastUpdate = lastUpdate;
         this.toiletId = toiletId;
+        this.rating = rating;
+        this.images = images;
     }
 
     public Integer getReviewId() { return reviewId; }
@@ -43,8 +45,8 @@ public class Review {
     public void setLastUpdate(Date lastUpdate) { this.lastUpdate = lastUpdate; }
     public String getToiletId() { return toiletId; }
     public void setToiletId(String toiletId) { this.toiletId = toiletId; }
-    public String[] getImages() { return images; }
-    public void setImages(String[] images) { this.images = images; }
+    public String getImages() { return images; }
+    public void setImages(String images) { this.images = images; }
     public float getRating() { return rating; }
     public void setRating(float rating) { this.rating = rating; }
 
@@ -52,7 +54,7 @@ public class Review {
     public String toString() {
         return "Review{reviewId=%s, name=%s, header=%s, body=%s, createdOn=%s, lastUpdate=%s, toiletId=%s, images: %s, rating: %.2f}"
         .formatted(reviewId, name, header, body
-            ,createdOn.toString(), lastUpdate.toString(), toiletId, images, rating);
+            ,createdOn, lastUpdate, toiletId, images, rating);
     }
 
 }

@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import vttp.batch4.csf.toiletnearme.Utils;
 import vttp.batch4.csf.toiletnearme.exceptions.InsertReviewException;
 import vttp.batch4.csf.toiletnearme.models.Review;
+import vttp.batch4.csf.toiletnearme.models.User;
 
 @Repository
 public class ReviewRepository {
@@ -13,20 +15,17 @@ public class ReviewRepository {
   @Autowired
   private JdbcTemplate template;
 
-  public boolean create(Review review) throws InsertReviewException{
-
-    // insert into purchase_order(id, date, name, address, priority, comments, cart)
-    //     values (?, ?, ?, ?, ?, ?, ?)
-    //     """;
-
-    return template.update(SQLQueries.SQL_INSERT_REVIEW
-        , review.getReviewId()
-        // , review.getDate()
-        // , review.getName()
-        // , review.getAddress()
-        // , review.getPriority()
-        // , review.getComments()
-        // , review.getCart().toString()
-        ) > 0;
+  // review_id auto incr user_id, toilet_id, created_on, last_update, header, text, rating, images
+  public boolean insertReview(Review review, User user) throws InsertReviewException {
+      return template.update(SQLQueries.SQL_INSERT_REVIEW
+      , user.getUserId()
+      , review.getToiletId()
+      , review.getCreatedOn()
+      , review.getLastUpdate()
+      , review.getHeader()
+      , review.getBody()
+      , review.getRating()
+      , review.getImages()
+      ) > 0;
   }
 }

@@ -4,17 +4,17 @@ import { HttpClientModule, provideHttpClient } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { MapComponent } from './components/map.component';
-import { SpringService } from './services/spring.service';
+import { AuthService } from './services/auth.service';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { registerLocaleData } from '@angular/common';
 import { MaterialModule } from './ui/material.module';
-import { AgmCoreModule, LAZY_MAPS_API_CONFIG, LazyMapsAPILoaderConfigLiteral } from '@agm/core';
 
 import en from '@angular/common/locales/en';
 import { GoogleMapsInitializer } from './services/googlemapsinitialiser.service';
 import { GoogleMapsModule } from '@angular/google-maps'
 import { AppRoutingModule } from './app-routing.module';
 import { GoogleMapsConfigService } from './services/googlemapsconfig.service';
+import { ToiletService } from './services/toilet.service';
 
 
 registerLocaleData(en);
@@ -41,7 +41,7 @@ registerLocaleData(en);
   ],
 
   providers: [
-    SpringService, GoogleMapsConfigService, provideAnimationsAsync(), provideHttpClient(),
+    AuthService, ToiletService, GoogleMapsConfigService, provideAnimationsAsync(), provideHttpClient(),
     // {
     //   // APP_INITIALIZER is the Angular dependency injection token.
     //   provide: APP_INITIALIZER,

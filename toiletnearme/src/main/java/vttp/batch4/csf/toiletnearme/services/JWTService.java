@@ -32,7 +32,7 @@ public class JWTService {
     } 
   
     private String createToken(Map<String, Object> claims, String email) {
-        System.out.println("jwt username:" + email);
+        // System.out.println("jwt username:" + email);
 
         return Jwts.builder() 
                 .claims(claims) 
@@ -78,7 +78,7 @@ public class JWTService {
   
     public Boolean validateToken(String token, UserDetails userDetails) { 
         final String email = extractEmail(token);
-        System.out.println("jwt username:" + email); 
+        // System.out.println("jwt username:" + email); 
         return (email.equals(userDetails.getUsername()) && !isTokenExpired(token)); 
     }  
 }

@@ -49,7 +49,7 @@ public class WebSecurityConfig {
         .authorizeHttpRequests((requests) -> requests
             .requestMatchers(HttpMethod.DELETE).hasAnyAuthority(Role.ROLE_ADMIN.toString())
             .requestMatchers("/add").authenticated()
-            .requestMatchers("/api/gmap/key", "/", "/login", "/login/oauth2/code/google/***", "/register/***").permitAll()
+            .requestMatchers("/api/gmap/key", "/api/toilet/***", "/api/***", "/", "/login", "/login/oauth2/code/google/***", "/register/***").permitAll()
         );
 
         http.formLogin(login -> login

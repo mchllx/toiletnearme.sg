@@ -76,7 +76,7 @@ public class GoogleSignInHandler implements AuthenticationSuccessHandler {
                 
                 User user = new User();
                 
-                user.setUserId(Utils.createUUID26Char());
+                user.setUserId(Utils.createUUID26Char(Utils.PREFIX_USER));
                 user.setUsername(username);
                 user.setEmail(email);
                 user.setPassword(passwordEncoder().encode(email));
@@ -100,12 +100,12 @@ public class GoogleSignInHandler implements AuthenticationSuccessHandler {
                 
                 System.out.println(">>>Generating JWT\n" + user.getEmail());
                 String token = jwtSvc.generateToken(email);
-                System.out.println("token:" +token);
+                // System.out.println("token:" +token);
                 // Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
                 
                 HttpHeaders headers = new HttpHeaders();
                 headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + token);
-                System.out.println("header:" + headers.toString());
+                // System.out.println("header:" + headers.toString());
                 response.setHeader(headers.toString(), token);
 
             }

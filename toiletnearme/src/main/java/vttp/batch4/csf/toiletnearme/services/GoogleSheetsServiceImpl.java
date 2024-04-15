@@ -1,6 +1,5 @@
 package vttp.batch4.csf.toiletnearme.services;
 
-
 import java.io.IOException;
 import java.io.StringReader;
 import java.security.GeneralSecurityException;
@@ -106,7 +105,7 @@ public class GoogleSheetsServiceImpl implements GoogleSheetsService {
                             // System.out.println(">>> check:" +sb.toString());
                             processed.add(sb.toString());
                             // System.out.println(j.get("hyperlink").toString());
-                        } catch (NullPointerException e) {
+                        } catch (NullPointerException e1) {
                             // System.out.println(">>>null value, not added");
                         } 
                     });  

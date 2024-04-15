@@ -1,9 +1,12 @@
 package vttp.batch4.csf.toiletnearme.models;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 import com.github.f4b6a3.ulid.UlidCreator;
 
@@ -18,19 +21,42 @@ public class Toilet {
     private String gender;
     private String type;
 	private String remarks;
-    private Map<String, Date> openingHours;
-    private Map<String, Date> closingHours;
-	private Date createdOn;
+    private Map<String, Date> openingHours = new HashMap<>();
+    private Map<String, Date> closingHours = new HashMap<>();
     private Date updatedOn;
     private String[] images;
+    private String website;
     private String region;
     private String author;
     private float rating;
     private List<Review> reviews;
     private String footTraffic;
 
+    public Toilet(String toiletId, String name, String address, String type, String remarks, List<Review> reviews, String website, Date updatedOn) {
+        this.toiletId = toiletId;
+        this.name = name;
+        this.address = address;
+        this.type = type;
+        this.remarks = remarks;
+        this.reviews = reviews;
+        this.website = website;
+        this.updatedOn = updatedOn;
+    }
+
+    public Toilet(String toiletId, String name, String gender, String address, String type, String remarks, Date updatedOn,
+            String region) {
+        this.toiletId = toiletId;
+        this.name = name;
+        this.gender = gender;
+        this.address = address;
+        this.type = type;
+        this.remarks = remarks;
+        this.updatedOn = updatedOn;
+        this.region = region;
+    }
+
     public Toilet(String toiletId, String name, String address, float price, String gender, String type, String remarks,
-            Map<String, Date> openingHours, Map<String, Date> closingHours, Date createdOn, Date updatedOn, String[] images, String region,
+            Map<String, Date> openingHours, Map<String, Date> closingHours, Date updatedOn, String[] images, String website, String region,
             String author, float rating,List<Review> reviews, String footTraffic) {
         this.toiletId = toiletId;
         this.name = name;
@@ -41,9 +67,9 @@ public class Toilet {
         this.remarks = remarks;
         this.openingHours = openingHours;
         this.closingHours = closingHours;
-        this.createdOn = createdOn;
         this.updatedOn = updatedOn;
         this.images = images;
+        this.website = website;
         this.region = region;
         this.author = author;
         this.rating = rating;
@@ -72,12 +98,12 @@ public class Toilet {
 	public void setOpeningHours(Map<String, Date> openingHours) { this.openingHours = openingHours; }
 	public Map<String, Date> getClosingHours() { return closingHours; }
 	public void setClosingHours(Map<String, Date> closingHours) { this.closingHours = closingHours; }
-    public Date getCreatedOn() { return createdOn; }
-    public void setCreatedOn(Date createdOn) { this.createdOn = createdOn; }
     public Date getUpdatedOn() { return updatedOn; }
     public void setUpdatedOn(Date updatedOn) { this.updatedOn = updatedOn; }
     public String[] getImages() { return images; }
     public void setImages(String[] images) { this.images = images; }
+    public String getWebsite() { return website; }
+    public void setWebsite(String website) { this.website = website; }
     public String getRegion() { return region; }
     public void setRegion(String region) { this.region = region; }
     public String getAuthor() { return author; }
@@ -90,12 +116,11 @@ public class Toilet {
     public void setFootTraffic(String footTraffic) { this.footTraffic = footTraffic; }
     
     // directions
-
     @Override
     public String toString() {
-        return "Toilet{toiletId=%s, name=%s, address=%s, price=%.2f, gender=%s, type=%s, remarks=%s, openingHours=%s, closingHours=%s, createdOn: %s, updatedOn: %s, author: %s, thumbnails: %s, region: %s, rating: %.2f, reviews: %s, footTraffic: %s }"
-        .formatted(toiletId, name, address, price, gender, type, remarks, openingHours.toString(), closingHours.toString()
-            ,createdOn.toString(), updatedOn.toString(), author, images
+        return "Toilet{toiletId=%s, name=%s, address=%s, price=%.2f, gender=%s, type=%s, remarks=%s, openingHours=%s, closingHours=%s, updatedOn: %s, author: %s, images: %s, website: %s, region: %s, rating: %.2f, reviews: %s, footTraffic: %s }"
+        .formatted(toiletId, name, address, price, gender, type, remarks, openingHours, closingHours
+            , updatedOn, author, images, website
             ,region, rating, reviews, footTraffic);
     }
 
@@ -110,33 +135,33 @@ public class Toilet {
     // toilet.setQuantity(doc.getString("Quantity"));
     // return toilet;
     return null;
-  }
+    }
 
-  public static Toilet fromJson(JsonObject jsonObj) {
-        Toilet toilet = new Toilet();
+    public static Toilet fromJson(JsonObject jsonObj) {
+            Toilet toilet = new Toilet();
 
-    // return Json.createObjectBuilder()
-    //   .add("prodId", toilet.getId())
-    //   .add("name", toilet.getName())
-    //   .add("brand", toilet.getBrand())
-    //   .add("price", toilet.getPrice())
-    //   .add("discountPrice", toilet.getDiscountPrice())
-    //   .add("image", toilet.getImage())
-    //   .add("quantity", toilet.getQuantity())
-    //   .build();
-      return toilet;
-  }
+        // return Json.createObjectBuilder()
+        //   .add("prodId", toilet.getId())
+        //   .add("name", toilet.getName())
+        //   .add("brand", toilet.getBrand())
+        //   .add("price", toilet.getPrice())
+        //   .add("discountPrice", toilet.getDiscountPrice())
+        //   .add("image", toilet.getImage())
+        //   .add("quantity", toilet.getQuantity())
+        //   .build();
+        return toilet;
+    }
 
-  public static JsonObject toJson(Toilet toilet) {
-    // return Json.createObjectBuilder()
-    //   .add("prodId", toilet.getId())
-    //   .add("name", toilet.getName())
-    //   .add("brand", toilet.getBrand())
-    //   .add("price", toilet.getPrice())
-    //   .add("discountPrice", toilet.getDiscountPrice())
-    //   .add("image", toilet.getImage())
-    //   .add("quantity", toilet.getQuantity())
-    //   .build();
-      return null;
-  }
+    public static JsonObject toJson(Toilet toilet) {
+        // return Json.createObjectBuilder()
+        //   .add("prodId", toilet.getId())
+        //   .add("name", toilet.getName())
+        //   .add("brand", toilet.getBrand())
+        //   .add("price", toilet.getPrice())
+        //   .add("discountPrice", toilet.getDiscountPrice())
+        //   .add("image", toilet.getImage())
+        //   .add("quantity", toilet.getQuantity())
+        //   .build();
+        return null;
+    }
 }

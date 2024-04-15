@@ -22,24 +22,6 @@ public class AuthController {
 
     private static final Logger logger = Logger.getLogger(AuthController.class.getName());
 
-    // @GetMapping(path="/login")
-    // public String login() {
-    //     logger.info("logging in");
-    //     return "login";
-    // }
-
-    // @GetMapping(path="/logout")
-    // public String logout() {
-    //     logger.info("logged out");
-    //     return "index";
-    // }
-
-    // @GetMapping(path="/form")
-    // public String form() {
-    //     logger.info("form");
-    //     return "form";
-    // }
-
     // JWT Filter blocks requests without headers before reach controller
     @PostMapping(path="api/authorization/jwt")
     public ResponseEntity<String> jwt(@RequestParam("email") String email) {
@@ -52,9 +34,14 @@ public class AuthController {
             .body("authenticated");
     }
 
-    // @GetMapping(path="/user")
-    // public String user() {
-    //     logger.info("user");
-    //     return "user";
-    // }
+    @GetMapping(path="/login")
+    public String login() {
+        return "login";
+    }
+
+    @GetMapping(path="/form")
+    public String form() {
+        return "form";
+    }
+
 }

@@ -14,6 +14,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class User implements UserDetails {
 
     private String userId;
+    public User(String userId) {
+        this.userId = userId;
+    }
+
     private String username;
     private String email;
     private String password;

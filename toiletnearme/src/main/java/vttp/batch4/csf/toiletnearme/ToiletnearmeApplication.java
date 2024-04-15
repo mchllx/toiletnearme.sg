@@ -8,7 +8,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import vttp.batch4.csf.toiletnearme.configs.WebSocketConfig;
+import vttp.batch4.csf.toiletnearme.repositories.ToiletListingRepository;
 import vttp.batch4.csf.toiletnearme.services.GoogleSheetsServiceImpl;
+import vttp.batch4.csf.toiletnearme.services.ReviewService;
+import vttp.batch4.csf.toiletnearme.services.ToiletService;
 import vttp.batch4.csf.toiletnearme.services.UserService;
 
 @SpringBootApplication
@@ -18,11 +21,19 @@ public class ToiletnearmeApplication implements CommandLineRunner {
     SpringApplication.run(ToiletnearmeApplication.class, args);
   }
 
+  @Autowired
+  ToiletService toiletSvc;
+
+  @Autowired
+  ReviewService reviewSvc;
+
+  @Autowired
+  ToiletListingRepository toiletRepo;
   // @Autowired
   // UserService userSvc;
   
-  // @Autowired
-  // GoogleSheetsServiceImpl googleSheetSvc;
+  @Autowired
+  GoogleSheetsServiceImpl googleSheetSvc;
 
   // @Autowired
   // WebSocketConfig webSocketConfig;
@@ -33,8 +44,8 @@ public class ToiletnearmeApplication implements CommandLineRunner {
     // googleSheetSvc.getSpreadSheetValues(Utils.SHEET_MALE);
     // googleSheetSvc.getSpreadSheetValues(Utils.SHEET_FEMALE);
     // googleSheetSvc.getSpreadSheetValues(Utils.SHEET_HOTEL);
-
-    // userSvc.selectUserByEmail("michcllelim@gmail.com");
+    // toiletSvc.updateToiletfromGSheet();
+    // reviewSvc.updateReviewsFromGSheet();
 
   }
 

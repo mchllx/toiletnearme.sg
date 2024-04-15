@@ -89,14 +89,3 @@ public class UserRepository {
         }
     
 }
-
-// user.setUserId(rs.getString("user_id"));
-// user.setUsername(rs.getString("username"));
-// user.setEmail(rs.getString("email"));
-// user.setPassword(rs.getString("password"));
-// user.setCreatedOn(rs.getDate("created_on"));
-// user.setUpdatedOn(rs.getDate("updated_on"));
-// user.setFirstName(rs.getString("first_name"));
-// user.setLastName(rs.getString("last_name"));
-// user.setProfileImage(rs.getString("profile_image"));
-// user.setRole(rs.getString("role"));
