@@ -1,9 +1,9 @@
 <google-map [options]="mapOptions" [width]="width" [height]="height">
-    @for (location of sgLocations; track location) {
+    @for (location of sgLocations; track location; let index = $index) {
         <map-advanced-marker
           #markerElem="mapAdvancedMarker"
           [position]="{ lat: location.lat, lng: location.lng }"
-          [title]="location.title"
+          [title]="'Toilet '+(index+1)+':  '+location.title"
           [content]="location.content"
           (mapClick)="onMarkerClick(markerElem)"
         />
