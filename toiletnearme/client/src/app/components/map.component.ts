@@ -1,6 +1,6 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild, inject } from '@angular/core';
-import { GoogleMap } from '@angular/google-maps';
-import { GoogleMapsConfigService } from '../services/googlemapsconfig.service';
+import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild, inject } from '@angular/core';
+import { GoogleMap, MapAdvancedMarker, MapMarker } from '@angular/google-maps';
+import { sgLocations } from '../models';
 import { ToiletService } from '../services/toilet.service';
 
 @Component({
@@ -16,14 +16,13 @@ export class MapComponent implements OnInit {
   gmapAPIKey:string = ""
   mapURL!:string
 
-  map!: google.maps.Map
-  marker!: google.maps.Marker
   geocoder!: google.maps.Geocoder
-  geocoderRequest!: google.maps.GeocoderRequest
-  geocoderStatus!: google.maps.GeocoderStatus
-  geocoderResults!: google.maps.GeocoderResult[]
+  geocoderRequest: google.maps.GeocoderRequest = {}
   responseDiv!: HTMLDivElement
   response!: HTMLPreElement
+  mapOptions!: google.maps.MapOptions
+  mapDiv!: HTMLDivElement
+  map!: google.maps.Map
 
   width: number= 1280
   height: number= 720
@@ -32,21 +31,20 @@ export class MapComponent implements OnInit {
   addressList: string[] = []
   address!: string
 
-  options: google.maps.MapOptions = {
-    center: {lat: 1.3191389705135221, lng: 103.89404363104732},
-    zoom: 12,
-    mapTypeControl: false
-  };
-
   private toiletSvc = inject(ToiletService)
+  sgLocations: sgLocations[] = [{ title: "Singpost Centre", lat: 1.3191389705135221, lng: 103.89404363104732 }]
+
+  constructor() {
+    this.mapOptions = {
+      center: { lat: 1.3191389705135221, lng: 103.89404363104732 },
+      zoom: 12,
+      mapId: 'fc1289eedacfb1a1'
+    }
+  }
 
   ngOnInit(): void {
+    // console.log(">>> addresses:", this.addressList)
     this.addressList = this.getAddress()
-    console.log(">>> addresses:", this.addressList)
-
-    for (let i = 0; i < this.addressList.length; i++) {
-      this.loadGeocode(this.addressList[i])
-    }  
   }
 
   getAddress(): string[] {
@@ -55,7 +53,7 @@ export class MapComponent implements OnInit {
         console.log('awaiting response from server')
         // console.log(">>> value:", value)
         for (let i = 0; i < value.length; i++) {
-          this.addressList.push(value[i]) 
+          this.loadGeocode(value[i]) 
         }
       })
       .catch(err => console.error(err))
@@ -63,26 +61,29 @@ export class MapComponent implements OnInit {
   }
 
   loadGeocode(address: string) {
+    console.log('>>>requesting google address')
     this.geocoderRequest = {
-      address: address,
-      region: "SG"
+      address: address
     }
 
-  this.geocoder = new google.maps.Geocoder()
-  this.geocoder.geocode(this.geocoderRequest, 
-    (results: google.maps.GeocoderResult[] | null, status: google.maps.GeocoderStatus) => {
-    if (this.geocoderStatus === google.maps.GeocoderStatus.OK) {
-      this.map.setCenter(this.geocoderResults[0].geometry.location);
+    this.geocoder = new google.maps.Geocoder()
+    this.geocoder.geocode(this.geocoderRequest, 
+      (results: google.maps.GeocoderResult[] | null, status: google.maps.GeocoderStatus) => {
+      if (status === google.maps.GeocoderStatus.OK && results && results.length > 0) {
+        var lat = results[0].geometry.location.lat()
+        var lng = results[0].geometry.location.lng()
+        this.sgLocations.push(
+          {
+            title:results[0].formatted_address,
+            lat: lat,
+            lng: lng
+          })
+        // console.log(this.sgLocations)
 
-      var marker = new google.maps.Marker({
-        map: this.map,
-        position: this.geocoderResults[0].geometry.location
+      } else {
+        console.log('Geocode was not successful for the following reason: ' + results)
+        // alert('Geocode was not successful for the following reason: ' + this.geocoderResults);
+        }
       })
-      console.log(marker)
-
-    } else {
-      alert('Geocode was not successful for the following reason: ' + this.geocoderResults);
-      }
-    })
-  }
+    }
 }

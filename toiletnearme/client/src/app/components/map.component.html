@@ -1,1 +1,18 @@
-<google-map [width]="width" [height]="height" [options]="options"></google-map>
+<google-map [options]="mapOptions" [width]="width" [height]="height">
+    @for (location of sgLocations; track location) {
+        <map-advanced-marker
+          #markerElem="mapAdvancedMarker"
+          [position]="{ lat: location.lat, lng: location.lng }"
+          [title]="location.title"
+        />
+        }
+</google-map>
+<!-- 
+    @for (marker of markers; track $index) {
+        <map-marker
+        [position]="marker.position"
+        [icon]="marker.icon!"
+        (shapeChanged)="marker.markerShape"
+        [draggable]="true"
+      ></map-marker>
+      } -->
