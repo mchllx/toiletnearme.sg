@@ -1,20 +1,24 @@
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, provideHttpClient } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
-import { MapComponent } from './components/map.component';
 import { AuthService } from './services/auth.service';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { registerLocaleData } from '@angular/common';
 import { MaterialModule } from './ui/material.module';
 
 import en from '@angular/common/locales/en';
-import { GoogleMapsInitializer } from './services/googlemapsinitialiser.service';
 import { GoogleMapsModule } from '@angular/google-maps'
 import { AppRoutingModule } from './app-routing.module';
 import { GoogleMapsConfigService } from './services/googlemapsconfig.service';
 import { ToiletService } from './services/toilet.service';
+import { FeatherModule } from 'angular-feather';
+import { allIcons } from 'angular-feather/icons';
+import { FullComponent } from './layouts/full/full.component';
+import { MapComponent } from './components/google-map/map.component';
+import { ComponentsModule } from './components/components.module';
+import { DashboardModule } from './dashboard/dashboard.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 registerLocaleData(en);
@@ -29,19 +33,19 @@ registerLocaleData(en);
 @NgModule({
   declarations: [
     AppComponent,
-    MapComponent
+    MapComponent,
+    FullComponent,
   ],
 
   // AGMCore clashes with router, core@1 fixes, but invalidates router module
   imports: [
-    BrowserModule, HttpClientModule, ReactiveFormsModule, MaterialModule
-    , GoogleMapsModule
-    , AppRoutingModule
+    BrowserModule, HttpClientModule, BrowserAnimationsModule, ReactiveFormsModule, MaterialModule, DashboardModule
+    , GoogleMapsModule, AppRoutingModule, ComponentsModule, FeatherModule.pick(allIcons),
     // , AgmCoreModule.forRoot({apiKey: ''})
   ],
 
   providers: [
-    AuthService, ToiletService, GoogleMapsConfigService, provideAnimationsAsync(), provideHttpClient(),
+    AuthService, ToiletService, GoogleMapsConfigService, provideHttpClient(),
     // {
     //   // APP_INITIALIZER is the Angular dependency injection token.
     //   provide: APP_INITIALIZER,
