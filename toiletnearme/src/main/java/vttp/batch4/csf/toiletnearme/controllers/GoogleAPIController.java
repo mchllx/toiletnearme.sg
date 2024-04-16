@@ -34,34 +34,7 @@ public class GoogleAPIController {
   @Value("${maps.api.key}")
   private String mapsAPIKey;
 
-  @Autowired
-  private GoogleSheetsServiceImpl googleSheetSvc;
-
-  // POST localhost:8080/api/gsheets
-  @PostMapping(path="/gsheets")
-  @ResponseBody
-  public ResponseEntity<String> postToilet() {
-
-    try {
-      googleSheetSvc.getSpreadSheetValues(Utils.SHEET_FEMALE);
-      googleSheetSvc.getSpreadSheetValues(Utils.SHEET_MALE);
-      googleSheetSvc.getSpreadSheetValues(Utils.SHEET_HOTEL);  
-    } catch (IOException e1) {
-      e1.printStackTrace();
-      return ResponseEntity
-        .status(HttpStatus.ORDINAL_500_Internal_Server_Error)
-        .body("Server error");
-    } catch (GeneralSecurityException e2) {
-      e2.printStackTrace();
-      return ResponseEntity
-      .status(HttpStatus.ORDINAL_500_Internal_Server_Error)
-      .body("Server error");
-    }
-    return ResponseEntity
-        .status(HttpStatus.ORDINAL_200_OK)
-        .body("Successful");
-  }
-
+  // NOT USED: gmaps Init() in index.hmtl has to intialise before any services
   // GET localhost:8080/api/gmap/key
   @GetMapping(path="/gmap/key")
   @ResponseBody

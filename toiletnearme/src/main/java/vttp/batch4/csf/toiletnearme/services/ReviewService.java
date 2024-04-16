@@ -12,7 +12,7 @@ import vttp.batch4.csf.toiletnearme.models.Review;
 import vttp.batch4.csf.toiletnearme.models.User;
 import vttp.batch4.csf.toiletnearme.repositories.ImageRepository;
 import vttp.batch4.csf.toiletnearme.repositories.ReviewRepository;
-import vttp.batch4.csf.toiletnearme.repositories.ToiletListingRepository;
+import vttp.batch4.csf.toiletnearme.repositories.ToiletRepository;
 import vttp.batch4.csf.toiletnearme.repositories.UserRepository;
 
 @Service
@@ -22,7 +22,7 @@ public class ReviewService {
 	private ImageRepository imageRepo;
 
   @Autowired
-	private ToiletListingRepository toiletRepo;
+	private ToiletRepository toiletRepo;
 
   @Autowired
   private ReviewRepository reviewRepo;
@@ -40,7 +40,18 @@ public class ReviewService {
     }
       System.out.println(">>>successfully inserted");
       return reviewRepo.insertReview(review, user);
-  
+  }
+
+  public List<Review> getReviews() {
+    return reviewRepo.getReviews();
+  }
+
+  public Review getReviewByID(String id) {
+    return reviewRepo.getReviewByID(id);
+  }
+
+  public boolean deleteReviewByID(String id) {
+    return reviewRepo.deleteReviewByID(id);
   }
 
   public List<Review> getGSheetHotelReviews() {
@@ -57,7 +68,6 @@ public class ReviewService {
         }
         System.out.printf(">>>Successful: %s was inserted", review);
       });
-
   }
 }
 

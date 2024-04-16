@@ -27,8 +27,8 @@ public class SQLQueries {
     // review_id auto incr user_id, toilet_id, created_on, last_update, header, text, rating, images
     public static final String SQL_INSERT_REVIEW = """
         insert into reviews(
-        user_id, toilet_id, created_on, last_update, header
-        , text, rating, images)
+        user_id, toilet_id, name, created_on, last_update
+        , header , text, rating, images)
         values (?, ?, ?, ?, ?, ?, ?, ?)
         """;
 
@@ -71,13 +71,43 @@ public class SQLQueries {
         from toilets
         """;
     
-
     public static final String SQL_SELECT_TOILET = """
         select 
         toilet_id, name, address, price, gender
         , type, remarks, website, last_update, opening_hours_id
         , closing_hours_id, images, region
         from toilets
+        """;
+       
+    public static final String SQL_SELECT_REVIEW = """
+        select 
+        user_id, toilet_id, name, created_on, last_update
+        , header , text, rating, images
+        from reviews
+        """;
+
+    public static final String SQL_SELECT_REVIEW_BY_ID_TOILET = """
+        select 
+        user_id, toilet_id, name, created_on, last_update
+        , header , text, rating, images
+        from reviews
+        where toilet_id like ?
+        """;
+
+    public static final String SQL_SELECT_REVIEW_BY_ID_USER = """
+        select 
+        user_id, toilet_id, name, created_on, last_update
+        , header , text, rating, images
+        from reviews
+        where user_id like ?
+        """;
+
+    public static final String SQL_DELETE_REVIEW_BY_ID_USER = """
+        delete 
+        user_id, toilet_id, name, created_on, last_update
+        , header , text, rating, images
+        from reviews
+        where user_id like ?
         """;
 
      // toilet_id not autoincr, str

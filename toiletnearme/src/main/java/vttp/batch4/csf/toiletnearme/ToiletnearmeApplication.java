@@ -8,7 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import vttp.batch4.csf.toiletnearme.configs.WebSocketConfig;
-import vttp.batch4.csf.toiletnearme.repositories.ToiletListingRepository;
+import vttp.batch4.csf.toiletnearme.repositories.ToiletRepository;
 import vttp.batch4.csf.toiletnearme.services.GoogleSheetsServiceImpl;
 import vttp.batch4.csf.toiletnearme.services.ReviewService;
 import vttp.batch4.csf.toiletnearme.services.ToiletService;
@@ -28,7 +28,7 @@ public class ToiletnearmeApplication implements CommandLineRunner {
   ReviewService reviewSvc;
 
   @Autowired
-  ToiletListingRepository toiletRepo;
+  ToiletRepository toiletRepo;
   // @Autowired
   // UserService userSvc;
   

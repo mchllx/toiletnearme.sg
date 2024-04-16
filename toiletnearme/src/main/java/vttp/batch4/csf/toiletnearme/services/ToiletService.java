@@ -11,15 +11,28 @@ import org.springframework.transaction.annotation.Transactional;
 import vttp.batch4.csf.toiletnearme.exceptions.InsertToiletListingException;
 import vttp.batch4.csf.toiletnearme.exceptions.InsertUserException;
 import vttp.batch4.csf.toiletnearme.models.Toilet;
-import vttp.batch4.csf.toiletnearme.repositories.ToiletListingRepository;
+import vttp.batch4.csf.toiletnearme.repositories.ToiletRepository;
 
 @Service
 public class ToiletService {
 
   @Autowired
-  private ToiletListingRepository toiletRepo;
+  private ToiletRepository toiletRepo;
 
   private static final Logger logger = Logger.getLogger(ToiletService.class.getName());
+
+  public List<Toilet> getToilets() {
+    return toiletRepo.getToilets();
+  }
+
+  public Toilet getToiletByID(String id) {
+    return toiletRepo.getToiletByID(id);
+  }
+
+  public boolean deleteToiletByID(String id) {
+    return toiletRepo.deleteToiletByID(id);
+    
+  }
 
   @Transactional(rollbackFor=InsertToiletListingException.class)
   public void updateToiletfromGSheet() throws InsertToiletListingException{

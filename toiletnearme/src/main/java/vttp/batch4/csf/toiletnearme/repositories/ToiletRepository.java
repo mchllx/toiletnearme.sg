@@ -18,15 +18,71 @@ import vttp.batch4.csf.toiletnearme.models.Toilet;
 import vttp.batch4.csf.toiletnearme.models.User;
 
 @Repository
-public class ToiletListingRepository {
+public class ToiletRepository {
 
-  private Logger logger = Logger.getLogger(ToiletListingRepository.class.getName());
+  private Logger logger = Logger.getLogger(ToiletRepository.class.getName());
 
   @Autowired
   private JdbcTemplate template;
 
-  public boolean insertToilet(Toilet toilet) throws InsertToiletListingException{
+  public Toilet getToiletByID(String id) {
+    SqlRowSet rs = template.queryForRowSet(SQLQueries.SQL_SELECT_TOILET, id);
 
+    if(!rs.next()){
+      logger.info("Toilet does not exist in database");
+        return null;
+    } else {
+        return new Toilet(
+          rs.getString("toilet_id"),
+          rs.getString("name"),
+          rs.getString("address"),
+          rs.getFloat("price"),
+          rs.getString("gender"),
+          rs.getString("type"),
+          rs.getString("remarks"),
+          rs.getString("website"),
+          rs.getDate("last_update"),
+          rs.getString("images"),
+          rs.getString("region")
+        );
+    }
+  }
+
+  public List<Toilet> getToilets() {
+    SqlRowSet rs = template.queryForRowSet(SQLQueries.SQL_SELECT_TOILET);
+
+    // toilet_id, name, address, price, gender, type, remarks, website, last_update, opening_hours_id, closing_hours_id, images, region
+    if(!rs.next()){
+      logger.info("Toilet does not exist in database");
+        return null;
+    } else {
+        List<Toilet> list = new LinkedList<>();
+        while (rs.next() != false) {
+          Toilet toilet = new Toilet(
+            rs.getString("toilet_id"),
+            rs.getString("name"),
+            rs.getString("address"),
+            rs.getFloat("price"),
+            rs.getString("gender"),
+            rs.getString("type"),
+            rs.getString("remarks"),
+            rs.getString("website"),
+            rs.getDate("last_update"),
+            rs.getString("images"),
+            rs.getString("region")
+          );
+
+          list.add(toilet);
+        }
+        return list;
+    }
+  }
+
+  public boolean deleteToiletByID(String id) {
+    return template.update(SQLQueries.SQL_DELETE_TOILET_BY_ID, id ) > 0;
+  }
+
+  public boolean insertToilet(Toilet toilet) throws InsertToiletListingException{
     return template.update(SQLQueries.SQL_INSERT_TOILET
       , toilet.getToiletId()
       , toilet.getName()

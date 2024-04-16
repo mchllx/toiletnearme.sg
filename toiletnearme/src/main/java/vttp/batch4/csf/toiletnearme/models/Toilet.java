@@ -24,13 +24,27 @@ public class Toilet {
     private Map<String, Date> openingHours = new HashMap<>();
     private Map<String, Date> closingHours = new HashMap<>();
     private Date updatedOn;
-    private String[] images;
+    private String images;
     private String website;
     private String region;
     private String author;
     private float rating;
     private List<Review> reviews;
     private String footTraffic;
+
+    public Toilet(String toiletId, String name, String address, float price, String gender, String type, String remarks, String website, Date updatedOn, String images, String region) {
+        this.toiletId = toiletId;
+        this.name = name;
+        this.address = address;
+        this.price = price;
+        this.gender = gender;
+        this.type = type;
+        this.remarks = remarks;
+        this.website = website;
+        this.updatedOn = updatedOn;
+        this.images = images;
+        this.region = region;
+    }
 
     public Toilet(String toiletId, String name, String address, String type, String remarks, List<Review> reviews, String website, Date updatedOn) {
         this.toiletId = toiletId;
@@ -56,7 +70,7 @@ public class Toilet {
     }
 
     public Toilet(String toiletId, String name, String address, float price, String gender, String type, String remarks,
-            Map<String, Date> openingHours, Map<String, Date> closingHours, Date updatedOn, String[] images, String website, String region,
+            Map<String, Date> openingHours, Map<String, Date> closingHours, Date updatedOn, String images, String website, String region,
             String author, float rating,List<Review> reviews, String footTraffic) {
         this.toiletId = toiletId;
         this.name = name;
@@ -100,8 +114,8 @@ public class Toilet {
 	public void setClosingHours(Map<String, Date> closingHours) { this.closingHours = closingHours; }
     public Date getUpdatedOn() { return updatedOn; }
     public void setUpdatedOn(Date updatedOn) { this.updatedOn = updatedOn; }
-    public String[] getImages() { return images; }
-    public void setImages(String[] images) { this.images = images; }
+    public String getImages() { return images; }
+    public void setImages(String images) { this.images = images; }
     public String getWebsite() { return website; }
     public void setWebsite(String website) { this.website = website; }
     public String getRegion() { return region; }
@@ -151,17 +165,5 @@ public class Toilet {
         //   .build();
         return toilet;
     }
-
-    public static JsonObject toJson(Toilet toilet) {
-        // return Json.createObjectBuilder()
-        //   .add("prodId", toilet.getId())
-        //   .add("name", toilet.getName())
-        //   .add("brand", toilet.getBrand())
-        //   .add("price", toilet.getPrice())
-        //   .add("discountPrice", toilet.getDiscountPrice())
-        //   .add("image", toilet.getImage())
-        //   .add("quantity", toilet.getQuantity())
-        //   .build();
-        return null;
-    }
+    
 }

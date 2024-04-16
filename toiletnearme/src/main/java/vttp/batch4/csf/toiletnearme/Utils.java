@@ -8,6 +8,7 @@ import com.github.f4b6a3.ulid.UlidCreator;
 
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
+import vttp.batch4.csf.toiletnearme.models.Review;
 import vttp.batch4.csf.toiletnearme.models.Toilet;
 
 public class Utils {
@@ -18,8 +19,8 @@ public class Utils {
   public static final String PREFIX_REVIEW = "REV";
   public static final String PREFIX_USER = "USR";
 
-  public static final String ROLE_1 = "ADMIN";
-  public static final String ROLE_2 = "USER";
+  public static final String ROLE_ADMIN = "ADMIN";
+  public static final String ROLE_USER = "USER";
 
   public static final String AMENITIES_1 = "babycare";
   public static final String AMENITIES_2 = "bidet";
@@ -53,4 +54,35 @@ public class Utils {
   public static String createUUID8Char() {
     return UlidCreator.getMonotonicUlid().toString().substring(0,8);
   }
+
+  public static JsonObject toiletToJson(Toilet toilet) {
+    return Json.createObjectBuilder()
+      .add("id", toilet.getToiletId())
+      .add("name", toilet.getName())
+      .add("address", toilet.getAddress())
+      .add("price", toilet.getPrice())
+      .add("gender", toilet.getGender())
+      .add("type", toilet.getType())
+      .add("remarks", toilet.getRemarks())
+      .add("website", toilet.getWebsite())
+      .add("last_update", toilet.getUpdatedOn().toString())
+      .add("images", toilet.getImages())
+      .add("region", toilet.getRegion())
+      .build();
+  }
+
+  public static JsonObject reviewToJson(Review review) {
+    return Json.createObjectBuilder()
+      .add("review_id", review.getReviewId())
+      .add("name", review.getName())
+      .add("header", review.getHeader())
+      .add("text", review.getBody())
+      .add("created_on", review.getCreatedOn().toString())
+      .add("last_update", review.getLastUpdate().toString())
+      .add("user_id", review.getUserId())
+      .add("rating", review.getRating())
+      .add("images", review.getImages())
+      .build();
+  }
+
 }

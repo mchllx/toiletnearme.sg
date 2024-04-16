@@ -17,12 +17,17 @@ import jakarta.json.JsonObject;
 import jakarta.json.JsonObjectBuilder;
 import jakarta.json.JsonReader;
 import vttp.batch4.csf.toiletnearme.Utils;
+import vttp.batch4.csf.toiletnearme.models.Role;
 import vttp.batch4.csf.toiletnearme.models.Toilet;
+import vttp.batch4.csf.toiletnearme.models.User;
+import vttp.batch4.csf.toiletnearme.services.JWTService;
 import vttp.batch4.csf.toiletnearme.services.ToiletService;
+import vttp.batch4.csf.toiletnearme.services.UserService;
 
 import java.io.StringReader;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,29 +42,43 @@ public class ToiletController {
 
     @Autowired
     private ToiletService toiletSvc;
+
+    @Autowired
+    private UserService userSvc;
  
     // GET http://localhost:8080/api/toilet/
     @GetMapping
     @ResponseBody
-    public ResponseEntity<List<Toilet>> getToilets() {
+    public ResponseEntity<List<JsonObject>> getToilets() {
         System.out.println(">>>GET Req: Toilets");
-        List<Toilet> toilets = new LinkedList<>();
-    // JsonArrayBuilder arrBuilder = Json.createArrayBuilder(toiletSvc.getToilets());
-    // List<Toilet> toilets = toiletSvc.getToilets()
-    //     .stream()
-    //     .map(Utils::toToilet)
-    //     .toList();
-    return ResponseEntity.ok(toilets);
+
+        if (toiletSvc.getToilets() == null) {
+            return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new LinkedList<>());
+        }
+
+        List<JsonObject> toilets = toiletSvc.getToilets()
+            .stream()
+            .map(Utils::toiletToJson)
+            .toList();
+            
+    return ResponseEntity
+        .status(HttpStatus.OK)
+        .contentType(MediaType.APPLICATION_JSON)
+        .body(toilets);
     }
 
+    // TODO: UPDATE/PUT http://localhost:8080/api/toilet/{toilet}")
     // POST http://localhost:8080/api/toilet/{toilet}")
     @PostMapping
     @ResponseBody
-    public ResponseEntity<String> postToilets(@RequestBody String payload) {
+    public ResponseEntity<String> postToilet(@RequestBody String payload) {
         System.out.println("payload" + payload);
 
         JsonReader jr = Json.createReader(new StringReader(payload));
-        JsonObject jsonObj = jr.readObject().getJsonObject("order");
+        JsonObject jsonObj = jr.readObject();
         System.out.println("json" + jsonObj.toString());
 
         Toilet toilet = new Toilet();
@@ -87,27 +106,38 @@ public class ToiletController {
         .contentType(MediaType.APPLICATION_JSON)
         .body(Json.createObjectBuilder().add("id:", toilet.getToiletId()).build().toString());
     }
-
+    
     // DELETE http://localhost:8080/api/toilet/{id}")
     @DeleteMapping(path="{id}")
     @ResponseBody
-    public ResponseEntity<String> deleteToilet(@PathVariable String id, Toilet toilet) {
+    public ResponseEntity<String> deleteToilet(@PathVariable String id, @RequestParam String email, Toilet toilet) {
         System.out.println(">>>DELETE Req: Toilet");
 
-        // if (toiletSvc.getToiletByID(id) == false) {
-        //     return ResponseEntity
-        //     .status(HttpStatus.BAD_REQUEST)
-        //     .contentType(MediaType.APPLICATION_JSON)
-        //     .body(Json.createObjectBuilder().add("message:", "toilet does not exists").build().toString());
-        // }
+        if (toiletSvc.getToiletByID(id) == null) {
+            return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(Json.createObjectBuilder().add("message:", "toilet does not exist").build().toString());
+        }
+
+        User user = userSvc.selectUserByEmail(email);
+        Set<Role> authorities = user.getAuthorities();
+
+        if (authorities.contains(Role.ROLE_USER)) {
+            return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(Json.createObjectBuilder().add("message:", "invalid access").build().toString());
+        }
+
+        toiletSvc.deleteToiletByID(id);
 
     return ResponseEntity
       .status(HttpStatus.OK)
       .contentType(MediaType.APPLICATION_JSON)
-      .body(Json.createObjectBuilder().add("id:", toilet.getToiletId()).build().toString());
+      .body(Json.createObjectBuilder().add("deleted:", id).build().toString());
     }
     
-
     // GET http://localhost:8080/api/toilet/address
     @GetMapping(path="/address")
     @ResponseBody

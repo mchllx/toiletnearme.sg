@@ -1,5 +1,6 @@
 package vttp.batch4.csf.toiletnearme.controllers;
 
+import java.io.StringReader;
 import java.util.Date;
 import java.util.logging.Logger;
 
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.json.Json;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
 import vttp.batch4.csf.toiletnearme.exceptions.InsertUserException;
 import vttp.batch4.csf.toiletnearme.models.User;
 import vttp.batch4.csf.toiletnearme.services.JWTService;
@@ -40,26 +43,32 @@ public class AuthController {
         System.out.println("payload" + payload);
         System.out.println(">>>GET Req: Login");
 
+        JsonReader jr = Json.createReader(new StringReader(payload));
+        JsonObject jsonObj = jr.readObject().getJsonObject("order");
+
+        String email = "";
+        String token = "";
+
         User user = new User();
 
-        // if (userSvc.selectUserById(email) == false) {
+        if (userSvc.selectUserById(email) == null) {
             
-        // return ResponseEntity
-        //     .status(HttpStatus.BAD_REQUEST)
-        //     .contentType(MediaType.APPLICATION_JSON)
-        //     .body(Json.createObjectBuilder().add("message:", "invalid user").build().toString());
-        // }
+        return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(Json.createObjectBuilder().add("message:", "invalid user").build().toString());
+        }
 
-        // if (jwtSvc.extractExpiration(jwtToken).after(new Date())) {
+        if (jwtSvc.extractExpiration(token).after(new Date())) {
             
-        //     return ResponseEntity
-        //         .status(HttpStatus.BAD_REQUEST)
-        //         .contentType(MediaType.APPLICATION_JSON)
-        //         .body(Json.createObjectBuilder().add("message:", "token is not expired").build().toString());
-        //     }
-    
-        // String email = jwtSvc.extractEmail(jwtToken);
-        // String token = jwtSvc.generateToken("");
+            return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Json.createObjectBuilder().add("message:", "token is not expired").build().toString());
+            }
+            
+        email = jwtSvc.extractEmail(token);
+        token = jwtSvc.generateToken("");
 
         return ResponseEntity
             .status(HttpStatus.OK)
@@ -73,13 +82,15 @@ public class AuthController {
         System.out.println("payload" + payload);
         System.out.println(">>>GET Req: Registration");
 
-        // if (userSvc.selectUserById(email) != false) {
+        String email = "";
+
+        if (userSvc.selectUserById(email) != null) {
             
-        // return ResponseEntity
-        //     .status(HttpStatus.BAD_REQUEST)
-        //     .contentType(MediaType.APPLICATION_JSON)
-        //     .body(Json.createObjectBuilder().add("message:", "user exists").build().toString());
-        // }
+        return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(Json.createObjectBuilder().add("message:", "user exists").build().toString());
+        }
 
         User user = new User();
         userSvc.insertUser(new User());

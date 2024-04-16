@@ -13,13 +13,14 @@ public class Review {
     private Date createdOn;
     private Date lastUpdate;
     private String toiletId;
+    private String userId;
     private float rating;
     private String images;
 
     public Review() { 
     }
 
-    public Review(Integer reviewId, String name, String header, String body, Date createdOn, Date lastUpdate, String toiletId, float rating, String images) {
+    public Review(Integer reviewId, String name, String header, String body, Date createdOn, Date lastUpdate, String toiletId, String userId, float rating, String images) {
         this.reviewId = reviewId;
         this.name = name;
         this.header = header;
@@ -27,6 +28,7 @@ public class Review {
         this.createdOn = createdOn;
         this.lastUpdate = lastUpdate;
         this.toiletId = toiletId;
+        this.userId = userId;
         this.rating = rating;
         this.images = images;
     }
@@ -45,6 +47,8 @@ public class Review {
     public void setLastUpdate(Date lastUpdate) { this.lastUpdate = lastUpdate; }
     public String getToiletId() { return toiletId; }
     public void setToiletId(String toiletId) { this.toiletId = toiletId; }
+    public String getUserId() { return userId; }
+    public void setUserId(String userId) { this.userId = userId; }
     public String getImages() { return images; }
     public void setImages(String images) { this.images = images; }
     public float getRating() { return rating; }
@@ -52,9 +56,9 @@ public class Review {
 
     @Override
     public String toString() {
-        return "Review{reviewId=%s, name=%s, header=%s, body=%s, createdOn=%s, lastUpdate=%s, toiletId=%s, images: %s, rating: %.2f}"
+        return "Review{reviewId=%s, name=%s, header=%s, body=%s, createdOn=%s, lastUpdate=%s, toiletId=%s, userId=%s, images: %s, rating: %.2f}"
         .formatted(reviewId, name, header, body
-            ,createdOn, lastUpdate, toiletId, images, rating);
+            ,createdOn, lastUpdate, toiletId, userId, images, rating);
     }
 
 }
