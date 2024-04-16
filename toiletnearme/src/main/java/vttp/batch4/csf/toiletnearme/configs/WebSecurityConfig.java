@@ -48,14 +48,14 @@ public class WebSecurityConfig {
 
         .authorizeHttpRequests((requests) -> requests
             .requestMatchers(HttpMethod.DELETE).hasAnyAuthority(Role.ROLE_ADMIN.toString())
-            .requestMatchers("/delete").authenticated()
-            .requestMatchers("/api/jwt/***", "/api/gmap/key", "/api/jwt/register", "/api/jwt/login", "/api/toilet/***", "/api/***", "/", "/login", "/login2", "/login/oauth2/code/google/***", "/register/***").permitAll()
+            .requestMatchers("/api/review/add", "/api/toilet/add", "/api/review/delete", "/api/toilet/delete").authenticated()
+            .requestMatchers("/api/jwt/***", "/api/gmap/***", "/api/toilet/***", "/api/***", "/", "/api/jwt/login", "/api/jwt/login2", "/login/oauth2/code/google/***", "/register/***").permitAll()
         );
 
-        http.formLogin(login -> login
-            .loginPage("/api/jwt/login2")
-            .permitAll()
-            );
+        // http.formLogin(login -> login
+        //     .loginPage("/api/jwt/login")
+        //     .permitAll()
+        //     );
 
         http.oauth2Login(login -> login
             .loginPage("/login")

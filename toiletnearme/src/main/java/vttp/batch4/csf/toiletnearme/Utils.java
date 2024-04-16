@@ -10,6 +10,7 @@ import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import vttp.batch4.csf.toiletnearme.models.Review;
 import vttp.batch4.csf.toiletnearme.models.Toilet;
+import vttp.batch4.csf.toiletnearme.models.User;
 
 public class Utils {
 
@@ -82,6 +83,21 @@ public class Utils {
       .add("user_id", review.getUserId())
       .add("rating", review.getRating())
       .add("images", review.getImages())
+      .build();
+  }
+
+  // user_id, username, email, password, created_on, last_update, first_name, last_name, profile_image, role, expired, enabled, locked, credentials
+  public static JsonObject userToJson(User user, String token) {
+    return Json.createObjectBuilder()
+      .add("userId", user.getUserId())
+      .add("username", user.getUsername())
+      .add("email", user.getEmail())
+      .add("createdOn", user.getCreatedOn().toString())
+      .add("updatedOn", user.getUpdatedOn().toString())
+      .add("firstName", user.getFirstName())
+      .add("lastName", user.getLastName())
+      .add("profileImage", user.getProfileImage() != null ? user.getProfileImage() : "https://t4.ftcdn.net/jpg/05/42/36/11/360_F_542361185_VFRJWpR2FH5OiAEVveWO7oZnfSccZfD3.jpg")
+      .add("jwtToken", token)
       .build();
   }
 

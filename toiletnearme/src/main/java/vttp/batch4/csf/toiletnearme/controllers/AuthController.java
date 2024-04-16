@@ -46,21 +46,19 @@ public class AuthController {
     private static final Logger logger = Logger.getLogger(AuthController.class.getName());
 
     // JWT Filter blocks requests without headers before reach controller
-    @GetMapping(path="/login")
+    @PostMapping(path="/login")
     @ResponseBody
-    public ResponseEntity<String> login(String payload) {
-        System.out.println("payload" + payload);
-        System.out.println(">>>GET Req: Login");
+    public ResponseEntity<String> login(@RequestBody String payload) {
+        // payload{"user":{"email":"tester@gmail.com","password":"tester"}}
+        // System.out.println("Payload" + payload);
+        System.out.println(">>>POST Req: Login");
 
         JsonReader jr = Json.createReader(new StringReader(payload));
-        JsonObject jsonObj = jr.readObject().getJsonObject("order");
+        JsonObject jsonObj = jr.readObject().getJsonObject("user");
 
-        String email = "";
-        String token = "";
+        String email = jsonObj.getString("email");
 
-        User user = new User();
-
-        if (userSvc.selectUserById(email) == null) {
+        if (userSvc.selectUserByEmail(email) == null) {
             
         return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
@@ -68,32 +66,43 @@ public class AuthController {
             .body(Json.createObjectBuilder().add("message:", "invalid user").build().toString());
         }
 
-        if (jwtSvc.extractExpiration(token).after(new Date())) {
-            
+        String password = jsonObj.getString("password");
+        User user = userSvc.selectUserByEmail(email);
+        boolean matches = googleHandler.passwordEncoder().matches(password, user.getPassword());
+
+        if (!matches) {
             return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(Json.createObjectBuilder().add("message:", "token is not expired").build().toString());
-            }
-            
-        email = jwtSvc.extractEmail(token);
-        token = jwtSvc.generateToken("");
+            .status(HttpStatus.BAD_REQUEST)
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(Json.createObjectBuilder().add("message:", "invalid user").build().toString());
+        }
+
+        String token = jwtSvc.generateToken(email);
 
         return ResponseEntity
             .status(HttpStatus.OK)
             .contentType(MediaType.APPLICATION_JSON)
-            .body(Json.createObjectBuilder().add("logged in:", user.getEmail()).build().toString());
+            .body(Utils.userToJson(user, token).toString());
     }
 
+    // user_id, username, email, password, created_on, last_update, first_name, last_name, profile_image, role, expired, enabled, locked, credentials
     @PostMapping(path="/register")
     @ResponseBody
-    public ResponseEntity<String> register(@RequestParam String username, String password, String firstName, String lastName, String profileImage) throws InsertUserException {
+    public ResponseEntity<String> register(@RequestBody String payload) throws InsertUserException {
         // System.out.println("payload" + payload);
-        System.out.println(">>>GET Req: Registration");
+        System.out.println(">>>POST Req: Registration");
 
-        String email = username;
+        JsonReader jr = Json.createReader(new StringReader(payload));
+        JsonObject jsonObj = jr.readObject().getJsonObject("user");
 
-        if (userSvc.selectUserById(email) != null) {
+        String username = jsonObj.getString("username");
+        String email = jsonObj.getString("email");
+        String password = jsonObj.getString("password");
+        String firstName = jsonObj.getString("firstName");
+        String lastName = jsonObj.getString("lastName");
+        String profileImage = jsonObj.getString("profileImage");
+
+        if (userSvc.selectUserByEmail(email) != null) {
             
         return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
@@ -103,18 +112,17 @@ public class AuthController {
     
         Set<Role> authorities = new HashSet<>();
         authorities.add(Role.ROLE_USER);
-        
+       
         User user = new User();
         user.setUserId(Utils.createUUID26Char(Utils.PREFIX_USER));
         user.setUsername(username);
         user.setEmail(email);
-        user.setPassword(googleHandler.passwordEncoder().encode(email));
+        user.setPassword(googleHandler.passwordEncoder().encode(password));
         user.setCreatedOn(new Date());
         user.setUpdatedOn(new Date());
         user.setFirstName(firstName);
         user.setLastName(lastName);
-        user.setProfileImage(profileImage);
-        
+        user.setProfileImage(profileImage); 
         user.setAuthorities(authorities);
         // System.out.println(">>>sending user data to mySQL");
         
@@ -134,14 +142,23 @@ public class AuthController {
             .body(Json.createObjectBuilder().add("registered", token).build().toString());
     }
 
-    @GetMapping(path="/login2")
-    public String login2() {
-        return "login";
-    }
+    // @GetMapping(path="/login2")
+    // public String login2() {
+    //     return "login";
+    // }
 
-    @GetMapping(path="/form")
-    public String form() {
-        return "form";
-    }
+    // @GetMapping(path="/form")
+    // public String form() {
+    //     return "form";
+    // }
+
+    // if (jwtSvc.extractExpiration(token).after(new Date())) { 
+    //     return ResponseEntity
+    //         .status(HttpStatus.BAD_REQUEST)
+    //         .contentType(MediaType.APPLICATION_JSON)
+    //         .body(Json.createObjectBuilder().add("message:", "token is not expired").build().toString());
+    //     }
+        
+    // email = jwtSvc.extractEmail(token);
 
 }

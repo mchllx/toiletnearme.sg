@@ -33,7 +33,7 @@ public class User implements UserDetails {
     public User(String userId) {
         this.userId = userId;
     }
-    
+
     public User(String userId, String username, String email, String password, Date createdOn, Date updatedOn,
             String firstName, String lastName, String profileImage, List<Bookmark> bookmarks,
             List<Review> reviews, Set<Role> authorities, boolean accountNonExpired, boolean isEnabled,
@@ -95,7 +95,7 @@ public class User implements UserDetails {
     @Override
     public String toString() {
         return "User{userId=%s, username=%s, password=%s, email=%s, createdOn=%s, updatedOn=%s, firstName=%s, lastName=%s, profileImage=%s, bookmarks: %s, reviews: %s, authorities:%s, accountNonExpired:%b, isEnabled:%b, accountNonLocked:%b, credentialsNonExpired:%b}"
-        .formatted(userId, username, email, password, createdOn.toString(), updatedOn.toString(), firstName, lastName
+        .formatted(userId, username, email, password, createdOn, updatedOn, firstName, lastName
             ,profileImage, bookmarks, reviews, authorities, accountNonExpired, isEnabled, accountNonLocked, credentialsNonExpired);
     }
 

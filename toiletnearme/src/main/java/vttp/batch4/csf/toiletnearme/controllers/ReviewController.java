@@ -77,7 +77,7 @@ public class ReviewController {
 
   // TODO: PUT http://localhost:8080/api/review/")
   // POST http://localhost:8080/api/review/")
-  @PostMapping
+  @PostMapping(path="/add")
   @ResponseBody
   public ResponseEntity<String> postReview(@RequestBody String payload) {
       System.out.println("payload" + payload);
@@ -112,8 +112,8 @@ public class ReviewController {
       .body(Json.createObjectBuilder().add("id:", review.getToiletId()).build().toString());
   }
 
-  // DELETE http://localhost:8080/api/review/{id}")
-  @DeleteMapping(path="{id}/user")
+  // DELETE http://localhost:8080/api/review/delete/{id}")
+  @DeleteMapping(path="/delete/{id}")
   @ResponseBody
   public ResponseEntity<String> deleteToilet(@PathVariable String id, @RequestParam String email) {
       System.out.println(">>>DELETE Req: Review");

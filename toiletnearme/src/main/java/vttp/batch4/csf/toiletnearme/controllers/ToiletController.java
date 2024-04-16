@@ -72,7 +72,7 @@ public class ToiletController {
 
     // TODO: UPDATE/PUT http://localhost:8080/api/toilet/{toilet}")
     // POST http://localhost:8080/api/toilet/{toilet}")
-    @PostMapping
+    @PostMapping(path="/add")
     @ResponseBody
     public ResponseEntity<String> postToilet(@RequestBody String payload) {
         System.out.println("payload" + payload);
@@ -106,9 +106,9 @@ public class ToiletController {
         .contentType(MediaType.APPLICATION_JSON)
         .body(Json.createObjectBuilder().add("id:", toilet.getToiletId()).build().toString());
     }
-    
+
     // DELETE http://localhost:8080/api/toilet/{id}")
-    @DeleteMapping(path="{id}")
+    @DeleteMapping(path="/delete/{id}")
     @ResponseBody
     public ResponseEntity<String> deleteToilet(@PathVariable String id, @RequestParam String email, Toilet toilet) {
         System.out.println(">>>DELETE Req: Toilet");
