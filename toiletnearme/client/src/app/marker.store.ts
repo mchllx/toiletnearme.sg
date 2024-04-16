@@ -6,7 +6,7 @@ import { Marker, MarkerStorage } from "./models";
     providedIn: 'root'
 })
         
-export class LocationStore extends ComponentStore<MarkerStorage> {
+export class MarkerStore extends ComponentStore<MarkerStorage> {
 
     constructor() {
         super(

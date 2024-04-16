@@ -7,7 +7,7 @@ import { Review, Toilet } from "../models";
 import { environment } from '../../environments/environment'
 
 const URL = environment.url
-const API_KEY_ENDPOINT = 'api/review'
+const API_KEY_ENDPOINT = 'api/review/'
 
 @Injectable()
 export class ReviewService {

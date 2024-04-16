@@ -20,6 +20,11 @@ import { ComponentsModule } from './components/components.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ExtendedComponent } from './components/extended/extended.component';
+import { MarkerService } from './services/marker.service';
+import { ReviewService } from './services/review.service';
+import { ToiletStore } from './toilet.store';
+import { MarkerStore } from './marker.store';
+import { UserStore } from './user.store';
 
 
 registerLocaleData(en);
@@ -47,7 +52,8 @@ registerLocaleData(en);
   ],
 
   providers: [
-    AuthService, ToiletService, GoogleMapsConfigService, provideHttpClient(), GoogleMap
+    AuthService, ToiletService, MarkerService, ReviewService, ToiletStore
+    , MarkerStore, UserStore, GoogleMapsConfigService, provideHttpClient(), GoogleMap
     // {
     //   // APP_INITIALIZER is the Angular dependency injection token.
     //   provide: APP_INITIALIZER,

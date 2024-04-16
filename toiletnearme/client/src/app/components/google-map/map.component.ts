@@ -34,7 +34,7 @@ export class MapComponent implements OnInit {
   address!: string
 
   private toiletSvc = inject(ToiletService)
-  sgLocations: Marker[] = []
+  sgLocations: Marker[] = [{id:"test", lat: 1.3191389705135221, lng: 103.89404363104732, title: "Singpost Centre", content:""}]
 
   svgString: string = `<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#FF5733" stroke="#FFFFFF" viewBox="0 0 24 24">
     <circle cx="12" cy="12" r="10" fill="#FF5733" stroke="#FFFFFF" stroke-width="2" />
