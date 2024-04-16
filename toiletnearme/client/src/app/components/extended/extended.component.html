@@ -1,0 +1,33 @@
+<gmpx-api-loader [key]="mapsApiKey"></gmpx-api-loader>
+
+<gmpx-split-layout row-reverse row-layout-min-width="700">
+  <gmpx-overlay-layout #overlay slot="fixed">
+    <div slot="main" class="main-container">
+      <gmpx-place-picker for-map="gmap" type="university"
+                         placeholder="Enter a college in the US or Canada"
+                         country="us ca" (gmpx-placechange)="selectCollege($event)">
+      </gmpx-place-picker>
+      <gmpx-place-overview size="large" [place]="college" google-logo-already-displayed>
+        <gmpx-icon-button slot="action" variant="filled" (click)="showReviews()">
+          See Reviews
+        </gmpx-icon-button>
+        <gmpx-place-directions-button slot="action" variant="filled">
+          Directions
+        </gmpx-place-directions-button>
+      </gmpx-place-overview>
+    </div>
+    <div slot="overlay">
+      <gmpx-icon-button autofocus (click)="hideReviews()"
+                        class="close-button">
+        Close
+      </gmpx-icon-button>
+      <gmpx-place-data-provider [place]="college">
+        <gmpx-place-reviews></gmpx-place-reviews>
+      </gmpx-place-data-provider>
+    </div>
+  </gmpx-overlay-layout>
+  <gmp-map slot="main" id="gmap" map-id="DEMO_MAP_ID"
+           [zoom]="mapZoom" [center]="mapCenter">
+    <gmp-advanced-marker [position]="college?.location"></gmp-advanced-marker>
+  </gmp-map>
+</gmpx-split-layout>

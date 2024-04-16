@@ -3,14 +3,17 @@ import { RouterModule, Routes } from '@angular/router';
 import { FullComponent } from './layouts/full/full.component';
 import { MapComponent } from './components/google-map/map.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { ExtendedComponent } from './components/extended/extended.component';
+import { FormsComponent } from './components/forms/forms.component';
 
 const routes: Routes = [
   { path: '',
     component: FullComponent,
     children: [
       {path:"", redirectTo:"/home", pathMatch:"full"},
-      {path:"home", component:MapComponent},
-      {path:"dashboard", component:DashboardComponent}
+      {path:"home", component:ExtendedComponent},
+      {path:"dashboard", component:DashboardComponent},
+      {path:"contact", component:FormsComponent},
     ]
    },
   { path: "", redirectTo: '/', pathMatch:'full' },

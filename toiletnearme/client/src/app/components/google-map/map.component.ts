@@ -3,6 +3,8 @@ import { GoogleMap, MapAdvancedMarker, MapInfoWindow, MapMarker } from '@angular
 import { sgLocations } from '../../models';
 import { ToiletService } from '../../services/toilet.service';
 
+import {OverlayLayout} from '@googlemaps/extended-component-library/overlay_layout.js';
+
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
@@ -41,6 +43,8 @@ export class MapComponent implements OnInit {
 
     // info marker
   @ViewChild(MapInfoWindow) infoWindow!: MapInfoWindow;
+
+  @ViewChild('overlay') overlay!: ElementRef<OverlayLayout>;
 
   constructor() {
     this.mapOptions = {

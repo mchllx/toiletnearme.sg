@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA , NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, provideHttpClient } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -19,6 +19,7 @@ import { MapComponent } from './components/google-map/map.component';
 import { ComponentsModule } from './components/components.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ExtendedComponent } from './components/extended/extended.component';
 
 
 registerLocaleData(en);
@@ -35,12 +36,13 @@ registerLocaleData(en);
     AppComponent,
     MapComponent,
     FullComponent,
+    ExtendedComponent
   ],
 
   // AGMCore clashes with router, core@1 fixes, but invalidates router module
   imports: [
     BrowserModule, HttpClientModule, BrowserAnimationsModule, ReactiveFormsModule, MaterialModule, DashboardModule
-    , GoogleMapsModule, AppRoutingModule, ComponentsModule, FeatherModule.pick(allIcons),
+    , GoogleMapsModule, AppRoutingModule, ComponentsModule, FeatherModule.pick(allIcons)
     // , AgmCoreModule.forRoot({apiKey: ''})
   ],
 
@@ -60,7 +62,8 @@ registerLocaleData(en);
     //     // , initializer: GoogleMapsInitializer) => () => initializer.initialize(config),
     // }
   ],
-  bootstrap: [ AppComponent ]
+  bootstrap: [ AppComponent ],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
   
 })
 
