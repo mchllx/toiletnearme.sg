@@ -28,6 +28,7 @@ export class FormsComponent implements OnInit, OnDestroy {
   private router = inject(Router)
   private authSvc = inject(AuthService)
   private activatedRoute = inject(ActivatedRoute)
+  private userStore = inject(UserStore)
   
   checked = true;
   user$!: Promise<void>
@@ -35,7 +36,7 @@ export class FormsComponent implements OnInit, OnDestroy {
 
   form!: FormGroup
   
-  constructor(private userStore: UserStore) { }
+  constructor() { }
 
   ngOnInit(): void {
     this.form = this.createSignInForm()

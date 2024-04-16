@@ -32,7 +32,7 @@
       <gmp-advanced-marker *ngFor="let location of sgLocations; let index = index"
         class="pannable"
         [position]="{ lat: location.lat, lng: location.lng }" 
-        [title]="'Toilet ' + (index + 1) + ': ' + location.title"
+        [title]="location.title"
         [content]="location.content"
         gmp-clickable
         (gmp-click)="onMarkerClick(location)">

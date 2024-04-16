@@ -54,13 +54,10 @@ export class MarkerService {
   // DELETE http://localhost:8080/api/marker/{id}")
   deleteMarkerById(id: string, jwtToken: string): Promise<Marker> {
     const headers = new HttpHeaders()
-    .set('Authorization', 'Bearer '.concat(jwtToken))
-    
-    const params = new HttpParams()
-      .set('id', id)
+    // .set('Authorization', 'Bearer '.concat(jwtToken))
     
     try {
-      return lastValueFrom(this.http.delete<Marker>(`${URL}/${API_KEY_ENDPOINT}+${params}`, {headers}))
+      return lastValueFrom(this.http.delete<Marker>(`${URL}/${API_KEY_ENDPOINT}+${id}`, {headers}))
     } catch (error) {
       console.error('Error fetching address:', error)
       throw error

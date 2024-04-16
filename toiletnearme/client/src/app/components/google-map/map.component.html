@@ -13,14 +13,14 @@
     <div class="col-lg-4">
       <mat-card>
         <mat-card-content>
-          <h4 class="mb-60">Selected Listing</h4>
+          <h4 class="mb-60">Selected Toilet</h4>
           <div class="d-flex">
             <google-map [options]="mapOptions" [width]="width" [height]="height">
               @for (location of sgLocations; track location; let index = $index) {
                   <map-advanced-marker
                     #markerElem="mapAdvancedMarker"
                     [position]="{ lat: location.lat, lng: location.lng }"
-                    [title]="'Toilet '+(index+1)+':  '+location.title"
+                    [title]="location.title"
                     [content]="location.content"
                     (mapClick)="onMarkerClick(markerElem)"
                   />
@@ -37,9 +37,48 @@
       <!-- Daily Activity -->
 <mat-card class="w-100">
   <mat-card-content>
-    <h4 class="mb-56">Listing Details</h4>
-    
-    <p class="fw-bold ps-16 pe-20 fs-12" style="padding-right: 24px">Credits to &#64;toiletswithbidetsg for data, used with owner's permission</p>
+    <h4 class="mb-56">Toilet Details</h4>
+    <div class="row">
+    <!-- Card column -->
+    <div class="col-12">
+          <mat-tab-group mat-stretch-tabs="false" class="demo-tab-group">
+            <mat-tab label="Overview">
+              <div class="demo-tab-content" *ngFor="let t of displayToilet ">
+                <button mat-button color="btn btn-info fw-normal" type="button" (click)="save()">Save</button>
+                <button mat-button color="btn btn-info fw-normal" type="button" (click)="delete()">Save</button>
+
+                <b>Name:</b> {{t.name }}<br>
+                <b>Address:</b> {{t.address ? t.address : 'n/a'}}<br>
+                <b>Ratings:</b> {{t.rating ? t.remarks : 'n/a'}}<br>
+                <b>Gender:</b> {{t.gender ? t.remarks : 'n/a'}}<br>
+                <b>Remarks:</b> {{t.remarks ? t.remarks : 'n/a'}}<br>
+                <b>Last updated:</b> {{t.updatedOn ? t.updatedOn : 'n/a'}}<br>
+                <a href="{{t.website}}">Website</a><br>
+                <b>Region:</b> {{t.region ? t.region : 'n/a'}}<br>
+                <b>Contributed by:</b> {{ t.author ? t.author : 'ToiletsWithBidet' }}<br>
+                <img src="{{t.images}}" alt="">   
+              </div>
+            </mat-tab>
+            <mat-tab label="About" *ngFor="let t of displayToilet">
+                <b>Price:</b> {{t.price ? t.remarks : 'FREE'}}<br>
+                <b>Amenities:</b>
+                <br>{{t.amenities ? t.amenities : 'Bidet: true Dryer: true Reserved: true Locked: false Unisex: false'}}<br>
+                <b>Crowd:</b> {{t.footTraffic ? t.footTraffic : 'n/a'}}<br>
+            </mat-tab>
+            <mat-tab label="Reviews" *ngFor="let t of displayToilet">
+              <div class="demo-tab-content">
+                {{t.reviews ? t.reviews : 'No reviews yet'}}
+              </div>
+            </mat-tab>
+            <mat-tab label="Business Hours" *ngFor="let t of displayToilet">
+              <b>Opening Hours:</b> {{t.openingHours ? t.openingHours : 'n/a'}}<br>
+              <b>Closing Hours:</b> {{t.closingHours ? t.closingHours : 'n/a'}}<br>
+            </mat-tab>
+        </mat-tab-group>
+  </div>
+</div>
+
+    <p class="fw-bold ps-16 pe-20 fs-12" style="padding: 48px 0px 0px">Credits to &#64;toiletswithbidetsg for data, used with owner's permission</p>
   </mat-card-content>
 </mat-card>
     </div>

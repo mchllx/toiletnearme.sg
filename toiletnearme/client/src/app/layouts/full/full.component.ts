@@ -39,11 +39,11 @@ export class FullComponent {
       icon: "droplet",
       menu: "Toilets with Bidet",
     },
-    {
-      link: "/community",
-      icon: "smile",
-      menu: "Our Community",
-    },
+    // {
+    //   link: "/community",
+    //   icon: "smile",
+    //   menu: "Our Community",
+    // },
     {
       link: "/login",
       icon: "log-in",

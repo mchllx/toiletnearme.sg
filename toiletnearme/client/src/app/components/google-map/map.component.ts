@@ -6,6 +6,10 @@ import { ToiletService } from '../../services/toilet.service';
 import {OverlayLayout} from '@googlemaps/extended-component-library/overlay_layout.js';
 import { Observable, of, switchMap, tap } from 'rxjs';
 import { ToiletStore } from 'src/app/toilet.store';
+import { ActivatedRoute } from '@angular/router';
+import { MarkerService } from 'src/app/services/marker.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { UserStore } from 'src/app/user.store';
 
 @Component({
   selector: 'app-map',
@@ -13,7 +17,7 @@ import { ToiletStore } from 'src/app/toilet.store';
   styleUrls: ['./map.component.css']
 })
 
-export class MapComponent implements OnInit{
+export class MapComponent implements OnInit {
 
   // JWTToken!: Promise<string>
   gmapAPIKeyPromise!: Promise<string>
@@ -37,9 +41,17 @@ export class MapComponent implements OnInit{
 
   toilet: Toilet[] = []
   toilet$!:Observable<Toilet[]>
+  displayToilet: Toilet[] = []
 
+  marker!: Marker[]
+
+  private activatedRoute = inject(ActivatedRoute)
   private toiletSvc = inject(ToiletService)
   private toiletStore = inject(ToiletStore)
+  private markerSvc = inject(MarkerService)
+  private authSvc = inject(AuthService)
+  private userStore = inject(UserStore)
+
   sgLocations: Marker[] = [{id:"test", lat: 1.3191389705135221, lng: 103.89404363104732, title: "Singpost Centre", content:""}]
 
   svgString: string = `<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#FF5733" stroke="#FFFFFF" viewBox="0 0 24 24">
@@ -64,16 +76,13 @@ export class MapComponent implements OnInit{
         if (value === undefined) {
           return;
         } else {
-          for (let index = 0; index < value.length; index++) {
-            const toilet = value[index];
+          for (let i = 0; i < value.length; i++) {
+            const toilet = value[i];
             // console.info('>>>retrieving toilets', toilet);
             this.toilet.push(toilet);
-
-            // console.info('address', this.toilet[index].address)
-            this.loadGeocode(this.toilet[index].address)
+            this.loadGeocode(this.toilet[i].address, i.toString())
           }
         }
-        // console.info('>>> value', value)
       },
       (error) => {
         console.error('Error fetching toilets:', error);
@@ -84,20 +93,93 @@ export class MapComponent implements OnInit{
 
     this.sgLocations.forEach((location) => {
       location.content = parser.parseFromString(this.svgString, "image/svg+xml").documentElement
-    }) 
+    })
+
+    this.activatedRoute.params.subscribe(params => {
+      this.address = params['title'] 
+    })
   }
 
   onMarkerClick(marker: MapAdvancedMarker) {
     // console.log(">>>advmarker:", marker.advancedMarker)
     // console.log(">>>title:", marker.advancedMarker.title)
-    this.infoWindow.openAdvancedMarkerElement(marker.advancedMarker, marker.advancedMarker.title);
+    this.infoWindow.openAdvancedMarkerElement(marker.advancedMarker, marker.advancedMarker.title)
+
+    console.log(">>>mark:", marker.advancedMarker.title)
+    this.marker.push({
+      id: marker.advancedMarker.id
+      , title: marker.advancedMarker.title
+      , lat: marker.advancedMarker.position?.lat
+      , lng: marker.advancedMarker.position?.lng
+      , content: marker.advancedMarker.content
+    })
+
+    this.findToiletByAddress(marker.advancedMarker.title)
   }
 
-  // TODO: change method from address to get toilets
-  
-    
+  findToiletByAddress(address: string) {
+    for (let index = 0; index < this.toilet.length; index++) {
+      const toilet = this.toilet[index];
 
-  loadGeocode(address: string) {
+      if (toilet.address === address) {
+        console.log(toilet)
+        this.displayToilet.pop()
+        this.displayToilet.push(toilet)
+      } 
+    }
+  }
+
+  save() {
+    console.log('>>>saving to mongodb')
+    this.userStore.getUser.subscribe(user => { 
+      const token = user.jwtToken
+
+      for (let index = 0; index < this.marker.length; index++) {
+        const marker = this.marker[index]
+        this.markerSvc.postMarker(marker, token)
+        .then(
+          value => {
+            console.log('awaiting response from server')
+    
+            alert(`successful: ${value}`); 
+            console.log('>>>ang: successful', value)
+          })
+          .catch(
+            error => {
+              console.log('server error', error)
+              alert('server error: failed to save marker') 
+            }
+          )
+      }
+    }) 
+  }
+
+  delete() {
+    console.log('>>>saving to mongodb')
+    this.userStore.getUser.subscribe(user => { 
+      const token = user.jwtToken
+
+      for (let index = 0; index < this.marker.length; index++) {
+        const marker = this.marker[index]
+        this.markerSvc.deleteMarkerById(marker.id, token)
+        .then(
+          value => {
+            console.log('awaiting response from server')
+    
+            alert(`successful: ${value}`); 
+            console.log('>>>ang: successful', value)
+          })
+          .catch(
+            error => {
+              console.log('server error', error)
+              alert('server error: failed to save marker') 
+            }
+          )
+      }
+    }) 
+  }
+
+  loadGeocode(address: string, count: string) {
     // console.log('>>>requesting google address')
     this.geocoderRequest = {
       address: address
@@ -111,7 +193,7 @@ export class MapComponent implements OnInit{
         var lng = results[0].geometry.location.lng()
         this.sgLocations.push(
           {
-            id: "",
+            id: count,
             title:results[0].formatted_address,
             lat: lat,
             lng: lng,

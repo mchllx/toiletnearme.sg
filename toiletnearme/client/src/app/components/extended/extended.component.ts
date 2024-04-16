@@ -95,7 +95,7 @@ export class ExtendedComponent implements OnInit{
   onMarkerClick(location: Marker) {
     console.log(">>click:", location)
 
-    this.router.navigate(['/toilets'])
+    this.router.navigate(['/toilets', location]);
     // this.infoWindow.position = { lat: location.lat, lng: location.lng }
     // this.infoWindow = location.content
     // this.infoWindow.open()
@@ -109,14 +109,14 @@ export class ExtendedComponent implements OnInit{
         // console.log('awaiting response from server')
         // console.log(">>> value:", value)
         for (let i = 0; i < value.length; i++) {
-          this.loadGeocode(value[i]) 
+          this.loadGeocode(value[i], i.toString()) 
         }
       })
       .catch(err => console.error(err))
       return this.addressList
   }
 
-  loadGeocode(address: string) {
+  loadGeocode(address: string, count: string) {
     // console.log('>>>requesting google address')
     this.geocoderRequest = {
       address: address
@@ -130,7 +130,7 @@ export class ExtendedComponent implements OnInit{
         var lng = results[0].geometry.location.lng()
         this.sgLocations.push(
           {
-            id: "",
+            id: count,
             title:results[0].formatted_address,
             lat: lat,
             lng: lng,
