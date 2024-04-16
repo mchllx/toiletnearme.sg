@@ -18,8 +18,8 @@ const routes: Routes = [
       {path:"community", component:DashboardComponent},
     ]
    },
-  { path: "", redirectTo: '/', pathMatch:'full' },
-  { path: '**', redirectTo: '/', pathMatch:'full' }
+  { path: "", redirectTo: '/home', pathMatch:'full' },
+  { path: '**', redirectTo: '/home', pathMatch:'full' }
 ]
 
 @NgModule({

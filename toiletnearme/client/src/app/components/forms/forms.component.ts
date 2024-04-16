@@ -1,4 +1,5 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -13,31 +14,31 @@ import { UserStore } from 'src/app/user.store';
 @Component({
   selector: 'app-forms',
   standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, FormsModule, ReactiveFormsModule, MatCheckboxModule, MatRadioModule, MatButtonModule],
+  imports: [CommonModule, MatFormFieldModule, MatInputModule, FormsModule, ReactiveFormsModule, MatCheckboxModule, MatRadioModule, MatButtonModule],
+  providers: [UserStore, AuthService],
   templateUrl: './forms.component.html',
 })
-export class FormsComponent implements OnInit {
+export class FormsComponent implements OnInit, OnDestroy {
 
   private fb: FormBuilder = inject(FormBuilder)
   private router = inject(Router)
   private authSvc = inject(AuthService)
   private activatedRoute = inject(ActivatedRoute)
-  private userStore = inject(UserStore)
   
   checked = true;
   user$!: Promise<void>
-  newUser!: User
+  newUser: User[] = []
 
   form!: FormGroup
   
-  constructor() { }
+  constructor(private userStore: UserStore) { }
 
   ngOnInit(): void {
     this.form = this.createSignInForm()
   }
 
   onBack(): void {
-    this.router.navigate(['/flexy/home']);
+    this.router.navigate(['/home'])
   }
 
   private createSignInForm(): FormGroup {
@@ -45,6 +46,10 @@ export class FormsComponent implements OnInit {
       email: this.fb.control<string>('', [Validators.required, Validators.minLength(4)]),
       password: this.fb.control<string>('', [Validators.required, Validators.minLength(4)])
     })
+  }
+
+  ngOnDestroy(): void {
+    this.form.reset()
   }
 
   login() : void  {
@@ -55,9 +60,8 @@ export class FormsComponent implements OnInit {
     .then(
       value => {
         alert(`successful: ${value.email}, ${value.createdOn}, ${value.jwtToken},`)
-        this.newUser = value
-
         console.log('>>>Registered:', value.jwtToken)
+        this.newUser.push(value)
       })
       .catch(
         error => {
@@ -65,7 +69,7 @@ export class FormsComponent implements OnInit {
           alert('Invalid request')
         }
       )
-
-      this.userStore.addToStorage(this.newUser)
+    this.userStore.addToStorage(this.newUser[0])
+    this.router.navigate(['/home'])
   }
 }

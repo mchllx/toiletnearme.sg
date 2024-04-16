@@ -7,9 +7,49 @@ import { Amenities, ClosingHours, FootTraffic, OpeningHours, Review, Toilet } fr
 })
         
 export class ToiletStore extends ComponentStore<Toilet> {
+    toilet!: Toilet[]
 
     constructor() {
-        super()
+        super({id: "",
+            name: "",
+            price: 0,
+            gender: "",
+            type: "",
+            remarks: "",
+            openingHours: {
+                sunday: new Date,
+                monday: new Date,
+                tuesday: new Date,
+                wednesday: new Date,
+                thursday: new Date,
+                friday: new Date,
+                saturday: new Date
+            },
+            closingHours: {
+                sunday: new Date,
+                monday: new Date,
+                tuesday: new Date,
+                wednesday: new Date,
+                thursday: new Date,
+                friday: new Date,
+                saturday: new Date
+            },
+            updatedOn: new Date,
+            images: [],
+            website: "",
+            region: "",
+            author: "",
+            rating: 0,
+            reviews: [],
+            amenities: {
+                bidet: false,
+                dryer: false,
+                reserved: false,
+                locked: false,
+                unisex: false},
+            footTraffic: {
+                level: 0,
+                timing: new Date}})
     }
 
     readonly getAllReviews = this.select<Review[]>(

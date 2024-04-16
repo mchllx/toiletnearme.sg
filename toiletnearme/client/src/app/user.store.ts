@@ -7,9 +7,21 @@ import { Marker, MarkerStorage, User } from "./models";
 })
         
 export class UserStore extends ComponentStore<User> {
+    user!: User
 
     constructor() {
-        super()
+        super({userId: "",
+            username: "",
+            email: "",
+            password: "",
+            createdOn: new Date,
+            updatedOn: new Date,
+            firstName: "",
+            lastName: "",
+            profileImage: "",
+            bookmarks: [],
+            reviews: [],
+            jwtToken: ""})
     }
 
     readonly getUser = this.select<User>(

@@ -7,6 +7,7 @@ import { Marker, MarkerStorage } from "./models";
 })
         
 export class MarkerStore extends ComponentStore<MarkerStorage> {
+    marker!: Marker[]
 
     constructor() {
         super(
