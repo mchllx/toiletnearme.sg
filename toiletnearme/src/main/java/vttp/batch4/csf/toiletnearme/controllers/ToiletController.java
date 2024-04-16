@@ -47,16 +47,16 @@ public class ToiletController {
     private UserService userSvc;
  
     // GET http://localhost:8080/api/toilet/
-    @GetMapping
+    @GetMapping(path="")
     @ResponseBody
-    public ResponseEntity<List<JsonObject>> getToilets() {
+    public ResponseEntity<String> getToilets() {
         System.out.println(">>>GET Req: Toilets");
 
         if (toiletSvc.getToilets() == null) {
             return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(new LinkedList<>());
+                .body("");
         }
 
         List<JsonObject> toilets = toiletSvc.getToilets()
@@ -67,7 +67,7 @@ public class ToiletController {
     return ResponseEntity
         .status(HttpStatus.OK)
         .contentType(MediaType.APPLICATION_JSON)
-        .body(toilets);
+        .body(toilets.toString());
     }
 
     // TODO: UPDATE/PUT http://localhost:8080/api/toilet/{toilet}")

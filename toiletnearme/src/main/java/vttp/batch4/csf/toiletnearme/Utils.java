@@ -65,10 +65,10 @@ public class Utils {
       .add("gender", toilet.getGender())
       .add("type", toilet.getType())
       .add("remarks", toilet.getRemarks())
-      .add("website", toilet.getWebsite())
+      .add("website", toilet.getWebsite() != null ? toilet.getWebsite() : "")
       .add("last_update", toilet.getUpdatedOn().toString())
-      .add("images", toilet.getImages())
-      .add("region", toilet.getRegion())
+      .add("images", toilet.getImages() != null ? toilet.getImages() : "")
+      .add("region", toilet.getRegion() != null ? toilet.getRegion() : "")
       .build();
   }
 
