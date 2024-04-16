@@ -48,12 +48,12 @@ public class WebSecurityConfig {
 
         .authorizeHttpRequests((requests) -> requests
             .requestMatchers(HttpMethod.DELETE).hasAnyAuthority(Role.ROLE_ADMIN.toString())
-            .requestMatchers("/add").authenticated()
-            .requestMatchers("/api/gmap/key", "/api/toilet/***", "/api/***", "/", "/login", "/login/oauth2/code/google/***", "/register/***").permitAll()
+            .requestMatchers("/delete").authenticated()
+            .requestMatchers("/api/jwt/***", "/api/gmap/key", "/api/jwt/register", "/api/jwt/login", "/api/toilet/***", "/api/***", "/", "/login", "/login2", "/login/oauth2/code/google/***", "/register/***").permitAll()
         );
 
         http.formLogin(login -> login
-            .loginPage("/authorization/jwt")
+            .loginPage("/api/jwt/login2")
             .permitAll()
             );
 

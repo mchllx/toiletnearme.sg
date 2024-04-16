@@ -31,7 +31,7 @@ public class ToiletService {
 
   public boolean deleteToiletByID(String id) {
     return toiletRepo.deleteToiletByID(id);
-    
+
   }
 
   @Transactional(rollbackFor=InsertToiletListingException.class)
@@ -55,10 +55,10 @@ public class ToiletService {
             try {
               insertToilet(toilet);
             } catch (InsertToiletListingException e) {
-              System.out.printf(">>>Unsuccessful: %s was not inserted", toilet.getToiletId());
+              System.out.printf(">>>Unsuccessful: %s was not inserted\n", toilet.getToiletId());
             }
           }); 
-          System.out.printf(">>>Successful: %s was inserted", toilets.toString());
+          System.out.printf(">>>Successful: %s was inserted\n", toilets.toString());
   }
 
   public List<String> getToiletAddress() {
@@ -73,12 +73,12 @@ public class ToiletService {
   public void insertToilet(Toilet toilet) throws InsertToiletListingException {
 
     if (toiletRepo.insertToilet(toilet) == false) {
-      System.out.printf(">>>Unsuccessful: %s was not inserted", toilet.getToiletId());
+      System.out.printf(">>>Unsuccessful: %s was not inserted\n", toilet.getToiletId());
       throw new InsertToiletListingException("Invalid request");
     }
 
     // returning user inserts records into mySQL twice
-      System.out.printf(">>>Successful: %s was inserted", toilet.getToiletId()); 
+      System.out.printf(">>>Successful: %s was inserted\n", toilet.getToiletId()); 
   }
 
   // TODO: check ID if already exists
@@ -88,7 +88,7 @@ public class ToiletService {
     throws InsertToiletListingException {
 
     if (toiletRepo.insertGSheetToiletHotel(hotel, room, review, website, address) == false) {
-      System.out.printf(">>>Unsuccessful: %s was not inserted", hotel);
+      System.out.printf(">>>Unsuccessful: %s was not inserted\n", hotel);
       throw new InsertToiletListingException("Invalid request");
     }
 
@@ -102,12 +102,12 @@ public class ToiletService {
     throws InsertToiletListingException {
 
     if (toiletRepo.insertGSheetToiletFemale(region, location, remarks, address) == false) {
-      System.out.printf(">>>Unsuccessful: %s was not inserted", location);
+      System.out.printf(">>>Unsuccessful: %s was not inserted\n", location);
       throw new InsertToiletListingException("Invalid request");
     }
 
     // returning user inserts records into mySQL twice
-      System.out.printf(">>>Successful: %s was inserted", location); 
+      System.out.printf(">>>Successful: %s was inserted\n", location); 
   }
 
   @Transactional(rollbackFor=InsertToiletListingException.class)
@@ -116,12 +116,12 @@ public class ToiletService {
     throws InsertToiletListingException {
 
     if (toiletRepo.insertGSheetToiletMale(region, location, remarks, address) == false) {
-      System.out.printf(">>>Unsuccessful: %s was not inserted", location);
+      System.out.printf(">>>Unsuccessful: %s was not inserted\n", location);
       throw new InsertToiletListingException("Invalid request");
     }
 
     // returning user inserts records into mySQL twice
-      System.out.printf(">>>Successful: %s was inserted", location); 
+      System.out.printf(">>>Successful: %s was inserted\n", location); 
   }
 
 

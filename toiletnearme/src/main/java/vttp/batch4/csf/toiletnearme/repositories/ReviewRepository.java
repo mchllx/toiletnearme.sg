@@ -30,8 +30,8 @@ public class ReviewRepository {
   public boolean insertReview(Review review, User user) throws InsertReviewException {
       return template.update(SQLQueries.SQL_INSERT_REVIEW
       , user.getUserId()
-      , user.getFirstName()
       , review.getToiletId()
+      , user.getFirstName()
       , review.getCreatedOn()
       , review.getLastUpdate()
       , review.getHeader()

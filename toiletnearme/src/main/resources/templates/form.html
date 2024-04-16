@@ -7,7 +7,8 @@
 </head>
 <body>
    Login form
-   <form th:action="@{/authorization/jwt}" method="POST">
+   <form th:action="@{/api/jwt/register}" method="POST">
+        <!-- Email -->
         <div>
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" />
@@ -16,7 +17,15 @@
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" />
         </div>
-        <button type="submit">Submit</button>
+        <div>
+            <label for="firstName">FirstName:</label>
+            <input type="firstName" id="firstName" name="firstName" />
+        </div>
+        <div>
+            <label for="lastName">LastName:</label>
+            <input type="lastName" id="lastName" name="lastName" />
+        </div>
+        <button type="submit">Register</button>
    </form> 
 </body>
 </html>

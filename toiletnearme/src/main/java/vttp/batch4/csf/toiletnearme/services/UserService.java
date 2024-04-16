@@ -66,11 +66,11 @@ public class UserService {
   public void insertUser(User user) throws InsertUserException {
 
     if (userRepo.insertUser(user) == false) {
-      System.out.printf(">>>Unsuccessful: %s was not inserted", user.getEmail());
+      System.out.printf(">>>Unsuccessful: %s was not inserted\n", user.getEmail());
       throw new InsertUserException("Invalid request");
     }
     // returning user inserts records into mySQL twice
-    System.out.printf(">>>Successful: %s inserted", user.getEmail()); 
+    System.out.printf(">>>Successful: %s inserted\n", user.getEmail()); 
   }
 
 }

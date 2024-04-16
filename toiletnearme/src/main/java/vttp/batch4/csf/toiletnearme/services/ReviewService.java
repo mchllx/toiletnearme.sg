@@ -28,7 +28,7 @@ public class ReviewService {
   private ReviewRepository reviewRepo;
 
   @Autowired
-  private UserRepository userRepo;
+  private UserService userSvc;
 
   // TODO: Insert/Select images from S3
   @Transactional(rollbackFor=InsertReviewException.class)
@@ -62,11 +62,11 @@ public class ReviewService {
     List<Review> reviews = getGSheetHotelReviews();
       reviews.forEach(review -> {
         try {
-          insertReview(review, new User("USR01HVGWH8XGHEH6G93SAQ9GDJ0S"));
+          insertReview(review, userSvc.selectUserById("USR01HVKSP4F1A1K6RSCXNZ15G3T7"));
         } catch (InsertReviewException e1) {
-          System.out.printf(">>>Unsuccessful: %s was not inserted", review.getReviewId());
+          System.out.printf(">>>Unsuccessful: %s was not inserted\n", review.getReviewId());
         }
-        System.out.printf(">>>Successful: %s was inserted", review);
+        System.out.printf(">>>Successful: %s was inserted\n", review);
       });
   }
 }

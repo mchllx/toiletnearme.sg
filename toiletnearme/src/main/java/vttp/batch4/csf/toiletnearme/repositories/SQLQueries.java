@@ -29,7 +29,7 @@ public class SQLQueries {
         insert into reviews(
         user_id, toilet_id, name, created_on, last_update
         , header , text, rating, images)
-        values (?, ?, ?, ?, ?, ?, ?, ?)
+        values (?, ?, ?, ?, ?, ?, ?, ?, ?)
         """;
 
     public static final String SQL_DELETE_TOILET_BY_ID = """

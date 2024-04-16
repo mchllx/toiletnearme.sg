@@ -28,9 +28,7 @@ public class ToiletnearmeApplication implements CommandLineRunner {
   ReviewService reviewSvc;
 
   @Autowired
-  ToiletRepository toiletRepo;
-  // @Autowired
-  // UserService userSvc;
+  UserService userSvc;
   
   @Autowired
   GoogleSheetsServiceImpl googleSheetSvc;
@@ -40,6 +38,7 @@ public class ToiletnearmeApplication implements CommandLineRunner {
   
   @Override
   public void run(String... args) throws Exception {
+
     // System.out.println(">>> springboot");
     // googleSheetSvc.getSpreadSheetValues(Utils.SHEET_MALE);
     // googleSheetSvc.getSpreadSheetValues(Utils.SHEET_FEMALE);
