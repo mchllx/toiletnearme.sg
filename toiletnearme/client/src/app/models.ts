@@ -74,6 +74,7 @@ export interface Review {
     createdOn: Date,
     lastUpdate: Date,
     toiletId: string,
+    userId: string,
     rating: number,
     images: string
 }
