@@ -14,12 +14,14 @@ import '@googlemaps/extended-component-library/place_building_blocks/place_data_
 import '@googlemaps/extended-component-library/place_picker.js';
 import '@googlemaps/extended-component-library/place_overview.js';
 
-import {Directive, Component, ElementRef, OnInit, ViewChild, inject} from '@angular/core';
+import {Directive, Component, ElementRef, OnInit, ViewChild, inject, AfterViewInit} from '@angular/core';
 import {OverlayLayout} from '@googlemaps/extended-component-library/overlay_layout.js';
 import {PlacePicker} from '@googlemaps/extended-component-library/place_picker.js';
 import { ToiletService } from 'src/app/services/toilet.service';
-import { sgLocations } from 'src/app/models';
+import { Marker } from 'src/app/models';
 import { MapAdvancedMarker, MapInfoWindow } from '@angular/google-maps';
+import { AdvancedMarkerElement } from 'node_modules/@googlemaps/extended-component-library/lib/utils/googlemaps_types';
+import { ActivatedRoute, Router } from '@angular/router';
 
 const DEFAULT_CENTER = {
   lat: 1.4093769844197537,
@@ -56,10 +58,13 @@ export class ExtendedComponent implements OnInit{
 
   // TODO: revert to google.maps.places.Place when Maps JS typings updated.
   place?: any  // google.maps.places.Place;
-  marker?: any
+  markerElem?: any
 
   private toiletSvc = inject(ToiletService)
-  sgLocations: sgLocations[] = [{ content: "", title: "Singpost Centre", lat: 1.3191389705135221, lng: 103.89404363104732 }]
+  private activatedRoute = inject(ActivatedRoute)
+  private router = inject(Router)
+
+  sgLocations: Marker[] = [{ content: "", title: "Singpost Centre", lat: 1.3191389705135221, lng: 103.89404363104732 }]
 
   svgString: string = `<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#FF5733" stroke="#FFFFFF" viewBox="0 0 24 24">
     <circle cx="12" cy="12" r="10" fill="#FF5733" stroke="#FFFFFF" stroke-width="2" />
@@ -67,7 +72,6 @@ export class ExtendedComponent implements OnInit{
     </svg>`
 
   @ViewChild('overlay') overlay!: ElementRef<OverlayLayout>;
-  @ViewChild(MapInfoWindow) infoWindow!: MapInfoWindow;
   
   constructor() {
     this.mapOptions = {
@@ -88,16 +92,21 @@ export class ExtendedComponent implements OnInit{
     // console.log(">>updated:",this.sgLocations)
   }
 
-  onMarkerClick(marker: MapAdvancedMarker) {
-    // console.log(">>>advmarker:", marker.advancedMarker)
-    // console.log(">>>title:", marker.advancedMarker.title)
-    this.infoWindow.openAdvancedMarkerElement(marker.advancedMarker, marker.advancedMarker.title);
+  onMarkerClick(location: string) {
+    console.log(">>click:", location)
+
+    this.router.navigate(['/toilets'])
+    // this.infoWindow.position = { lat: location.lat, lng: location.lng }
+    // this.infoWindow = location.content
+    // this.infoWindow.open()
+    // this.infoWindow.openAdvancedMarkerElement(location.content, location.title);
+    // this.infoWindow.openAdvancedMarkerElement(this.marker.advancedMarker, this.marker.advancedMarker.title);
   }
 
   getAddress(): string[] {
     address$: this.toiletSvc.getGoogleMapAddress()
       .then(value => {
-        console.log('awaiting response from server')
+        // console.log('awaiting response from server')
         // console.log(">>> value:", value)
         for (let i = 0; i < value.length; i++) {
           this.loadGeocode(value[i]) 
@@ -108,7 +117,7 @@ export class ExtendedComponent implements OnInit{
   }
 
   loadGeocode(address: string) {
-    console.log('>>>requesting google address')
+    // console.log('>>>requesting google address')
     this.geocoderRequest = {
       address: address
     }
@@ -137,10 +146,6 @@ export class ExtendedComponent implements OnInit{
 
   get mapCenter() {
     return this.place?.location ?? DEFAULT_CENTER;
-  }
-
-  addMarkers(e: Event) {
-    this.place?.location
   }
 
   get mapZoom() {

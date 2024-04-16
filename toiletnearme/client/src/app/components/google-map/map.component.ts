@@ -26,8 +26,8 @@ export class MapComponent implements OnInit {
   mapDiv!: HTMLDivElement
   map!: google.maps.Map
 
-  width: number= 1040
-  height: number= 720
+  width: number= 250
+  height: number= 500
 
   address$!: Promise<string[]>
   addressList: string[] = []
@@ -72,7 +72,7 @@ export class MapComponent implements OnInit {
   getAddress(): string[] {
     address$: this.toiletSvc.getGoogleMapAddress()
       .then(value => {
-        console.log('awaiting response from server')
+        // console.log('awaiting response from server')
         // console.log(">>> value:", value)
         for (let i = 0; i < value.length; i++) {
           this.loadGeocode(value[i]) 
@@ -83,7 +83,7 @@ export class MapComponent implements OnInit {
   }
 
   loadGeocode(address: string) {
-    console.log('>>>requesting google address')
+    // console.log('>>>requesting google address')
     this.geocoderRequest = {
       address: address
     }

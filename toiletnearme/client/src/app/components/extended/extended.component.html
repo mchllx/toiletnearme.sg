@@ -34,7 +34,8 @@
         [position]="{ lat: location.lat, lng: location.lng }" 
         [title]="'Toilet ' + (index + 1) + ': ' + location.title"
         [content]="location.content"
-        gmp-clickable position="1.4093769844197537,103.7935080799274">
+        gmp-clickable
+        (gmp-click)="onMarkerClick(location)">
       </gmp-advanced-marker>
       <map-info-window #MapInfoWindow></map-info-window>
   </gmp-map>

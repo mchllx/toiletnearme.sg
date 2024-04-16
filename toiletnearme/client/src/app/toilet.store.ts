@@ -1,35 +1,54 @@
 import {Injectable} from "@angular/core";
 import {ComponentStore} from "@ngrx/component-store";
-
-import { Toilet } from "./models";
+import { Amenities, ClosingHours, FootTraffic, OpeningHours, Review, Toilet } from "./models";
 
 @Injectable({
     providedIn: 'root'
 })
         
-export class CartStore extends ComponentStore<Toilet> {
+export class ToiletStore extends ComponentStore<Toilet> {
 
-    // cart!: Cart[]
+    constructor() {
+        super()
+    }
 
-    // constructor() {
-    //     super(
-    //         {lineItems: []}
-    //     )
-    // }
+    readonly getAllReviews = this.select<Review[]>(
+        (slice: Toilet) => slice.reviews
+        )
 
-    // readonly getAllItems = this.select<LineItem[]>(
-    //     (slice: Cart) => slice.lineItems
-    //     )
+    readonly getReviewCount = this.select<number>(
+    (slice: Toilet) => slice.reviews.length
+    )
 
-    // readonly getItemCount = this.select<number>(
-    // (slice: Cart) => slice.lineItems.length
-    // )
+    public readonly addReviewsToToilet = this.updater<Review[]>(
+            (slice: Toilet, reviews: Review[]) => 
+            ({
+            ...slice, reviews,
+      }));
 
-    // public readonly addToCart = this.updater<LineItem[]>(
-    //         (slice: Cart, lineItems: LineItem[]) => 
-    //         ({
-    //         ...slice, lineItems,
-    //   }));
+    public readonly addOpeningToToilet = this.updater<OpeningHours>(
+    (slice: Toilet, openingHours: OpeningHours) => 
+    ({
+        ...slice, openingHours,
+    }));
+
+    public readonly addClosingToToilet = this.updater<ClosingHours>(
+        (slice: Toilet, closingHours: ClosingHours) => 
+        ({
+        ...slice, closingHours,
+    }));
+
+    public readonly addAmenitiesToToilet = this.updater<Amenities>(
+        (slice: Toilet, amenities: Amenities) => 
+        ({
+        ...slice, amenities,
+    }));
+
+    public readonly addFootTrafficToToilet = this.updater<FootTraffic>(
+        (slice: Toilet, footTraffic: FootTraffic) => 
+        ({
+        ...slice, footTraffic,
+    }));
 
 }
 

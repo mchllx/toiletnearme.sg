@@ -1,35 +1,22 @@
 import {Injectable, inject} from "@angular/core";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {Observable, lastValueFrom} from "rxjs";
-import {} from "../models";
+import { Toilet } from "../models";
 
 
 import { environment } from '../../environments/environment'
 
 const URL = environment.url
+const API_KEY_ENDPOINT = 'api/toilet/address'
 
 @Injectable()
 export class ToiletService {
 
   private http = inject(HttpClient)
 
-  // getProductCategories(): Observable<string[]> {
-  //   return this.http.get<string[]>('/api/categories')
-  // }
-
-  // getProductsByCategory(category: string): Observable<Product[]> {
-  //   return this.http.get<Product[]>(`/api/category/${category}`)
-  // }
-
-  //   // POST http://localhost:8080/api/order
-  // checkout(order: Order): Promise<Order> {
-  //   return lastValueFrom(this.http.post<Order>(`${URL}/api/order`, {order}))
-  // }
-
   // GET http://localhost:8080/api/toilet/address
   constructor(http: HttpClient) {}
   getGoogleMapAddress(): Promise<string[]> { 
-    const API_KEY_ENDPOINT = 'api/toilet/address'
     try {
       return lastValueFrom(this.http.get<any>(`${URL}/${API_KEY_ENDPOINT}`, {}))
     } catch (error) {
@@ -39,15 +26,12 @@ export class ToiletService {
   }
 
   // GET http://localhost:8080/api/toilet/address/{type}")
-  getGoogleMapAddressByType(type: string): Promise<string[]> {
+  getGoogleMapAddressByGender(gender: string): Observable<Toilet[]> {
     const params = new HttpParams()
-    .set('type', type)
+    .set('gender', gender)
 
-  console.info(params)
-
-    const API_KEY_ENDPOINT = 'api/toilet/address'
     try {
-      return lastValueFrom(this.http.get<any>(`${URL}/${API_KEY_ENDPOINT}`, {params}))
+      return this.http.get<any>(`${URL}/${API_KEY_ENDPOINT}`, {params})
     } catch (error) {
       console.error('Error fetching address', error)
       throw error
@@ -55,15 +39,41 @@ export class ToiletService {
   }
 
   // GET http://localhost:8080/api/toilet/address/{region}")
-  getGoogleMapAddressByRegion(region: string): Promise<string[]> {
+  getGoogleMapAddressByRegion(region: string): Observable<Toilet[]> {
     const params = new HttpParams()
       .set('region', region)
 
-    console.info(params)
-    
-    const API_KEY_ENDPOINT = 'api/toilet/address'
     try {
-      return lastValueFrom(this.http.get<any>(`${URL}/${API_KEY_ENDPOINT}`, {params}))
+      return this.http.get<any>(`${URL}/${API_KEY_ENDPOINT}`, {params})
+    } catch (error) {
+      console.error('Error fetching address:', error)
+      throw error
+    }
+  }
+
+  // POST http://localhost:8080/api/toilet/address/{toilet}")
+  postToilet(toilet: Toilet, jwtToken: string): Promise<Toilet> {
+    const headers = new HttpHeaders()
+    .set('Authorization', 'Bearer '.concat(jwtToken)) 
+
+    try {
+      return lastValueFrom(this.http.post<Toilet>(`${URL}/${API_KEY_ENDPOINT}`, {toilet}, {headers}))
+    } catch (error) {
+      console.error('Error fetching address:', error)
+      throw error
+    }
+  }
+
+  // DELETE http://localhost:8080/api/toilet/address/{id}")
+  deleteToiletById(id: string, jwtToken: string): Promise<Toilet> {
+    const headers = new HttpHeaders()
+    .set('Authorization', 'Bearer '.concat(jwtToken))
+    
+    const params = new HttpParams()
+      .set('id', id)
+    
+    try {
+      return lastValueFrom(this.http.delete<Toilet>(`${URL}/${API_KEY_ENDPOINT}+${params}`, {headers}))
     } catch (error) {
       console.error('Error fetching address:', error)
       throw error

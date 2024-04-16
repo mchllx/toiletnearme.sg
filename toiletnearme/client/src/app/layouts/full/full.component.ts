@@ -32,27 +32,22 @@ export class FullComponent {
     {
       link: "/home",
       icon: "map-pin",
-      menu: "Toilet Finder",
+      menu: "Google Map",
     },
     {
-      link: "/dashboard",
-      icon: "grid",
-      menu: "Dashboard",
+      link: "/toilets",
+      icon: "droplet",
+      menu: "Toilets with Bidet",
     },
     {
-      link: "/report",
-      icon: "alert-triangle",
-      menu: "Report A Problem",
-    },
-    {
-      link: "/about",
-      icon: "github",
-      menu: "About Us",
-    },
-    {
-      link: "/grid-list",
+      link: "/community",
       icon: "smile",
-      menu: "FAQ",
+      menu: "Our Community",
+    },
+    {
+      link: "/login",
+      icon: "log-in",
+      menu: "Sign In",
     },
     {
       link: "/contact",
