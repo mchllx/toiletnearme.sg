@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import vttp.batch4.csf.toiletnearme.models.ToiletLocation;
+import vttp.batch4.csf.toiletnearme.models.Coordinates;
 import vttp.batch4.csf.toiletnearme.services.KafkaReceiver;
 import vttp.batch4.csf.toiletnearme.services.KafkaService;
 
@@ -25,14 +25,14 @@ public class KafkaController {
 	private KafkaService sender;
 	
 	@PostMapping("/kafkaProducer")
-	public ResponseEntity<String> sendData(@RequestBody ToiletLocation toiletLocation){
-		sender.sendData(toiletLocation);
+	public ResponseEntity<String> sendData(@RequestBody Coordinates coordinates){
+		sender.sendData(coordinates);
 		return new ResponseEntity<>("Data sent to Kafka", HttpStatus.OK);
 	}
 
 	@GetMapping("/kafkaReceiver")
-	public ResponseEntity<String> receiveData(@RequestBody ToiletLocation toiletLocation){
-		receiver.recieveData(toiletLocation);
+	public ResponseEntity<String> receiveData(@RequestBody Coordinates coordinates){
+		receiver.recieveData(coordinates);
 		return new ResponseEntity<>("Data received from Kafka", HttpStatus.OK); 
 	}
 }

@@ -18,7 +18,7 @@ import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 import vttp.batch4.csf.toiletnearme.exceptions.KafkaErrorHandler;
-import vttp.batch4.csf.toiletnearme.models.ToiletLocation;
+import vttp.batch4.csf.toiletnearme.models.Coordinates;
 
 @Configuration
 @EnableKafka
@@ -31,7 +31,7 @@ public class KafkaConsumerConfig {
 	private String kafkaGroupId;
 
 	@Bean
-	public ConsumerFactory<String, ToiletLocation> consumerConfig() {
+	public ConsumerFactory<String, Coordinates> consumerConfig() {
 		Map<String, Object> config = new HashMap<>();
 		config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaServer);
 		config.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaGroupId);
@@ -39,12 +39,12 @@ public class KafkaConsumerConfig {
 		config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 		// config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 		config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
-		return new DefaultKafkaConsumerFactory<>(config, null, new JsonDeserializer<ToiletLocation>(ToiletLocation.class));
+		return new DefaultKafkaConsumerFactory<>(config, null, new JsonDeserializer<Coordinates>(Coordinates.class));
 	}
 
 	@Bean
-	public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, ToiletLocation>> kafkaListenerContainerFactory() {
-		ConcurrentKafkaListenerContainerFactory<String, ToiletLocation> listener = new ConcurrentKafkaListenerContainerFactory<>();
+	public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, Coordinates>> kafkaListenerContainerFactory() {
+		ConcurrentKafkaListenerContainerFactory<String, Coordinates> listener = new ConcurrentKafkaListenerContainerFactory<>();
 		listener.setConsumerFactory(consumerConfig());
         listener.setCommonErrorHandler(commonErrorHandler());
 		return listener;

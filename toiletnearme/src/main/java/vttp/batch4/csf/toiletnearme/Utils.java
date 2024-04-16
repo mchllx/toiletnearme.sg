@@ -1,13 +1,18 @@
 package vttp.batch4.csf.toiletnearme;
 
 
+import java.sql.Time;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.UUID;
 
+import org.bson.Document;
 
 import com.github.f4b6a3.ulid.UlidCreator;
 
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
+import vttp.batch4.csf.toiletnearme.models.Coordinates;
 import vttp.batch4.csf.toiletnearme.models.Review;
 import vttp.batch4.csf.toiletnearme.models.Toilet;
 import vttp.batch4.csf.toiletnearme.models.User;
@@ -99,6 +104,15 @@ public class Utils {
       .add("profileImage", user.getProfileImage() != null ? user.getProfileImage() : "https://t4.ftcdn.net/jpg/05/42/36/11/360_F_542361185_VFRJWpR2FH5OiAEVveWO7oZnfSccZfD3.jpg")
       .add("jwtToken", token)
       .build();
+  }
+
+  public static Coordinates fromJSON(Document d) {
+    return new Coordinates(
+      (d.getString("id")), 
+      (d.getString("title")), 
+    (d.getDouble("lat")), 
+    (d.getDouble("lng")), 
+    (d.getString("content")));
   }
 
 }

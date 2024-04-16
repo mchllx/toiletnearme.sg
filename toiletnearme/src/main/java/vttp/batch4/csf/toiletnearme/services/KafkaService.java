@@ -12,7 +12,7 @@ import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.stereotype.Service;
 
-import vttp.batch4.csf.toiletnearme.models.ToiletLocation;
+import vttp.batch4.csf.toiletnearme.models.Coordinates;
 
 // PRODUCER
 @Service
@@ -27,12 +27,12 @@ public class KafkaService {
 	private String topicName;
 
 	// 	{"id":"123","firstName":"John","lastName":"Doe","department":"IT"}
-	public void sendData(ToiletLocation toiletLocation) {
+	public void sendData(Coordinates coordinates) {
 		Map<String, Object> headers = new HashMap<>();
 		headers.put(KafkaHeaders.TOPIC, topicName);
-		kafkaTemplate.send(new GenericMessage<ToiletLocation>(toiletLocation, headers));
+		kafkaTemplate.send(new GenericMessage<Coordinates>(coordinates, headers));
 
 		// kafkaTemplate.send(topicName, "some string value")
-		LOGGER.info("Data - " + toiletLocation.toString() + " sent to Kafka Topic - " + topicName);
+		LOGGER.info("Data - " + coordinates.toString() + " sent to Kafka Topic - " + topicName);
 	}
 }

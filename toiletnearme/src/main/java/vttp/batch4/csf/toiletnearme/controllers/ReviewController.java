@@ -54,14 +54,14 @@ public class ReviewController {
   // GET http://localhost:8080/api/review/
   @GetMapping
     @ResponseBody
-    public ResponseEntity<List<JsonObject>> getReviews() {
+    public ResponseEntity<String> getReviews() {
         System.out.println(">>>GET Req: Toilets");
 
         if (reviewSvc.getReviews() == null) {
             return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(new LinkedList<>());
+                .body("");
         }
 
         List<JsonObject> reviews = reviewSvc.getReviews()
@@ -72,7 +72,7 @@ public class ReviewController {
     return ResponseEntity
         .status(HttpStatus.OK)
         .contentType(MediaType.APPLICATION_JSON)
-        .body(reviews);
+        .body(reviews.toString());
   }
 
   // TODO: PUT http://localhost:8080/api/review/")

@@ -48,7 +48,7 @@ public class WebSecurityConfig {
 
         .authorizeHttpRequests((requests) -> requests
             .requestMatchers(HttpMethod.DELETE).hasAnyAuthority(Role.ROLE_ADMIN.toString())
-            .requestMatchers("/api/review/add", "/api/toilet/add", "/api/review/delete", "/api/toilet/delete").authenticated()
+            .requestMatchers("/api/review/add", "/api/toilet/add", "/api/review/delete", "/api/toilet/delete", "/api/marker/add").authenticated()
             .requestMatchers("/api/jwt/***", "/api/gmap/***", "/api/toilet/***", "/api/***", "/", "/api/jwt/login", "/api/jwt/login2", "/login/oauth2/code/google/***", "/register/***").permitAll()
         );
 

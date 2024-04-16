@@ -123,7 +123,7 @@ public class ToiletController {
         User user = userSvc.selectUserByEmail(email);
         Set<Role> authorities = user.getAuthorities();
 
-        if (authorities.contains(Role.ROLE_USER)) {
+        if (authorities.contains(Role.ROLE_ADMIN)) {
             return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
             .contentType(MediaType.APPLICATION_JSON)
