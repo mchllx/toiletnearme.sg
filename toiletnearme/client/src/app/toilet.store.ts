@@ -13,6 +13,7 @@ export class ToiletStore extends ComponentStore<Toilet> {
         super({id: "",
             name: "",
             price: 0,
+            address: "",
             gender: "",
             type: "",
             remarks: "",
@@ -64,7 +65,7 @@ export class ToiletStore extends ComponentStore<Toilet> {
             (slice: Toilet, reviews: Review[]) => 
             ({
             ...slice, reviews,
-      }));
+      }))
 
     public readonly addOpeningToToilet = this.updater<OpeningHours>(
     (slice: Toilet, openingHours: OpeningHours) => 

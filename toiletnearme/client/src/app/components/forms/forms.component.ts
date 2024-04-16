@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { User } from 'src/app/models';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserStore } from 'src/app/user.store';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-forms',
@@ -18,7 +19,10 @@ import { UserStore } from 'src/app/user.store';
   providers: [UserStore, AuthService],
   templateUrl: './forms.component.html',
 })
+
 export class FormsComponent implements OnInit, OnDestroy {
+  
+  URL = environment.url
 
   private fb: FormBuilder = inject(FormBuilder)
   private router = inject(Router)

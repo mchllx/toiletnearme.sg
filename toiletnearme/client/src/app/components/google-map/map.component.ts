@@ -1,9 +1,11 @@
 import { AfterContentInit, AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild, inject } from '@angular/core';
 import { GoogleMap, MapAdvancedMarker, MapInfoWindow, MapMarker } from '@angular/google-maps';
-import { Marker } from '../../models';
+import { Marker, Toilet } from '../../models';
 import { ToiletService } from '../../services/toilet.service';
 
 import {OverlayLayout} from '@googlemaps/extended-component-library/overlay_layout.js';
+import { Observable, of, switchMap, tap } from 'rxjs';
+import { ToiletStore } from 'src/app/toilet.store';
 
 @Component({
   selector: 'app-map',
@@ -11,7 +13,7 @@ import {OverlayLayout} from '@googlemaps/extended-component-library/overlay_layo
   styleUrls: ['./map.component.css']
 })
 
-export class MapComponent implements OnInit {
+export class MapComponent implements OnInit{
 
   // JWTToken!: Promise<string>
   gmapAPIKeyPromise!: Promise<string>
@@ -33,7 +35,11 @@ export class MapComponent implements OnInit {
   addressList: string[] = []
   address!: string
 
+  toilet: Toilet[] = []
+  toilet$!:Observable<Toilet[]>
+
   private toiletSvc = inject(ToiletService)
+  private toiletStore = inject(ToiletStore)
   sgLocations: Marker[] = [{id:"test", lat: 1.3191389705135221, lng: 103.89404363104732, title: "Singpost Centre", content:""}]
 
   svgString: string = `<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#FF5733" stroke="#FFFFFF" viewBox="0 0 24 24">
@@ -50,17 +56,35 @@ export class MapComponent implements OnInit {
       zoom: 12,
       mapId: 'fc1289eedacfb1a1'
     }
-
-    this.addressList = this.getAddress()
   }
 
   ngOnInit(): void {
+    this.toiletSvc.getGoogleMapToilets().subscribe(
+      (value: Toilet[]) => {
+        if (value === undefined) {
+          return;
+        } else {
+          for (let index = 0; index < value.length; index++) {
+            const toilet = value[index];
+            // console.info('>>>retrieving toilets', toilet);
+            this.toilet.push(toilet);
+
+            // console.info('address', this.toilet[index].address)
+            this.loadGeocode(this.toilet[index].address)
+          }
+        }
+        // console.info('>>> value', value)
+      },
+      (error) => {
+        console.error('Error fetching toilets:', error);
+      }
+    )
+
     const parser = new DOMParser()
 
     this.sgLocations.forEach((location) => {
       location.content = parser.parseFromString(this.svgString, "image/svg+xml").documentElement
-    })
-    // console.log(">>updated:",this.sgLocations)
+    }) 
   }
 
   onMarkerClick(marker: MapAdvancedMarker) {
@@ -70,18 +94,8 @@ export class MapComponent implements OnInit {
   }
 
   // TODO: change method from address to get toilets
-  getAddress(): string[] {
-    address$: this.toiletSvc.getGoogleMapAddress()
-      .then(value => {
-        // console.log('awaiting response from server')
-        // console.log(">>> value:", value)
-        for (let i = 0; i < value.length; i++) {
-          this.loadGeocode(value[i]) 
-        }
-      })
-      .catch(err => console.error(err))
-      return this.addressList
-  }
+  
+    
 
   loadGeocode(address: string) {
     // console.log('>>>requesting google address')
@@ -107,8 +121,20 @@ export class MapComponent implements OnInit {
 
       } else {
         console.log('Geocode was not successful for the following reason: ' + results)
-        // alert('Geocode was not successful for the following reason: ' + this.geocoderResults);
         }
       })
     }
+
+    // getAddress(): string[] {
+    //   address$: this.toiletSvc.getGoogleMapAddress()
+    //     .then(value => {
+    //       // console.log('awaiting response from server')
+    //       // console.log(">>> value:", value)
+    //       for (let i = 0; i < value.length; i++) {
+    //         this.loadGeocode(value[i]) 
+    //       }
+    //     })
+    //     .catch(err => console.error(err))
+    //     return this.addressList
+    // }
 }

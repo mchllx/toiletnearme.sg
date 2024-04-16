@@ -1,6 +1,7 @@
 export interface Toilet {
     id: string,
     name: string,
+    address: string,
     price: number,
     gender: string,
     type: string,

@@ -7,7 +7,7 @@ import { Toilet } from "../models";
 import { environment } from '../../environments/environment'
 
 const URL = environment.url
-const API_KEY_ENDPOINT = 'api/toilet/'
+const API_KEY_ENDPOINT = 'api/toilet'
 
 @Injectable()
 export class ToiletService {
@@ -16,9 +16,9 @@ export class ToiletService {
 
   // GET http://localhost:8080/api/toilet
   constructor(http: HttpClient) {}
-  getGoogleMapToilets(): Observable<Toilet[]> { 
+  getGoogleMapToilets(): Observable<Toilet[]> {
     try {
-      return this.http.get<any>(`${URL}/${API_KEY_ENDPOINT}`, {})
+      return this.http.get<Toilet[]>(`${URL}/${API_KEY_ENDPOINT}`)
     } catch (error) {
       console.error('Error fetching address', error)
       throw error
@@ -28,7 +28,7 @@ export class ToiletService {
     // GET http://localhost:8080/api/toilet/address
   getGoogleMapAddress(): Promise<string[]> { 
     try {
-      return lastValueFrom(this.http.get<any>(`${URL}/${API_KEY_ENDPOINT}`.concat("address"), {}))
+      return lastValueFrom(this.http.get<any>(`${URL}/${API_KEY_ENDPOINT}`.concat("/address"), {}))
     } catch (error) {
       console.error('Error fetching address', error)
       throw error
@@ -41,7 +41,7 @@ export class ToiletService {
     .set('gender', gender)
 
     try {
-      return this.http.get<any>(`${URL}/${API_KEY_ENDPOINT}`.concat("address"), {params})
+      return this.http.get<any>(`${URL}/${API_KEY_ENDPOINT}`.concat("/address"), {params})
     } catch (error) {
       console.error('Error fetching address', error)
       throw error
@@ -54,7 +54,7 @@ export class ToiletService {
       .set('region', region)
 
     try {
-      return this.http.get<any>(`${URL}/${API_KEY_ENDPOINT}`.concat("address"), {params})
+      return this.http.get<any>(`${URL}/${API_KEY_ENDPOINT}`.concat("/address"), {params})
     } catch (error) {
       console.error('Error fetching address:', error)
       throw error
