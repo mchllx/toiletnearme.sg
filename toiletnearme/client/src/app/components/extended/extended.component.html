@@ -3,11 +3,12 @@
 <gmpx-split-layout row-reverse row-layout-min-width="700">
   <gmpx-overlay-layout #overlay slot="fixed">
     <div slot="main" class="main-container">
-      <gmpx-place-picker for-map="gmap" type="university"
-                         placeholder="Enter a college in the US or Canada"
-                         country="us ca" (gmpx-placechange)="selectCollege($event)">
+      <gmpx-route-overview for-map="gmap"></gmpx-route-overview>
+      <gmpx-place-picker for-map="gmap" type="park"
+                         placeholder="Enter a location in Singapore"
+                         country="sg" (gmpx-placechange)="selectPlace($event)">
       </gmpx-place-picker>
-      <gmpx-place-overview size="large" [place]="college" google-logo-already-displayed>
+      <gmpx-place-overview size="large" [place]="place" google-logo-already-displayed>
         <gmpx-icon-button slot="action" variant="filled" (click)="showReviews()">
           See Reviews
         </gmpx-icon-button>
@@ -17,17 +18,24 @@
       </gmpx-place-overview>
     </div>
     <div slot="overlay">
-      <gmpx-icon-button autofocus (click)="hideReviews()"
-                        class="close-button">
+      <gmpx-icon-button autofocus (click)="hideReviews()" class="close-button">
         Close
       </gmpx-icon-button>
-      <gmpx-place-data-provider [place]="college">
+      <gmpx-place-data-provider [place]="place">
         <gmpx-place-reviews></gmpx-place-reviews>
       </gmpx-place-data-provider>
     </div>
   </gmpx-overlay-layout>
-  <gmp-map slot="main" id="gmap" map-id="DEMO_MAP_ID"
-           [zoom]="mapZoom" [center]="mapCenter">
-    <gmp-advanced-marker [position]="college?.location"></gmp-advanced-marker>
+
+  <!-- Corrected placement of closing tag for gmpx-split-layout -->
+  <gmp-map slot="main" id="gmap" map-id="fc1289eedacfb1a1" [zoom]="mapZoom" [center]="mapCenter">
+      <gmp-advanced-marker *ngFor="let location of sgLocations; let index = index"
+        class="pannable"
+        [position]="{ lat: location.lat, lng: location.lng }" 
+        [title]="'Toilet ' + (index + 1) + ': ' + location.title"
+        [content]="location.content"
+        gmp-clickable position="1.4093769844197537,103.7935080799274">
+      </gmp-advanced-marker>
+      <map-info-window #MapInfoWindow></map-info-window>
   </gmp-map>
 </gmpx-split-layout>

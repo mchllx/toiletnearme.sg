@@ -8,7 +8,7 @@ import { registerLocaleData } from '@angular/common';
 import { MaterialModule } from './ui/material.module';
 
 import en from '@angular/common/locales/en';
-import { GoogleMapsModule } from '@angular/google-maps'
+import { GoogleMap, GoogleMapsModule } from '@angular/google-maps'
 import { AppRoutingModule } from './app-routing.module';
 import { GoogleMapsConfigService } from './services/googlemapsconfig.service';
 import { ToiletService } from './services/toilet.service';
@@ -47,7 +47,7 @@ registerLocaleData(en);
   ],
 
   providers: [
-    AuthService, ToiletService, GoogleMapsConfigService, provideHttpClient(),
+    AuthService, ToiletService, GoogleMapsConfigService, provideHttpClient(), GoogleMap
     // {
     //   // APP_INITIALIZER is the Angular dependency injection token.
     //   provide: APP_INITIALIZER,

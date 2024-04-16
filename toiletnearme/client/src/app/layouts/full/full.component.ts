@@ -51,7 +51,7 @@ export class FullComponent {
     },
     {
       link: "/grid-list",
-      icon: "help-circle",
+      icon: "smile",
       menu: "FAQ",
     },
     {

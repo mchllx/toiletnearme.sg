@@ -44,8 +44,6 @@ export class MapComponent implements OnInit {
     // info marker
   @ViewChild(MapInfoWindow) infoWindow!: MapInfoWindow;
 
-  @ViewChild('overlay') overlay!: ElementRef<OverlayLayout>;
-
   constructor() {
     this.mapOptions = {
       center: { lat: 1.3191389705135221, lng: 103.89404363104732 },
