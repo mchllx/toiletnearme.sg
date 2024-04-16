@@ -21,6 +21,7 @@
     "@angular/platform-browser": "^17.3.4",
     "@angular/platform-browser-dynamic": "^17.3.4",
     "@angular/router": "^17.3.4",
+    "@emailjs/browser": "^4.3.3",
     "@googlemaps/extended-component-library": "^0.6.10",
     "@ngrx/component-store": "^17.2.0",
     "angular-feather": "^6.5.0",

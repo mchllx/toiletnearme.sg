@@ -2,6 +2,8 @@
 <div class="card">
   <div class="card-body">
     <h4 class="mb-32">Sign In</h4>
+    <a href="http://localhost:4200/oauth2/authorization/google">Login with Google</a>
+
     <form [formGroup]="form" (submit)="login()">
       <mat-form-field class="w-100 fs-16" appearance="outline">
         <mat-label>Email</mat-label>
@@ -13,8 +15,8 @@
       <mat-form-field class="w-100 fs-16" appearance="outline">
         <mat-label>Password</mat-label>
         <input matInput type="password" placeholder="Enter your password" formControlName="password">
-          <mat-error *ngIf="form.get('email')?.hasError('required')">Password cannot be empty</mat-error>
-          <mat-error *ngIf="form.get('email')?.hasError('minlength')">Password must be greater than 4 characters</mat-error>
+          <mat-error *ngIf="form.get('password')?.hasError('required')">Password cannot be empty</mat-error>
+          <mat-error *ngIf="form.get('password')?.hasError('minlength')">Password must be greater than 4 characters</mat-error>
       </mat-form-field>
 
       <button mat-button color="btn btn-info fw-normal" type="submit" [disabled]="form.invalid || !form.dirty">Login</button>

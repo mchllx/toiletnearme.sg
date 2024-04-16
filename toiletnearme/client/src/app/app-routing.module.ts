@@ -5,6 +5,7 @@ import { MapComponent } from './components/google-map/map.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ExtendedComponent } from './components/extended/extended.component';
 import { FormsComponent } from './components/forms/forms.component';
+import { ContactComponent } from './components/contact/contact.component';
 
 const routes: Routes = [
   { path: '',
@@ -14,8 +15,8 @@ const routes: Routes = [
       {path:"home", component:ExtendedComponent},
       {path:"toilets", component:MapComponent},
       {path:"login", component:FormsComponent},
-      {path:"contact", component:FormsComponent},
-      {path:"community", component:DashboardComponent},
+      {path:"contact", component:ContactComponent},
+      {path:"community", component:DashboardComponent}
     ]
    },
   { path: "", redirectTo: '/home', pathMatch:'full' },

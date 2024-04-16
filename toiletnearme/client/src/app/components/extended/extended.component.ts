@@ -32,7 +32,7 @@ const DEFAULT_ZOOM = 12;
 const DEFAULT_ZOOM_WITH_LOCATION = 16;
 
 @Component({
-  selector: 'app-root',
+  selector: 'app-extended',
   templateUrl: './extended.component.html',
   styleUrls: ['./extended.component.css']
 })

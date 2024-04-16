@@ -1,0 +1,50 @@
+<!-- Form Layout -->
+<div class="card">
+  <div class="card-body">
+    <h4 class="mb-32">Contact Us</h4>
+    <h4 style="margin-bottom: 32px;">Submit suggestions or leave feedback for our website</h4>
+      <form class="contact-form" (submit)="sendEmail($event)">
+        <label>Name</label>
+        <br>
+        <input type="text" name="user_name" size="60px">
+        <br>
+        <label>Email</label>
+        <br>
+        <input type="email" name="user_email" size="60px">
+        <br>
+        <label>Message</label>
+        <br>
+        <textarea name="message"></textarea>
+        <br>
+        <input type="submit" value="Send">
+      </form>
+      <br><br>
+    
+      <!-- <form [formGroup]="form" (submit)="sendEmail($event)">
+        <mat-form-field class="w-100 fs-16" appearance="outline">
+          <mat-label>Name</mat-label>
+          <input matInput type="user_name" value="user_name" placeholder="Enter your name" formControlName="user_name">
+            <mat-error *ngIf="form.get('user_name')?.hasError('required')">Name cannot be empty</mat-error>
+            <mat-error *ngIf="form.get('user_name')?.hasError('minlength')">Name must be greater than 2 characters</mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="w-100 fs-16" appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput type="user_email" value="user_email" placeholder="Enter your email" formControlName="user_email">
+            <mat-error *ngIf="form.get('user_email')?.hasError('required')">Email cannot be empty</mat-error>
+            <mat-error *ngIf="form.get('user_email')?.hasError('minlength')">Email must be greater than 4 characters</mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="w-100 fs-16" appearance="outline">
+          <mat-label>Textarea</mat-label>
+          <textarea matInput rows="6" placeholder="Write your message" value="Default Value" formControlName="message"></textarea>
+            <mat-error *ngIf="form.get('message')?.hasError('required')">Textarea cannot be empty</mat-error>
+            <mat-error *ngIf="form.get('message')?.hasError('minlength')">Text length must be greater than 1 character</mat-error>
+            <mat-error *ngIf="form.get('message')?.hasError('maxlength')">Text length must be lesser than 120 characters</mat-error>
+        </mat-form-field> -->
+
+      <!-- <button mat-button color="btn btn-info fw-normal" type="submit" [disabled]="form.invalid || !form.dirty">Send Email</button> -->
+      <button mat-button color="btn btn-info fw-normal" type="button" (click)="onBack()">Back</button>
+    <!-- </form>  -->
+  </div>
+</div>
