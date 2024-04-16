@@ -64,7 +64,7 @@ export class ExtendedComponent implements OnInit{
   private activatedRoute = inject(ActivatedRoute)
   private router = inject(Router)
 
-  sgLocations: Marker[] = [{ content: "", title: "Singpost Centre", lat: 1.3191389705135221, lng: 103.89404363104732 }]
+  sgLocations: Marker[] = []
 
   svgString: string = `<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#FF5733" stroke="#FFFFFF" viewBox="0 0 24 24">
     <circle cx="12" cy="12" r="10" fill="#FF5733" stroke="#FFFFFF" stroke-width="2" />
@@ -130,6 +130,7 @@ export class ExtendedComponent implements OnInit{
         var lng = results[0].geometry.location.lng()
         this.sgLocations.push(
           {
+            id: "",
             title:results[0].formatted_address,
             lat: lat,
             lng: lng,

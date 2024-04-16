@@ -1,6 +1,6 @@
 import { AfterContentInit, AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild, inject } from '@angular/core';
 import { GoogleMap, MapAdvancedMarker, MapInfoWindow, MapMarker } from '@angular/google-maps';
-import { sgLocations } from '../../models';
+import { Marker } from '../../models';
 import { ToiletService } from '../../services/toilet.service';
 
 import {OverlayLayout} from '@googlemaps/extended-component-library/overlay_layout.js';
@@ -34,7 +34,7 @@ export class MapComponent implements OnInit {
   address!: string
 
   private toiletSvc = inject(ToiletService)
-  sgLocations: sgLocations[] = [{ content: "", title: "Singpost Centre", lat: 1.3191389705135221, lng: 103.89404363104732 }]
+  sgLocations: Marker[] = []
 
   svgString: string = `<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#FF5733" stroke="#FFFFFF" viewBox="0 0 24 24">
     <circle cx="12" cy="12" r="10" fill="#FF5733" stroke="#FFFFFF" stroke-width="2" />
@@ -69,6 +69,7 @@ export class MapComponent implements OnInit {
     this.infoWindow.openAdvancedMarkerElement(marker.advancedMarker, marker.advancedMarker.title);
   }
 
+  // TODO: change method from address to get toilets
   getAddress(): string[] {
     address$: this.toiletSvc.getGoogleMapAddress()
       .then(value => {
@@ -96,6 +97,7 @@ export class MapComponent implements OnInit {
         var lng = results[0].geometry.location.lng()
         this.sgLocations.push(
           {
+            id: "",
             title:results[0].formatted_address,
             lat: lat,
             lng: lng,

@@ -14,10 +14,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class User implements UserDetails {
 
     private String userId;
-    public User(String userId) {
-        this.userId = userId;
-    }
-
     private String username;
     private String email;
     private String password;
@@ -34,6 +30,10 @@ public class User implements UserDetails {
     private boolean accountNonLocked;
     private boolean credentialsNonExpired;
 
+    public User(String userId) {
+        this.userId = userId;
+    }
+    
     public User(String userId, String username, String email, String password, Date createdOn, Date updatedOn,
             String firstName, String lastName, String profileImage, List<Bookmark> bookmarks,
             List<Review> reviews, Set<Role> authorities, boolean accountNonExpired, boolean isEnabled,

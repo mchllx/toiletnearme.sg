@@ -3,6 +3,8 @@ package vttp.batch4.csf.toiletnearme.controllers;
 
 import java.io.StringReader;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,137 +27,34 @@ import jakarta.json.JsonValue;
 import vttp.batch4.csf.toiletnearme.models.Review;
 import vttp.batch4.csf.toiletnearme.services.ReviewService;
 
+
+// GET http://localhost:8080/api/review/{id}")
+// GET http://localhost:8080/api/review/user/{region}")
+// POST http://localhost:8080/api/review/")
+// DELETE http://localhost:8080/api/toilet/address/{id}")
+
+// TODO: add headers for jwt
 @Controller
 @CrossOrigin()
-@RequestMapping(path="/api")
+@RequestMapping(path="/api/review")
 public class ReviewController {
 
   @Autowired
   private ReviewService reviewSvc;
 
-  // @PostMapping(path="/listings")
-  // @ResponseBody
-  // public ResponseEntity<String> postReview(@RequestBody String payload) throws CreateReviewException {
+  // GET http://localhost:8080/api/review/
+  @GetMapping
+  @ResponseBody
+  public ResponseEntity<List<Review>> getToilets() {
+      System.out.println(">>>GET Req: Toilets");
+      List<Review> reviews = new LinkedList<>();
+  // JsonArrayBuilder arrBuilder = Json.createArrayBuilder(toiletSvc.getToilets());
+  // List<Toilet> toilets = toiletSvc.getToilets()
+  //     .stream()
+  //     .map(Utils::toToilet)
+  //     .toList();
+  return ResponseEntity.ok(reviews);
+  }
 
-  //     System.out.println("payload" + payload);
-
-  //       JsonReader jr = Json.createReader(new StringReader(payload));
-  //       JsonObject jsonObj = jr.readObject().getJsonObject("review");
-
-  //       System.out.println("json" + jsonObj.toString());
-
-  //       // String id = UUID.randomUUID().toString().substring(0,8);
-
-  //       // orderid, date, name, address, priority, comments, cart 
-    
-  //       String name = jsonObj.getString("name");
-  //       String address = jsonObj.getString("address");
-  //       boolean priority = jsonObj.getBoolean("priority");
-  //       String comments = jsonObj.getString("comments");
-
-  //        // cart: lineItems: [{}]
-  //       JsonObject cart = jsonObj.getJsonObject("cart");
-  //       System.out.println("cart" + cart.toString());
-
-
-  //       Review review = new Review();
-
-  //       System.out.println(">>> check review" + review.getId());
-
-  //       order.setDate(new Date());
-  //       order.setName(name);
-  //       order.setAddress(address);
-  //       order.setPriority(priority);
-  //       order.setComments(comments);
-  //       order.setCart(new Cart());
-
-  //     if (poSvc.createNewPurchaseOrder(order) == false) {
-
-  //       JsonObjectBuilder jsonObjBuilder = Json.createObjectBuilder()
-  //         .add("message:", "order already exists");
-
-  //       JsonObject error = jsonObjBuilder.build();
-
-  //       // BAD REQUEST = 400
-  //       return ResponseEntity
-  //       .status(HttpStatus.BAD_REQUEST)
-  //       .contentType(MediaType.APPLICATION_JSON)
-  //       .body(error.toString());
-  //     }
-
-  //     JsonObjectBuilder jsonObjBuilder = Json.createObjectBuilder()
-  //         .add("id:", order.getOrderId());
-  //         // .add("name:", order.getName())
-  //         // .add("address:", order.getAddress())
-  //         // .add("priority:", order.getPriority())
-  //         // .add("comments:", order.getComments())
-  //         // .add("cart:", order.getCart().toString());
-
-  //       JsonObject success = jsonObjBuilder.build();
-    
-  //     // OK = 200
-  //     return ResponseEntity
-  //     .status(HttpStatus.OK)
-  //     .contentType(MediaType.APPLICATION_JSON)
-  //     .body(success.toString());
-  // }
 }
 
-// @Controller
-// @RequestMapping
-// public class ArticleController {
-
-// 	@Autowired
-// 	private ArticleService articleSvc;
-
-// 	@CrossOrigin
-// 	@PostMapping(path="/picture", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-// 	@ResponseBody
-// 	public ResponseEntity<String> postPicture(@RequestPart MultipartFile image) {
-// 	/*
-// 	 * <input type="file" name="image">
-// 	 */
-
-// 		Document doc;
-
-// 		System.out.printf(">>> image: %s", image.getContentType());
-
-// 		Article article = new Article(
-// 				"Upload from Angular", 
-// 				"Uploaded on %s".formatted((new Date()).toString())
-// 				, "");
-
-// 		try {
-// 			article = articleSvc.saveArticle(article, image);
-// 		} catch (Exception ex) {
-// 			doc = new Document("Error", ex.getMessage());
-// 			return ResponseEntity.status(500).body(doc.toJson());
-// 		}
-
-// 		doc = new Document("url", article.url());
-// 		return ResponseEntity.ok(doc.toJson());
-// 	}
-
-// 	@PostMapping(path="/article", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-// 	public ModelAndView postArticle(@RequestPart MultipartFile image,
-// 			@RequestPart String title, @RequestPart String text) {
-
-// 		ModelAndView mav;
-
-// 		Article article = new Article(title, text, "");
-
-// 		try {
-// 			article = articleSvc.saveArticle(article, image);
-// 			mav = new ModelAndView("article");
-// 			mav.addObject("article", article);
-// 			mav.setStatus(HttpStatusCode.valueOf(200));
-
-// 		} catch (Exception ex) {
-// 			mav = new ModelAndView("error");
-// 			mav.addObject("error", ex.getMessage());
-// 			mav.setStatus(HttpStatusCode.valueOf(500));
-// 		}
-
-// 		return mav;
-// 	}
-// }
