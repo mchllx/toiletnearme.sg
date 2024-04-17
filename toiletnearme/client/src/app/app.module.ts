@@ -1,4 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA , NgModule} from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA , NgModule, isDevMode} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, provideHttpClient } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -25,6 +25,7 @@ import { ReviewService } from './services/review.service';
 import { ToiletStore } from './toilet.store';
 import { MarkerStore } from './marker.store';
 import { UserStore } from './user.store';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 
 registerLocaleData(en);
@@ -47,7 +48,12 @@ registerLocaleData(en);
   // AGMCore clashes with router, core@1 fixes, but invalidates router module
   imports: [
     BrowserModule, HttpClientModule, BrowserAnimationsModule, ReactiveFormsModule, MaterialModule, DashboardModule
-    , GoogleMapsModule, AppRoutingModule, ComponentsModule, FeatherModule.pick(allIcons)
+    , GoogleMapsModule, AppRoutingModule, ComponentsModule, FeatherModule.pick(allIcons), ServiceWorkerModule.register('ngsw-worker.js', {
+  enabled: !isDevMode(),
+  // Register the ServiceWorker as soon as the application is stable
+  // or after 30 seconds (whichever comes first).
+  registrationStrategy: 'registerWhenStable:30000'
+})
     // , AgmCoreModule.forRoot({apiKey: ''})
   ],
 
